@@ -1,6 +1,6 @@
 //_________________________Variable Definition:_________________________
-const int trigPin = 7;   // Trigger pin of Ultrasonic Ranging Module HC-SR04
-const int echoPin = 8;   // Echo pin of Ultrasonic Ranging Module HC-SR04
+const int trigPin = 7;   // Trigger pin of Ultrasonic Ranging Module HC-SR04.
+const int echoPin = 8;   // Echo pin of Ultrasonic Ranging Module HC-SR04.
 
 const int standbyLedPin = 2;
 const int flashingLedPin = 3;
@@ -34,9 +34,33 @@ void setup() {
 
 //_________________________LOOP():_________________________
 void loop() {
-  //switch off everything
+  ledSwitchOFF();                     // Switching every led OFF().
+
   digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);               // Delay, to let sensor switch trigPin to LOW.
+
+  digitalWrite(flashingLedPin, HIGH);
+  digitalWrite(trigPin, HIGH);        // Emiting signal.
+  delayMicroseconds(10);              // Delay, to let sensor emit signal.
+  digitalWrite(trigPin, LOW);
+  digitalWrite(flashingLedPin, LOW);
+
+  duration = pulseIn(echoPin, HIGH);  // Recieving signal and saving its duracion.
+  distance = duration/58.2;           // Calculating distance in centimeters, based on the speed of sound.
+
+  Serial.println(distance);           // Printing distance on IDE's Serial Monitor.
+  Serial.write(distance);             // Passing distance value to Unity.
+  Serial.flush();                     // Waits for the transmission of outgoing serial data to complete.
+
+  ledSwitchON(distance);              // Switching leds ON, according to distance.
   
+  delay(200);
+}
+
+
+//_________________________FUNCTIONS:_________________________
+
+void ledSwitchOFF(){
   digitalWrite(standbyLedPin, LOW);
   digitalWrite(flashingLedPin, LOW);
 
@@ -45,30 +69,9 @@ void loop() {
   digitalWrite(led3Pin, LOW);
   digitalWrite(led4Pin, LOW);
   digitalWrite(led5Pin, LOW);
-
-  delayMicroseconds(2);                // To let sensor switch trigPin to LOW.
-
-  //emit signal
-  digitalWrite(flashingLedPin, HIGH);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);               // To let sensor emit signal.
-  digitalWrite(trigPin, LOW);
-  digitalWrite(flashingLedPin, LOW);
-  
-  duration = pulseIn(echoPin, HIGH);   // Recieving signal and calculating duracion.
-  distance = duration/58.2;            // This gives distance in centimeters based on the speed of sound.
-
-  Serial.println(distance);            // Printing distance in IDE's Serial Monitor
-
-  ledSwitch(distance);                 //Switching LEDs on, according to distance:
-  
-  delay(500);
 }
 
-
-//_________________________FUNCTIONS:_________________________
-
-void ledSwitch(int distance){
+void ledSwitchON(int distance){
   if(distance<10){
     digitalWrite(standbyLedPin, HIGH);
   }
