@@ -1,5 +1,6 @@
-const int trigPin = 7;
-const int echoPin = 8;
+//_________________________Variable Definition:_________________________
+const int trigPin = 7;   // Trigger pin of Ultrasonic Ranging Module HC-SR04
+const int echoPin = 8;   // Echo pin of Ultrasonic Ranging Module HC-SR04
 
 const int standbyLedPin = 2;
 const int flashingLedPin = 3;
@@ -14,6 +15,7 @@ long duration;
 long distance;
 
 
+//_________________________SETUP():_________________________
 void setup() {
   Serial.begin(9600);
   pinMode(trigPin, OUTPUT);
@@ -29,6 +31,8 @@ void setup() {
   pinMode(led5Pin, OUTPUT);
 }
 
+
+//_________________________LOOP():_________________________
 void loop() {
   //switch off everything
   digitalWrite(trigPin, LOW);
@@ -42,21 +46,29 @@ void loop() {
   digitalWrite(led4Pin, LOW);
   digitalWrite(led5Pin, LOW);
 
-  delayMicroseconds(2); //to let sensor switch trigPin to LOW.
+  delayMicroseconds(2);                // To let sensor switch trigPin to LOW.
 
   //emit signal
   digitalWrite(flashingLedPin, HIGH);
   digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);  //to let sensor emit signal.
+  delayMicroseconds(10);               // To let sensor emit signal.
   digitalWrite(trigPin, LOW);
   digitalWrite(flashingLedPin, LOW);
   
-  duration = pulseIn(echoPin, HIGH);  //recieving signal and calculating duracion.
-  distance = duration/58.2;  //this gives distance in cm based on the speed of sound.
+  duration = pulseIn(echoPin, HIGH);   // Recieving signal and calculating duracion.
+  distance = duration/58.2;            // This gives distance in centimeters based on the speed of sound.
 
-  Serial.println(distance);
+  Serial.println(distance);            // Printing distance in IDE's Serial Monitor
 
-  //Switching LEDs on, according to distance:
+  ledSwitch(distance);                 //Switching LEDs on, according to distance:
+  
+  delay(500);
+}
+
+
+//_________________________FUNCTIONS:_________________________
+
+void ledSwitch(int distance){
   if(distance<10){
     digitalWrite(standbyLedPin, HIGH);
   }
@@ -88,7 +100,4 @@ void loop() {
   else{
     digitalWrite(led5Pin, HIGH);
   }
-
-  
-  delay(1000);
 }
