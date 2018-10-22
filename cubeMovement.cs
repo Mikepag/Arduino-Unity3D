@@ -35,26 +35,8 @@ public class cubeMovement : MonoBehaviour {
 			}
 			MoveObject (dist2Move, direction);
 			previousPos = distance;
-
-
-
-
-
-			//MoveObject(distance);
-
-			//SetTransformZ(distance);	//THIS (almost) WORKS!
-
-			//transform.Translate (0, 0, distance);	
-	
 		}
 	}
-
-
-	/*	//THIS (almost) WORKS!
-	void SetTransformZ(int distance){
-		transform.position = new Vector3 (transform.position.x , transform.position.y, distance);
-	}
-	*/
 
 
 
@@ -65,12 +47,6 @@ public class cubeMovement : MonoBehaviour {
 		else {
 			transform.Translate (Vector3.back * dist2Move, Space.World);
 		}
-
-
-		//transform.position.y = distance;
-		//Cube.transform.position += Vector3.forward * distance;
-	
 	}
-
 
 }
