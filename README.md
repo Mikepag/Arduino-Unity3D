@@ -15,4 +15,3 @@
 * Moves cube:
     * closer to the camera as the distance decreases.
     * further away from the camera as the distance increases.
-* *Doesn't work as it should yet.*
