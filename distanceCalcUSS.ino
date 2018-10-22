@@ -48,7 +48,7 @@ void loop() {
   duration = pulseIn(echoPin, HIGH);  // Recieving signal and saving its duracion.
   distance = duration/58.2;           // Calculating distance in centimeters, based on the speed of sound.
 
-  Serial.println(distance);           // Printing distance on IDE's Serial Monitor.
+  //Serial.println(distance);         // Printing distance on IDE's Serial Monitor. (COMMENT THIS LINE OUT WHEN SENDING DATA TO UNITY).
   Serial.write(distance);             // Passing distance value to Unity.
   Serial.flush();                     // Waits for the transmission of outgoing serial data to complete.
 
