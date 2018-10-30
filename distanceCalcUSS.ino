@@ -11,8 +11,9 @@ const int led3Pin = 11;
 const int led4Pin = 10;
 const int led5Pin = 9;
 
-long duration;
-long distance;
+float duration;
+float distance;
+int distInt;
 
 
 //_________________________SETUP():_________________________
@@ -47,9 +48,11 @@ void loop() {
 
   duration = pulseIn(echoPin, HIGH);  // Recieving signal and saving its duracion.
   distance = duration/58.2;           // Calculating distance in centimeters, based on the speed of sound.
+  distInt = distance;                 // Converting float distance value to integer.
 
-  //Serial.println(distance);         // Printing distance on IDE's Serial Monitor. (COMMENT THIS LINE OUT WHEN SENDING DATA TO UNITY).
-  Serial.write(distance);             // Passing distance value to Unity.
+  
+  //Serial.println(distInt);          // Printing distance on IDE's Serial Monitor. (COMMENT THIS LINE OUT WHEN SENDING DATA TO UNITY).
+  Serial.write(distInt);              // Passing distance value to Unity.
   Serial.flush();                     // Waits for the transmission of outgoing serial data to complete.
 
   ledSwitchON(distance);              // Switching leds ON, according to distance.
