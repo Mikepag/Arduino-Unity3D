@@ -9,9 +9,10 @@ public class cubeMovement : MonoBehaviour {
 	//Recieving data from the arduino:
 	SerialPort sp = new SerialPort("COM3", 9600);
 
-	public int distance;
-	public int previousPos = 50;
-	public int dist2Move;
+	public int distInt;
+	public float distance;
+	public float previousPos = 0;
+	public float dist2Move;
 	public int direction;
 
 
@@ -25,7 +26,8 @@ public class cubeMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()  {
 		if (sp.IsOpen) {
-			distance = sp.ReadByte();
+			distInt = sp.ReadByte();
+			distance = (float) distInt / 100; 
 			dist2Move = previousPos - distance;
 			if (dist2Move < 0) {
 				dist2Move = dist2Move * (-1);
@@ -40,7 +42,8 @@ public class cubeMovement : MonoBehaviour {
 
 
 
-	void MoveObject(int dist2Move, int direction){
+	void MoveObject(float dist2Move, int direction){
+		
 		if (direction == 0) {
 			transform.Translate (Vector3.forward * dist2Move, Space.World);
 		} 
