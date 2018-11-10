@@ -4,7 +4,7 @@
 
 # Project 1
 ##### Distance Calculation using an Ultrasonic Sensor - Unity's Cube Movement.
-###### Related Files: *distanceCalcUSS.ino*, *cubeMovement.cs*.
+###### Related Files: [distanceCalcUSS.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/distanceCalcUSS.ino), [cubeMovement.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/cubeMovement.cs), [distanceCalcUSS_circuitSchema.png](https://github.com/Mikepag/Arduino-Unity3D/commits/master/distanceCalcUSS_circuitSchema.png).
 
 ## distanceCalcUSS.ino
 **--> C++ code uploaded to the Arduino.**
@@ -18,11 +18,14 @@
 * Moves cube:
     * closer to the camera as the distance decreases.
     * further away from the camera as the distance increases.
+
+## distanceCalcUSS_circuitSchema.png
+**--> Arduino's Circuit Schema.**
 ___
 
 # Project 2 (DUSHGRProject)
 ##### *D*ual *U*ltrasonic *S*ensor - *H*and *G*esture *R*ecognition *Project*
-###### Related Files: *dUSHGR_Project.ino*.
+###### Related Files: [dUSHGR_Project.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/dUSHGR_Project.ino).
 
 ## dUSHGR_Project.ino
 **--> C++ code uploaded to the Arduino.**
