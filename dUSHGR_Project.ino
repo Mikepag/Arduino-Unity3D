@@ -21,6 +21,13 @@ float distanceR;
 int distLInt;
 int distRInt;
 
+int distLOLD = 0;
+int distROLD = 0;
+int flagL = 0;
+int flagR = 0;
+int timestepsL = 0;
+int timestepsR = 0;
+
 int sensorSwitch = 0; // 0 == Left Sensor, 1 == Right Sensor.
 
 
@@ -92,8 +99,45 @@ void loop() {
     ledSwitchON(distanceR);              // Switching leds ON, according to distance.
     sensorSwitch = 0;
   }
+
+  if(flagL == 1 && timestepsL <3){
+    timestepsL++;
+  }
+  else{
+    flagL = 0;
+  }
+
+  if(flagR == 1 && timestepsR <3){
+    timestepsR++;
+  }
+  else{
+    flagR = 0;
+  }
   
-  delay(200);
+  
+  if(abs(distLOLD-distLInt) < abs(distROLD-distRInt) && (distLInt < 20)){
+    //something is in front of L.
+    flagL = 1;
+    timestepsL = 0;
+    if(flagR == 1){
+      Serial.print("\nMOVE LEFT\n");
+    }
+    flagR = 0;
+  }
+  if(abs(distLOLD-distLInt) > abs(distROLD-distRInt) && (distRInt < 20)){
+    //something is in front of R.
+    flagR = 1;
+    timestepsR = 0;
+    if(flagL == 1){
+      Serial.print("\nMOVE RIGHT\n");
+    }
+    flagL = 0;
+  }
+
+  //////////////////////if(flagL)
+    
+  
+  delay(100);
 }
 
 
