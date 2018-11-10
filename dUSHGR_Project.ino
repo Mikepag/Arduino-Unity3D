@@ -23,12 +23,12 @@ int distRInt;
 
 int distLOLD = 0;
 int distROLD = 0;
-int flagL = 0;
-int flagR = 0;
+int flagL = 0;        // ==1 when something is detected in front of left Sensor. Keeps its value for a specific amount of time.
+int flagR = 0;        // ==1 when something is detected in front of right Sensor. Keeps its value for a specific amount of time.
 int timestepsL = 0;
 int timestepsR = 0;
 
-int sensorSwitch = 0; // 0 == Left Sensor, 1 == Right Sensor.
+int sensorSwitch = 0; // 0== Switch Left Sensor ON, 1== Switch Right Sensor ON.
 
 
 //_________________________SETUP():_________________________
@@ -69,12 +69,12 @@ void loop() {
     distLInt = distanceL;                // Converting float distance value to integer.
   
     Serial.print("L ");
-    Serial.print(distLInt);          // Printing distance on IDE's Serial Monitor. (COMMENT THIS LINE OUT WHEN SENDING DATA TO UNITY).
-    //Serial.write(distLInt);              // Passing distance value to Unity.
-    //Serial.flush();                      // Waits for the transmission of outgoing serial data to complete.
+    Serial.print(distLInt);              // Printing distance on IDE's Serial Monitor. (COMMENT THIS LINE OUT WHEN SENDING DATA TO UNITY).
+    //Serial.write(distLInt);            // Passing distance value to Unity.
+    //Serial.flush();                    // Waits for the transmission of outgoing serial data to complete.
   
     ledSwitchON(distanceL);              // Switching leds ON, according to distance.
-    sensorSwitch = 1;
+    sensorSwitch = 1;                    // In the next loop, switch Right sensor On.
   }
   else{                                  // Else, when sensorSwitch == 1, RIGHT SENSOR emits and receives signal.
     digitalWrite(trigRPin, LOW);
@@ -92,52 +92,48 @@ void loop() {
   
 
     Serial.print("    R ");
-    Serial.println(distRInt);          // Printing distance on IDE's Serial Monitor. (COMMENT THIS LINE OUT WHEN SENDING DATA TO UNITY).
-    //Serial.write(distRInt);              // Passing distance value to Unity.
-    //Serial.flush();                      // Waits for the transmission of outgoing serial data to complete.
+    Serial.println(distRInt);            // Printing distance on IDE's Serial Monitor. (COMMENT THIS LINE OUT WHEN SENDING DATA TO UNITY).
+    //Serial.write(distRInt);            // Passing distance value to Unity.
+    //Serial.flush();                    // Waits for the transmission of outgoing serial data to complete.
   
     ledSwitchON(distanceR);              // Switching leds ON, according to distance.
-    sensorSwitch = 0;
+    sensorSwitch = 0;                    // In the next loop, switch Right sensor On.
   }
 
-  if(flagL == 1 && timestepsL <3){
-    timestepsL++;
+  if(flagL == 1 && timestepsL <3){        // If something was detected in front of the left sensor AND it was detected at maximum 2 timesteps ago...
+    timestepsL++;                         // ...then, increment timestepsL.
   }
-  else{
-    flagL = 0;
+  else{                                   // Else, if nothing was detected in front of the sensor OR something was detected but more than 3 timesteps ago...
+    flagL = 0;                            // ...then, flagL = 0, which roughly means "nothing was detected in front of the left sensor".
   }
 
-  if(flagR == 1 && timestepsR <3){
-    timestepsR++;
+  if(flagR == 1 && timestepsR <3){        // If something was detected in front of the right sensor AND it was detected at maximum 2 timesteps ago...
+    timestepsR++;                         // ...then, increment timestepsR.
   }
-  else{
-    flagR = 0;
+  else{                                   // Else, if nothing was detected in front of the sensor OR something was detected but more than 3 timesteps ago...
+    flagR = 0;                            // ...then, flagR = 0, which roughly means "nothing was detected in front of the right sensor".
   }
   
-  
-  if(abs(distLOLD-distLInt) < abs(distROLD-distRInt) && (distLInt < 20)){
-    //something is in front of L.
-    flagL = 1;
-    timestepsL = 0;
-    if(flagR == 1){
-      Serial.print("\nMOVE LEFT\n");
+  if(abs(distLOLD-distLInt) < abs(distROLD-distRInt) && (distLInt < 20)){   // If the absolute value of the difference between the two last Left sensor distances are smaller than the absolute value of the difference between the two last Right sensor distances...
+                                                                            // ...AND the last detected distance is smaller than 20cm...
+    flagL = 1;                                                              // ...then, something is in front of the Left Sensor, so flagL = 1.
+    timestepsL = 0;                                                         // timestepsL = 0 because something is CURRENTLY in front of the sensor. When it is no longer detected, timestepsL will increment.
+    if(flagR == 1){                   // If something was also detected in front of the Right sensor in the last 3 timesteps...
+      Serial.print("\nMOVE LEFT\n");  // ...that means something moved from Right to Left! Gesture recognised successfully.
     }
-    flagR = 0;
+    flagR = 0;                        // Since a gesture to-the-left was recognised, we need to set flagR=0. Otherwise, if in the next timestep something is still detected in front of the left sensor, another (false) gesture to-the-left will be recognised.
   }
-  if(abs(distLOLD-distLInt) > abs(distROLD-distRInt) && (distRInt < 20)){
-    //something is in front of R.
-    flagR = 1;
-    timestepsR = 0;
-    if(flagL == 1){
-      Serial.print("\nMOVE RIGHT\n");
+  if(abs(distLOLD-distLInt) > abs(distROLD-distRInt) && (distRInt < 20)){   // If the absolute value of the difference between the two last Left sensor distances are greater than the absolute value of the difference between the two last Right sensor distances...
+                                                                            // ...AND the last detected distance is smaller than 20cm...
+    flagR = 1;                                                              // ...then, something is in front of the Right Sensor, so flagR = 1.
+    timestepsR = 0;                                                         // timestepsR = 0 because something is CURRENTLY in front of the sensor. When it is no longer detected, timestepsR will increment.
+    if(flagL == 1){                   // If something was also detected in front of the Left sensor in the last 3 timesteps...
+      Serial.print("\nMOVE RIGHT\n"); // ...that means something moved from Left to Right! Gesture recognised successfully.
     }
-    flagL = 0;
+    flagL = 0;                        // Since a gesture to-the-right was recognised, we need to set flagL=0. Otherwise, if in the next timestep something is still detected in front of the right sensor, another (false) gesture to-the-right will be recognised.
   }
-
-  //////////////////////if(flagL)
-    
   
-  delay(100);
+  delay(100);   // Delay between each time that either left or right sensor are "enabled".
 }
 
 
