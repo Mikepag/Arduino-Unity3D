@@ -25,19 +25,24 @@ public class cubeRotation: MonoBehaviour {
 	{
 		if (sp.IsOpen) {
 			direction = sp.ReadByte ();
-			RotateObject (direction);
+			//RotateObject (direction);
+
+			StopCoroutine (RotateObject(direction));
+			StartCoroutine (RotateObject(direction));
 		}
 	}
 
 
 
-	void RotateObject (int direction){
+	IEnumerator RotateObject (int direction){
 
 		if (direction == 0) {
-			transform.Rotate (Vector3.up * 15, Space.World);
+			transform.Rotate (Vector3.up * 15);
+			yield return new WaitForSeconds(5);
 		} 
 		else if (direction == 1) {
-			transform.Rotate (Vector3.down * 15, Space.World);
+			transform.Rotate (Vector3.down * 15);
+			yield return new WaitForSeconds(5);
 		}
 	}
 
