@@ -10,6 +10,7 @@ public class cubeRotation: MonoBehaviour {
 	SerialPort sp = new SerialPort("COM3", 9600);
 
 	public int direction;
+	public int timesteps;
 
 
 
@@ -27,7 +28,7 @@ public class cubeRotation: MonoBehaviour {
 			direction = sp.ReadByte ();
 			//RotateObject (direction);
 
-			StopCoroutine (RotateObject(direction));
+			//StopCoroutine (RotateObject(direction));
 			StartCoroutine (RotateObject(direction));
 		}
 	}
@@ -35,14 +36,20 @@ public class cubeRotation: MonoBehaviour {
 
 
 	IEnumerator RotateObject (int direction){
-
 		if (direction == 0) {
-			transform.Rotate (Vector3.up * 15);
-			yield return new WaitForSeconds(5);
-		} 
-		else if (direction == 1) {
-			transform.Rotate (Vector3.down * 15);
-			yield return new WaitForSeconds(5);
+			timesteps = 0;
+			while (timesteps < 10) {
+				transform.Rotate (Vector3.up * 15 * Time.deltaTime);
+				yield return new WaitForSeconds (0.001F);	// Suspends the coroutine execution for the given amount of seconds using scaled time.
+				timesteps++;
+			}
+		} else if (direction == 1) {
+			timesteps = 0;
+			while (timesteps < 10) {
+				transform.Rotate (Vector3.down * 15 * Time.deltaTime);
+				yield return new WaitForSeconds (0.001F);	//Suspends the coroutine execution for the given amount of seconds using scaled time.
+				timesteps++;
+			}
 		}
 	}
 
