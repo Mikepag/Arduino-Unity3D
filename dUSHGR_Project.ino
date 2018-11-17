@@ -21,14 +21,18 @@ float distanceR;
 int distLInt;
 int distRInt;
 
-int rotation; // contains the value that is beeing sent to Unity. ==0 to rotate Left, ==1 to rotate Right, ==-1 to not rotate.
+//int rotation;         // Contains the value that is beeing sent to Unity. ==0 to rotate Left, ==1 to rotate Right, ==-1 to not rotate.
 
-int distLOLD = 0;
-int distROLD = 0;
+int distLOLD = 0;     // Previous distance calculated by left sensor.
+int distROLD = 0;     // Previous distance calculated by right sensor.
 int flagL = 0;        // ==1 when something is detected in front of left Sensor. Keeps its value for a specific amount of time.
 int flagR = 0;        // ==1 when something is detected in front of right Sensor. Keeps its value for a specific amount of time.
-int timestepsL = 0;
-int timestepsR = 0;
+
+int timestepsAL = 0;  // Timesteps since something arrived in the area in front of Left Sensor.   (Arrived to Left sensor)
+int timestepsAR = 0;  // Timesteps since something arrived in the area in front of Right Sensor.  (Arrived to Right sensor)
+int timestepsLL = 0;  // Timesteps since something left the area in front of Left Sensor.         (Left from Left sensor)
+int timestepsLR = 0;  // Timesteps since something left the area in front of Right Sensor.        (Left from Right sensor)
+
 
 int sensorSwitch = 0; // 0== Switch Left Sensor ON, 1== Switch Right Sensor ON.
 
@@ -104,47 +108,78 @@ void loop() {
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if(flagL == 1 && timestepsL <3){        // If something was detected in front of the left sensor AND it was detected at maximum 2 timesteps ago...
-    timestepsL++;                         // ...then, increment timestepsL.
+  if(timestepsAL < 10){
+    timestepsAL++;
+  }
+  if(timestepsAR < 10){
+    timestepsAR++;
+  }
+
+  if(flagL == 1 && timestepsLL <3){        // If something was detected in front of the left sensor AND it was detected at maximum 2 timesteps ago...
+    timestepsLL++;                         // ...then, increment timestepsLL.
   }
   else{                                   // Else, if nothing was detected in front of the sensor OR something was detected but more than 3 timesteps ago...
     flagL = 0;                            // ...then, flagL = 0, which roughly means "nothing was detected in front of the left sensor".
   }
 
-  if(flagR == 1 && timestepsR <3){        // If something was detected in front of the right sensor AND it was detected at maximum 2 timesteps ago...
-    timestepsR++;                         // ...then, increment timestepsR.
+  if(flagR == 1 && timestepsLR <3){        // If something was detected in front of the right sensor AND it was detected at maximum 2 timesteps ago...
+    timestepsLR++;                         // ...then, increment timestepsLR.
   }
   else{                                   // Else, if nothing was detected in front of the sensor OR something was detected but more than 3 timesteps ago...
     flagR = 0;                            // ...then, flagR = 0, which roughly means "nothing was detected in front of the right sensor".
   }
 
-  rotation = -1;  // That value does not rotate the cube in Unity.
+  //rotation = -1;  // This value makes the cube in Unity to stop rotating and stay still.
   
   if(abs(distLOLD-distLInt) < abs(distROLD-distRInt) && (distLInt < 20)){   // If the absolute value of the difference between the two last Left sensor distances are smaller than the absolute value of the difference between the two last Right sensor distances...
-                                                                            // ...AND the last detected distance is smaller than 20cm...
-    flagL = 1;                                                              // ...then, something is in front of the Left Sensor, so flagL = 1.
-    timestepsL = 0;                                                         // timestepsL = 0 because something is CURRENTLY in front of the sensor. When it is no longer detected, timestepsL will increment.
-    if(flagR == 1){                     // If something was also detected in front of the Right sensor in the last 3 timesteps...
-      //Serial.print("\nMOVE LEFT\n");  // ...that means something moved from Right to Left! Gesture recognised successfully.
-      rotation = 0;                     // That value rotates the cube in Unity to the Left.
+                                                                            // ...AND the last detected distance is smaller than 20cm, then something is in front of the Left Sensor...
+    if(flagL == 0){
+      timestepsAL = 0;                                                      // If flagL was 0, that means it is the "first-after-nothing-was-detected" time, that something is beeing detected in front of Left Sensor, so we set timestepsAL to 0. 
     }
-    flagR = 0;                          // Since a gesture to-the-left was recognised, we need to set flagR=0. Otherwise, if in the next timestep something is still detected in front of the left sensor, another (false) gesture to-the-left will be recognised.
+    flagL = 1;                                                              // ...so flagL = 1.
+    timestepsLL = 0;                                                        // timestepsLL = 0 because something is CURRENTLY in front of the sensor. When it is no longer detected, timestepsLL will increment.
+    if(flagR == 1){                     // If something was also detected in front of the Right sensor in the last 3 timesteps...
+      Serial.print("\nMOVE LEFT\n");    // ...that means something moved from Right to Left! Gesture recognised successfully.
+      Serial.print("timestepsAR = ");
+      Serial.println(-timestepsAR);
+      
+      //timestepsAR = -timestepsAR;
+      //Serial.write(timestepsAR);
+      //Serial.flush();
+      
+      //rotation = 0;                     // That value rotates the cube in Unity to the Left.
+      flagR = 0;                        // Since a gesture to-the-left was recognised, we need to set flagR=0. Otherwise, if in the next timestep something is still detected in front of the left sensor, another (false) gesture to-the-left will be recognised.
+      timestepsAL = 0;                  // Since a gesture was recognised, we set timestepsAL...
+      timestepsAR = 0;                  // ...and timestepsAR to 0, so they start counting timesteps for the next-to-be-recognised gesture.
+    }
   }
   if(abs(distLOLD-distLInt) > abs(distROLD-distRInt) && (distRInt < 20)){   // If the absolute value of the difference between the two last Left sensor distances are greater than the absolute value of the difference between the two last Right sensor distances...
-                                                                            // ...AND the last detected distance is smaller than 20cm...
-    flagR = 1;                                                              // ...then, something is in front of the Right Sensor, so flagR = 1.
-    timestepsR = 0;                                                         // timestepsR = 0 because something is CURRENTLY in front of the sensor. When it is no longer detected, timestepsR will increment.
+                                                                            // ...AND the last detected distance is smaller than 20cm, then something is in front of the Right Sensor...
+    if(flagR == 0){
+      timestepsAR = 0;                                                      // If flagR was 0, that means it is the "first-after-nothing-was-detected" time, that something is beeing detected in front of Right Sensor, so we set timestepsAR to 0. 
+    }                                                        
+    flagR = 1;                                                              // ...so flagR = 1.
+    timestepsLR = 0;                                                        // timestepsLR = 0 because something is CURRENTLY in front of the sensor. When it is no longer detected, timestepsLR will increment.
     if(flagL == 1){                     // If something was also detected in front of the Left sensor in the last 3 timesteps...
-      //Serial.print("\nMOVE RIGHT\n"); // ...that means something moved from Left to Right! Gesture recognised successfully.
-      rotation = 1;                     // That value rotates the cube in Unity to the Right.
+      Serial.print("\nMOVE RIGHT\n");   // ...that means something moved from Left to Right! Gesture recognised successfully.
+      Serial.print("timestepsAL = ");
+      Serial.println(timestepsAL);
+
+      //Serial.write(timestepsAL);
+      //Serial.flush();
+      
+      //rotation = 1;                     // That value rotates the cube in Unity to the Right.
+      flagL = 0;                        // Since a gesture to-the-right was recognised, we need to set flagL=0. Otherwise, if in the next timestep something is still detected in front of the right sensor, another (false) gesture to-the-right will be recognised.
+      timestepsAL = 0;                  // Since a gesture was recognised, we set timestepsAL...
+      timestepsAR = 0;                  // ...and timestepsAR to 0, so they start counting timesteps for the next-to-be-recognised gesture.
     }
-    flagL = 0;                          // Since a gesture to-the-right was recognised, we need to set flagL=0. Otherwise, if in the next timestep something is still detected in front of the right sensor, another (false) gesture to-the-right will be recognised.
   }
 
-  Serial.write(rotation);            // Passing rotation value to Unity.
-  Serial.flush();                    // Waits for the transmission of outgoing serial data to complete.
+  //Serial.write(rotation);            // Passing rotation value to Unity.
+  //Serial.flush();                    // Waits for the transmission of outgoing serial data to complete.
+  //Serial.println(rotation);
   
-  delay(100);   // Delay between each time that either left or right sensor are "enabled".
+  delay(50);   // Delay between each time that either left or right sensor are "enabled".
 }
 
 
