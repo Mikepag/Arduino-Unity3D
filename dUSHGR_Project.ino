@@ -22,6 +22,7 @@ int distLInt;
 int distRInt;
 
 //int rotation;         // Contains the value that is beeing sent to Unity. ==0 to rotate Left, ==1 to rotate Right, ==-1 to not rotate.
+int gesturotation;           // == -1 when right-to-left gesture was recognised, == 1 when left-to-right gesture was recognised, ==0 when no gesture was recognised.
 
 int distLOLD = 0;     // Previous distance calculated by left sensor.
 int distROLD = 0;     // Previous distance calculated by right sensor.
@@ -129,6 +130,7 @@ void loop() {
     flagR = 0;                            // ...then, flagR = 0, which roughly means "nothing was detected in front of the right sensor".
   }
 
+  gesturotation = 0;
   //rotation = -1;  // This value makes the cube in Unity to stop rotating and stay still.
   
   if(abs(distLOLD-distLInt) < abs(distROLD-distRInt) && (distLInt < 20)){   // If the absolute value of the difference between the two last Left sensor distances are smaller than the absolute value of the difference between the two last Right sensor distances...
@@ -139,15 +141,16 @@ void loop() {
     flagL = 1;                                                              // ...so flagL = 1.
     timestepsLL = 0;                                                        // timestepsLL = 0 because something is CURRENTLY in front of the sensor. When it is no longer detected, timestepsLL will increment.
     if(flagR == 1){                     // If something was also detected in front of the Right sensor in the last 3 timesteps...
-      Serial.print("\nMOVE LEFT\n");    // ...that means something moved from Right to Left! Gesture recognised successfully.
-      Serial.print("timestepsAR = ");
-      Serial.println(-timestepsAR);
+      //Serial.print("\nMOVE LEFT\n");    // ...that means something moved from Right to Left! Gesture recognised successfully.
+      //Serial.print("timestepsAR = ");
+      //Serial.println(-timestepsAR);
       
-      //timestepsAR = -timestepsAR;
-      //Serial.write(timestepsAR);
-      //Serial.flush();
+    
+      Serial.write(timestepsAR);
+      Serial.flush();
       
       //rotation = 0;                     // That value rotates the cube in Unity to the Left.
+      gesturotation = -1;
       flagR = 0;                        // Since a gesture to-the-left was recognised, we need to set flagR=0. Otherwise, if in the next timestep something is still detected in front of the left sensor, another (false) gesture to-the-left will be recognised.
       timestepsAL = 0;                  // Since a gesture was recognised, we set timestepsAL...
       timestepsAR = 0;                  // ...and timestepsAR to 0, so they start counting timesteps for the next-to-be-recognised gesture.
@@ -161,18 +164,24 @@ void loop() {
     flagR = 1;                                                              // ...so flagR = 1.
     timestepsLR = 0;                                                        // timestepsLR = 0 because something is CURRENTLY in front of the sensor. When it is no longer detected, timestepsLR will increment.
     if(flagL == 1){                     // If something was also detected in front of the Left sensor in the last 3 timesteps...
-      Serial.print("\nMOVE RIGHT\n");   // ...that means something moved from Left to Right! Gesture recognised successfully.
-      Serial.print("timestepsAL = ");
-      Serial.println(timestepsAL);
+      //Serial.print("\nMOVE RIGHT\n");   // ...that means something moved from Left to Right! Gesture recognised successfully.
+      //Serial.print("timestepsAL = ");
+      //println(timestepsAL);
 
-      //Serial.write(timestepsAL);
-      //Serial.flush();
+      timestepsAL = 10 + timestepsAL;
+      Serial.write(timestepsAL);
+      Serial.flush();
       
       //rotation = 1;                     // That value rotates the cube in Unity to the Right.
+      gesturotation = 1;
       flagL = 0;                        // Since a gesture to-the-right was recognised, we need to set flagL=0. Otherwise, if in the next timestep something is still detected in front of the right sensor, another (false) gesture to-the-right will be recognised.
       timestepsAL = 0;                  // Since a gesture was recognised, we set timestepsAL...
       timestepsAR = 0;                  // ...and timestepsAR to 0, so they start counting timesteps for the next-to-be-recognised gesture.
     }
+  }
+
+  if(gesturotation == 0){
+    Serial.write(gesturotation);
   }
 
   //Serial.write(rotation);            // Passing rotation value to Unity.
