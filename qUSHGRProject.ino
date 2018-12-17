@@ -245,7 +245,7 @@ void loop() {
   if(abs(distTLOLD-distTLInt) < abs(distTROLD-distTRInt) && (distTLInt < 20)){   // If the absolute value of the difference between the two last Bottom Left sensor distances is smaller than the absolute value of the difference between the two last Bottom Right sensor distances...
                                                                             // ...AND the last detected distance is smaller than 20cm, then something is in front of the Bottom Left Sensor...
     if(flagTL == 0){
-      timestepsATL = 0;                                                      // If flagBL was 0, that means it is the "first-after-nothing-was-detected" time, that something is beeing detected in front of Bottom Left Sensor, so we set timestepsABL to 0. 
+      timestepsATL = 0;                                                      // If flagBL was 0, that means it is the "first-after-nothing-was-detected" time, that something is beeing detected in front of Top Left Sensor, so we set timestepsATL to 0. 
     }
     flagTL = 1;                                                              // ...so flagBL = 1.
     timestepsLTL = 0;                                                        // timestepsLBL = 0 because something is CURRENTLY in front of the sensor. When it is no longer detected, timestepsLBL will increment.
@@ -291,47 +291,61 @@ void loop() {
 
   if(topGesture == 0 && botGesture == 0){
     //Serial.print("\nDONT MOVE\n");
+    Serial.write(0);
+    Serial.flush();
   }
   else if(topGesture == 0 && botGesture == -1 && timestepsFSRG >= 5){
-    Serial.print("\nMOVE LEFT (bottom)\n");
-    Serial.print("timestepsABR = ");
-    Serial.println(-timestepsABR);
+    //Serial.print("\nMOVE LEFT (bottom)\n");
+    //Serial.print("timestepsABR = ");
+    //Serial.println(-timestepsABR);
+    Serial.write(timestepsABR);
+    Serial.flush();
     botGesture = 0;
     timestepsABL = 0;                  // Since a gesture was recognised, we set timestepsABL...
     timestepsABR = 0;                  // ...and timestepsABR to 0, so they start counting timesteps for the next-to-be-recognised gesture.
     timestepsFSRG = -1;                // timestepsFSRG is now "disabled" so it doesn't increment.
   }
   else if(topGesture == 0 && botGesture == 1 && timestepsFSRG >= 5){
-    Serial.print("\nMOVE RIGHT (bottom)\n");
-    Serial.print("timestepsABL = ");
-    Serial.println(timestepsABL + 10);
+    //Serial.print("\nMOVE RIGHT (bottom)\n");
+    //Serial.print("timestepsABL = ");
+    //Serial.println(timestepsABL + 10);
+    timestepsABL = 10 + timestepsABL;
+    Serial.write(timestepsABL);
+    Serial.flush();
     botGesture = 0;
     timestepsABL = 0;                  // Since a gesture was recognised, we set timestepsABL...
     timestepsABR = 0;                  // ...and timestepsABR to 0, so they start counting timesteps for the next-to-be-recognised gesture.
     timestepsFSRG = -1;                // timestepsFSRG is now "disabled" so it doesn't increment.
   }
   else if(topGesture == -1 && botGesture == 0 && timestepsFSRG >= 5){
-    Serial.print("\nMOVE LEFT (top)\n");
-    Serial.print("timestepsATR = ");
-    Serial.println(-timestepsATR);
+    //Serial.print("\nMOVE LEFT (top)\n");
+    //Serial.print("timestepsATR = ");
+    //Serial.println(-timestepsATR);
+    Serial.write(timestepsATR);
+    Serial.flush();
     topGesture = 0;
     timestepsATL = 0;                  // Since a gesture was recognised, we set timestepsATL...
     timestepsATR = 0;                  // ...and timestepsATR to 0, so they start counting timesteps for the next-to-be-recognised gesture.
     timestepsFSRG = -1;                // timestepsFSRG is now "disabled" so it doesn't increment.
   }
   else if(topGesture == 1 && botGesture == 0 && timestepsFSRG >= 5){
-    Serial.print("\nMOVE RIGHT (top)\n");
-    Serial.print("timestepsATL = ");
-    Serial.println(timestepsATL + 10);
+    //Serial.print("\nMOVE RIGHT (top)\n");
+    //Serial.print("timestepsATL = ");
+    //Serial.println(timestepsATL + 10);
+    timestepsATL = 10 + timestepsATL;
+    Serial.write(timestepsATL);
+    Serial.flush();
     topGesture = 0;
     timestepsATL = 0;                  // Since a gesture was recognised, we set timestepsATL...
     timestepsATR = 0;                  // ...and timestepsATR to 0, so they start counting timesteps for the next-to-be-recognised gesture.
     timestepsFSRG = -1;                // timestepsFSRG is now "disabled" so it doesn't increment.
   }
   else if(topGesture == -1 && botGesture == -1){
-    Serial.print("\nMOVE LEFT (top+bottom)\n");
-    Serial.print("(-timestepsABR - timestepsATR)/2 = ");
-    Serial.println((-timestepsABR - timestepsATR)/2);
+    //Serial.print("\nMOVE LEFT (top+bottom)\n");
+    //Serial.print("(-timestepsABR - timestepsATR)/2 = ");
+    //Serial.println((-timestepsABR - timestepsATR)/2);
+    Serial.write((timestepsABR + timestepsATR)/2);
+    Serial.flush();
     topGesture = 0;
     botGesture = 0;
     timestepsATL = 0;                  // Since a gesture was recognised, we set timestepsATL...
@@ -341,9 +355,11 @@ void loop() {
     timestepsFSRG = -1;                // timestepsFSRG is now "disabled" so it doesn't increment.
   }
   else if(topGesture == 1 && botGesture == 1){
-    Serial.print("\nMOVE RIGHT (top+bottom)\n");
-    Serial.print("(timestepsABL + timestepsATL)/2 = ");
-    Serial.println((timestepsABL + timestepsATL)/2);
+    //Serial.print("\nMOVE RIGHT (top+bottom)\n");
+    //Serial.print("(timestepsABL + timestepsATL)/2 = ");
+    //Serial.println((timestepsABL + timestepsATL)/2);
+    Serial.write(((timestepsABL + timestepsATL)/2)+10);
+    Serial.flush();
     topGesture = 0;
     botGesture = 0;
     timestepsATL = 0;                  // Since a gesture was recognised, we set timestepsATL...
@@ -353,7 +369,9 @@ void loop() {
     timestepsFSRG = -1;                // timestepsFSRG is now "disabled" so it doesn't increment.
   }
   else if(topGesture == 1 && botGesture == -1){
-    Serial.print("\n ERROR! MOVE RIGHT(top), MOVE LEFT(bottom)\n");
+    //Serial.print("\n ERROR! MOVE RIGHT(top), MOVE LEFT(bottom)\n");
+    Serial.write(0);
+    Serial.flush();
     topGesture = 0;
     botGesture = 0;
     timestepsATL = 0;                  // Since a gesture was recognised, we set timestepsATL...
@@ -363,7 +381,9 @@ void loop() {
     timestepsFSRG = -1;                // timestepsFSRG is now "disabled" so it doesn't increment.
   }
   else if(topGesture == -1 && botGesture == 1){
-    Serial.print("\n ERROR! MOVE LEFT(top), MOVE RIGHT(bottom)\n");
+    //Serial.print("\n ERROR! MOVE LEFT(top), MOVE RIGHT(bottom)\n");
+    Serial.write(0);
+    Serial.flush();
     topGesture = 0;
     botGesture = 0;
     timestepsATL = 0;                  // Since a gesture was recognised, we set timestepsATL...
