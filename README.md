@@ -73,5 +73,5 @@ ___
    * 11 == Really Fast right-to-left rotation.
    * 20 == Really Slow left-to-right rotation.
 
-## dUSHGRPCircuitSchema.JPG
+## qUSHGRPCircuitSchema.JPG
 **--> Arduino's Circuit Schema.**
