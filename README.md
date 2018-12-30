@@ -35,15 +35,15 @@ ___
 
 ## cubeRotation.cs
 **--> C Sharp script attached to a cube in Unity.**
-* Receives rotation value from Arduino.
+* Receives rotation value from Arduino as a number between 0 and 20.
 * Rotates cube:
-   * to the Left if the received value is between 1-10.
-   * to the Right if the received value is between 11-20.
+   * to the Left if the received value is between 1 and 10.
+   * to the Right if the received value is between 11 and 20.
    * does not rotate the cube if the received value is equal to 0.
 * Each number between 1-10 and 11-20 describes the speed of the recognised gesture and also specifies cube's rotational speed as shown below:
    * 1 == Really Fast right-to-left rotation.
-   * 10 == Really Slow left-to-right rotation.
-   * 11 == Really Fast right-to-left rotation.
+   * 10 == Really Slow right-to-left rotation.
+   * 11 == Really Fast left-to-right rotation.
    * 20 == Really Slow left-to-right rotation.
 
 ## dUSHGRPCircuitSchema.JPG
@@ -62,15 +62,15 @@ ___
 
 ## cubeRotation.cs
 **--> C Sharp script attached to a cube in Unity.**
-* Receives rotation value from Arduino as a number between 1 and 20.
+* Receives rotation value from Arduino as a number between 0 and 20.
 * Rotates cube:
    * to the Left if the received value is between 1 and 10.
    * to the Right if the received value is between 11 and 20.
    * does not rotate the cube if the received value is equal to 0.
 * Each number between 1-10 and 11-20 describes the speed of the recognised gesture and also specifies cube's rotational speed as shown below:
    * 1 == Really Fast right-to-left rotation.
-   * 10 == Really Slow left-to-right rotation.
-   * 11 == Really Fast right-to-left rotation.
+   * 10 == Really Slow right-to-left rotation.
+   * 11 == Really Fast left-to-right rotation.
    * 20 == Really Slow left-to-right rotation.
 
 ## qUSHGRPCircuitSchema.JPG
