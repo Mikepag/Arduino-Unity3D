@@ -281,11 +281,8 @@ else{                                   // Else, if nothing was detected in fron
 
 
 
-
-
-//LEFT BREADBOARD
-
-if(distLLInt <= 30 || distLRInt <= 30){ // If at least one of the Sensors of the Left Breadboard detects something...
+If(distLLInt <= 30 || distLRInt <= 30 || distRLInt <= 30 || distRRInt <= 30){ // If at least one of the Sensors of the Left or Right Breadboard detects something...
+  
   if(distLLInt <= 30 && distLRInt <= 30){ // If both Left Sensors detect something at the same time...
     avgDistL = (distLLInt + distLRInt)/2; //... avgDist =  M.O. of the two Left distances
   }
@@ -300,13 +297,28 @@ if(distLLInt <= 30 || distLRInt <= 30){ // If at least one of the Sensors of the
       timestepsAL = 0;     // If flagL was 0, that means it is the "first-after-nothing-was-detected" time, that something is beeing detected in front of Left Sensor(s), so we set timestepsAL to 0. 
   }
   flagL = 1;  // ==1 means something was detected from Left Sensor(s) at maximum 3 timesteps ago.
+  Serial.print("flagL: ");
+  Serial.print(flagL);
+  Serial.print("\n");
   timestepsLL=0; // timestepsLL = 0 because something is CURRENTLY in front of the sensors. When it is no longer detected, timestepsLL will increment.
   if(flagR == 1){
-    Serial.print("MOVE RIGHT!\n\n\n");
-    flagR=0;
-    flagL=0;
+    if(timestepsLR = 1){
+      if(avgDistL <= avgDistR){
+        Serial.print("MOVE RIGHT!\n");
+        //Serial.print(:flagL:");
+        //Serial.print(flagL);
+        //Serial.print(" flagR: ");
+        //Serial.print(flagR);
+        Serial.print("\n\n\n");
+        flagR=0;
+        flagL=0;
+      }
+    }
   }  
 }
+}
+
+//LEFT BREADBOARD
 
 
 
@@ -328,12 +340,24 @@ if(distRLInt <= 30 || distRRInt <= 30){ // If at least one of the Sensors of the
       timestepsAR = 0;     // If flagR was 0, that means it is the "first-after-nothing-was-detected" time, that something is beeing detected in front of Right Sensor(s), so we set timestepsAR to 0. 
   }
   flagR = 1;  // ==1 means something was detected from Right Sensor(s) at maximum 3 timesteps ago.
+  Serial.print("flagR: ");
+  Serial.print(flagR);
+  Serial.print("\n");
   timestepsLR=0; // timestepsLR = 0 because something is CURRENTLY in front of the sensors. When it is no longer detected, timestepsLR will increment.
   if(flagL == 1){
-    Serial.print("MOVE LEFT!\n\n\n");
-    flagR=0;
-    flagL=0;
-  }  
+    if(timestepsLL = 1){
+      if(avgDistR <= avgDistL){
+        Serial.print("MOVE LEFT!\n");
+        //Serial.print(:flagL:");
+        //Serial.print(flagL);
+        //Serial.print(" flagR: ");
+        //Serial.print(flagR);
+        Serial.print("\n\n\n");
+        flagR=0;
+        flagL=0;
+      }
+    }
+  } 
 }
 
 
