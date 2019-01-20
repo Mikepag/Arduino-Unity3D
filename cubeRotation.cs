@@ -37,7 +37,7 @@ public class cubeRotation: MonoBehaviour {
 
 	IEnumerator RotateObject (int directionSteps){
 		if (directionSteps >0 && directionSteps <= 10) {
-			directionSteps = (10 - directionSteps) * 10;
+			directionSteps = (11 - directionSteps) * 10;
 
 			timesteps = 0;
 			while (timesteps < 10) {
@@ -46,7 +46,7 @@ public class cubeRotation: MonoBehaviour {
 				timesteps++;
 			}
 		} else if (directionSteps >10) {
-			directionSteps = (10 -(directionSteps - 10)) * 10;
+			directionSteps = (11 -(directionSteps - 10)) * 10;
 			timesteps = 0;
 			while (timesteps < 10) {
 				transform.Rotate (Vector3.down * directionSteps * Time.deltaTime);
