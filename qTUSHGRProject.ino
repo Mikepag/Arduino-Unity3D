@@ -1,5 +1,5 @@
 //Quad Tilted Ultrasonic Sensor - Hand Gesture Recognition Project ("Book Flipping" - "Slapping" Gestures)
-//_________________________Variable Definition:_________________________
+//_________________________Variable Declaration:_________________________
 // BL --> LL
 // BR --> LR
 // TL --> RL
@@ -14,62 +14,37 @@ const int echoRLPin = 11;   // Echo pin of Right Left Ultrasonic Ranging Module 
 const int trigRRPin = 12;   // Trigger pin of Right Right Ultrasonic Ranging Module HC-SR04.
 const int echoRRPin = 13;   // Echo pin of Right Right Ultrasonic Ranging Module HC-SR04.
 
-const int standbyLedPin = 2;
+const int flagLedPin = 2;
 const int flashingLedPin = 3;
 
-float durationLL;           // Time duration between emiting and receiving signal from the left left sensor.
-float durationLR;           // Time duration between emiting and receiving signal from the left right sensor.
-float distanceLL;           // Distance calulated based on durationLL.
-float distanceLR;           // Distance calulated based on durationLR.
-int distLLInt;              // Integer value of float distanceLL.
-int distLRInt;              // Integer value of float distanceLR.
+float durationLL;       // Time duration between emiting and receiving signal from the left left sensor.
+float durationLR;       // Time duration between emiting and receiving signal from the left right sensor.
+float distanceLL;       // Distance calulated based on durationLL.
+float distanceLR;       // Distance calulated based on durationLR.
+int distLLInt;          // Integer value of float distanceLL.
+int distLRInt;          // Integer value of float distanceLR.
 
-float durationRL;           // Time duration between emiting and receiving signal from the Right left sensor.
-float durationRR;           // Time duration between emiting and receiving signal from the Right right sensor.
-float distanceRL;           // Distance calulated based on durationRL.
-float distanceRR;           // Distance calulated based on durationRR.
-int distRLInt;              // Integer value of float distanceRL.
-int distRRInt;              // Integer value of float distanceRR.
+float durationRL;       // Time duration between emiting and receiving signal from the Right left sensor.
+float durationRR;       // Time duration between emiting and receiving signal from the Right right sensor.
+float distanceRL;       // Distance calulated based on durationRL.
+float distanceRR;       // Distance calulated based on durationRR.
+int distRLInt;          // Integer value of float distanceRL.
+int distRRInt;          // Integer value of float distanceRR.
 
-int gesturotation;     // Contains the value that is beeing sent to Unity. == -1 when right-to-left gesture was recognised, == 1 when left-to-right gesture was recognised, ==0 when no gesture was recognised.
+int gesturotation;      // Contains the value that is beeing sent to Unity. == -1 when right-to-left gesture was recognised, == 1 when left-to-right gesture was recognised, ==0 when no gesture was recognised.
 
-int distLLOLD = 0;     // Previous distance calculated by Left Left sensor.
-int distLROLD = 0;     // Previous distance calculated by Left Right sensor.
-int flagLL = 0;        // ==1 when something is detected in front of Left Left Sensor. Keeps its value for a specific amount of time.
-int flagLR = 0;        // ==1 when something is detected in front of Left Right Sensor. Keeps its value for a specific amount of time.
+int avgDistL = -1;      // Average distance value from the Left Sensors. ==-1 means there were not any distances from Left sensors in this timestep, so could not calculate average distance.
+int flagL = 0;          // ==1 when something is detected in front of one or both Left Sensors. Keeps its value for a specific amount of time.
+int prevFlagL = 0;      // Stores the previous value of variable flagL. 
 
-int distRLOLD = 0;     // Previous distance calculated by Right Left sensor.
-int distRROLD = 0;     // Previous distance calculated by Right Right sensor.
-int flagRL = 0;        // ==1 when something is detected in front of Right Left Sensor. Keeps its value for a specific amount of time.
-int flagRR = 0;        // ==1 when something is detected in front of Right Right Sensor. Keeps its value for a specific amount of time.
+int avgDistR = -1;      // Average distance value from the Right Sensors. ==-1 means there were not any distances from Right sensors in this timestep, so could not calculate average distance.
+int flagR = 0;          // ==1 when something is detected in front of one or both Right Sensors. Keeps its value for a specific amount of time.
+int prevFlagR = 0;      // Stores the previous value of variable flagL.
 
-int avgDistL = -1; // Average distance value from the Left Sensors. ==-1 means there were not any distances from Left sensors in this timestep, so could not calculate average distance.
-int flagL = 0;     // ==1 when something is detected in front of Left Right Sensor. Keeps its value for a specific amount of time.
-int prevFlagL = 0; // Stores the previous value of variable flagL. 
-
-int avgDistR = -1; // Average distance value from the Right Sensors. ==-1 means there were not any distances from Right sensors in this timestep, so could not calculate average distance.
-int flagR = 0;     // ==1 when something is detected in front of Left Right Sensor. Keeps its value for a specific amount of time.
-int prevFlagR = 0; // Stores the previous value of variable flagL.
-
-int timestepsALL = 0;  // Timesteps since something arrived in the area in front of Left Left Sensor.   (Arrived to Left Left sensor)
-int timestepsALR = 0;  // Timesteps since something arrived in the area in front of Left Right Sensor.  (Arrived to Left Right sensor)
-int timestepsLLL = 0;  // Timesteps since something left the area in front of Left Left Sensor.         (Left from Left Left sensor)
-int timestepsLLR = 0;  // Timesteps since something left the area in front of Left Right Sensor.        (Left from Left Right sensor)
-
-int timestepsARL = 0;  // Timesteps since something arrived in the area in front of Right Left Sensor.   (Arrived to Right Left sensor)
-int timestepsARR = 0;  // Timesteps since something arrived in the area in front of Right Right Sensor.  (Arrived to Right Right sensor)
-int timestepsLRL = 0;  // Timesteps since something left the area in front of Right Left Sensor.         (Left from Right Left sensor)
-int timestepsLRR = 0;  // Timesteps since something left the area in front of Right Right Sensor.        (Left from Right Right sensor)
-
-int timestepsAL = 0;   // Timesteps since something arrived in the area in front of at least one of the Left Sensors.    (Arrived to Left sensor(s))
-int timestepsLL = 0;   // Timesteps since something left the area in front of Left Sensors.                              (Left from Left sensors)
-int timestepsAR = 0;   // Timesteps since something arrived in the area in front of at least one of the Right Sensors.   (Arrived to Right sensor(s))
-int timestepsLR = 0;   // Timesteps since something left the area in front of Right Sensors.                             (Left from Right sensors)
-
-int timestepsFSRG = -1; // Timesteps since First Sensors (top or bottom) Recognised Gesture. Used to handle the case of "simultaneous" recognition of gestures. (simultaneous == within a period of ~250ms). (==-1 means it is "disabled" so it doesn't increment).
-
-int topGesture = 0;    // Gesture recognised from top layer sensors. ==0 means no gesture recognised. ==1 means left-to-right gesture recognised. ==-1 means right-to-left gesture recognised.
-int botGesture = 0;    // Gesture recognised from bottom layer sensors. ==0 means no gesture recognised. ==1 means left-to-right gesture recognised. ==-1 means right-to-left gesture recognised.
+int timestepsAL = 0;    // Timesteps since something Arrived in the area in front of at least one of the Left Sensors.    (Arrived to Left sensor(s))
+int timestepsLL = 0;    // Timesteps since something Left the area in front of Left Sensors.                              (Left from Left sensors(s))
+int timestepsAR = 0;    // Timesteps since something Arrived in the area in front of at least one of the Right Sensors.   (Arrived to Right sensor(s))
+int timestepsLR = 0;    // Timesteps since something Left the area in front of Right Sensors.                             (Left from Right sensors(s))
 
 int sensorSwitch = 0;  // 0== Switch Left Sensors ON, 1== Switch Right Sensors ON.
 
@@ -89,7 +64,7 @@ void setup() {
   pinMode(echoRLPin, INPUT);
   pinMode(echoRRPin, INPUT);
 
-  pinMode(standbyLedPin, OUTPUT);
+  pinMode(flagLedPin, OUTPUT);
   pinMode(flashingLedPin, OUTPUT);
 }
 
@@ -150,7 +125,7 @@ void loop() {
     distRRInt = distanceRR;                 // Converting float distance value to integer.
     
 
-    sensorSwitch = 0;                       // In the next loop, switch Right sensors On.
+    sensorSwitch = 0;                       // In the next loop, switch Left sensors On.
   }
 
 /*
@@ -207,26 +182,26 @@ void loop() {
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Setting flags & Incrementing timesteps:
 
-  if(timestepsAL < 10){    // If my hand Arrived in front of Left sensor(s) less than 10 timesteps ago,
-    timestepsAL++;         // then, increment those timesteps.
-  }// I use these timesteps to determine the hand gesture's speed (according to the amount of time it took my hand to get from the first to the second sensor).
+  if(timestepsAL < 10){               // If my hand Arrived in front of Left sensor(s) less than 10 timesteps ago,
+    timestepsAL++;                    // then, increment those timesteps.
+  }                                   // I use these timesteps to determine the hand gesture's speed (according to the amount of time it took my hand to get from the first to the second sensor).
   
-  if(timestepsAR < 10){    // If my hand Arrived in front of Right sensor(s) less than 10 timesteps ago,
-    timestepsAR++;         // then, increment those timesteps.
-  }// I use these timesteps to determine the hand gesture's speed (according to the amount of time it took my hand to get from the first to the second sensor).
+  if(timestepsAR < 10){               // If my hand Arrived in front of Right sensor(s) less than 10 timesteps ago,
+    timestepsAR++;                    // then, increment those timesteps.
+  }                                   // I use these timesteps to determine the hand gesture's speed (according to the amount of time it took my hand to get from the first to the second sensor).
   
-  if(flagL == 1 && timestepsLL <3){     // If something was detected in front of the left sensors AND it was detected at maximum 2 timesteps ago...
-      timestepsLL++;                       // ...then, increment timestepsLL.
+  if(flagL == 1 && timestepsLL <3){   // If something was detected in front of the left sensors AND it was detected at maximum 2 timesteps ago...
+      timestepsLL++;                  // ...then, increment timestepsLL.
   }
-  else{                                   // Else, if nothing was detected in front of the sensors OR something was detected but more than 3 timesteps ago...
-    flagL = 0;                           // ...then, flagL = 0, which roughly means "nothing was detected in front of the Left sensors".
+  else{                               // Else, if nothing was detected in front of the sensors OR something was detected but more than 3 timesteps ago...
+    flagL = 0;                        // ...then, flagL = 0, which roughly means "nothing was detected in front of the Left sensors".
   }
   
-  if(flagR == 1 && timestepsLR <3){     // If something was detected in front of the right sensors AND it was detected at maximum 2 timesteps ago...
-    timestepsLR++;                       // ...then, increment timestepsLR.
+  if(flagR == 1 && timestepsLR <3){   // If something was detected in front of the right sensors AND it was detected at maximum 2 timesteps ago...
+    timestepsLR++;                    // ...then, increment timestepsLR.
   }
-  else{                                   // Else, if nothing was detected in front of the sensor OR something was detected but more than 3 timesteps ago...
-    flagR = 0;                           // ...then, flagR = 0, which roughly means "nothing was detected in front of the Right sensors".
+  else{                               // Else, if nothing was detected in front of the sensor OR something was detected but more than 3 timesteps ago...
+    flagR = 0;                        // ...then, flagR = 0, which roughly means "nothing was detected in front of the Right sensors".
   }
 
 
@@ -236,53 +211,54 @@ void loop() {
   if(distLLInt <= 30 || distLRInt <= 30 || distRLInt <= 30 || distRRInt <= 30){ // If at least one of the Sensors of the Left or Right Breadboard detects something...
       
     //LEFT BREADBOARD
-    if(distLLInt <= 30 || distLRInt <= 30){
-      if(distLLInt <= 30 && distLRInt <= 30){ // If both Left Sensors detect something at the same time...
-        avgDistL = (distLLInt + distLRInt)/2; //... avgDist =  M.O. of the two Left distances
+    if(distLLInt <= 30 || distLRInt <= 30){     // If at least one of the Sensors of the Left Breadboard detects something...
+      if(distLLInt <= 30 && distLRInt <= 30){   // If both Left Sensors detect something at the same time...
+        avgDistL = (distLLInt + distLRInt)/2;   //... avgDist = average value of the two Left distances.
       }
-      else if(distLLInt <= 30){ // Else, if only LL Sensor detects something...
-        avgDistL = distLLInt;
+      else if(distLLInt <= 30){                 // Else, if only LL Sensor detects something...
+        avgDistL = distLLInt;                   //... avgDist = distance calculated by LL sensor.
       }
-      else if(distLRInt <= 30){ //  Else, if only LR Sensor detects something...
-        avgDistL = distLRInt;
+      else if(distLRInt <= 30){                 //  Else, if only LR Sensor detects something...
+        avgDistL = distLRInt;                   //... avgDist = distance calculated by LR sensor.
       }
     
-      if(flagL == 0){ 
-        timestepsAL = 0;     // If flagL was 0, that means it is the "first-after-nothing-was-detected" time, that something is beeing detected in front of Left Sensor(s), so we set timestepsAL to 0.
-        prevFlagL = 0;       // Keeping previous value of flagL before changing it to 1.
+      if(flagL == 0){
+        digitalWrite(flagLedPin, HIGH);
+        timestepsAL = 0;  // If flagL was 0, that means it is the "first-after-nothing-was-detected" time, that something is beeing detected in front of the Left Sensor(s), so we set timestepsAL to 0.
+        prevFlagL = 0;    // Saving previous value of flagL before changing it to 1.
       }
       else{
-        prevFlagL = 1;         // Keeping previous value of flagL before changing it to 1.
+        prevFlagL = 1;    // Keeping previous value of flagL before changing it to 1.
       }
-      flagL = 1;  // ==1 means something was detected from Left Sensor(s) at maximum 3 timesteps ago.
-      timestepsLL=0; // timestepsLL = 0 because something is CURRENTLY in front of the sensors. When it is no longer detected, timestepsLL will increment.
+      flagL = 1;          // Changing flagL value to 1.
+      timestepsLL = 0;    // timestepsLL = 0 because something is CURRENTLY in front of the sensors. When it is no longer detected, timestepsLL will increment.
     }
     //else{
     //  avgDistL = -1;
     //}
     
     //RIGHT BREADBOARD
-    if(distRLInt <= 30 || distRRInt <= 30){ // If at least one of the Sensors of the Right Breadboard detects something...
-      if(distRLInt <= 30 && distRRInt <= 30){ // If both Right Sensors detect something at the same time...
-        avgDistR = (distRLInt + distRRInt)/2; //... avgDist =  M.O. of the two Right distances
+    if(distRLInt <= 30 || distRRInt <= 30){     // If at least one of the Sensors of the Right Breadboard detects something...
+      if(distRLInt <= 30 && distRRInt <= 30){   // If both Right Sensors detect something at the same time...
+        avgDistR = (distRLInt + distRRInt)/2;   //... avgDist = average value of the two Right distances
       }
-      else if(distRLInt <= 30){ // Else, if only RL Sensor detects something...
-        avgDistR = distRLInt;
+      else if(distRLInt <= 30){                 // Else, if only RL Sensor detects something...
+        avgDistR = distRLInt;                   //... avgDist = distance calculated by RL sensor.
       }
-      else if(distRRInt <= 30){ //  Else, if only RR Sensor detects something...
-        avgDistR = distRRInt;
+      else if(distRRInt <= 30){                 // Else, if only RR Sensor detects something...
+        avgDistR = distRRInt;                   //... avgDist = distance calculated by RR sensor.
       }
     
       if(flagR == 0){
-        timestepsAR = 0;     // If flagR was 0, that means it is the "first-after-nothing-was-detected" time, that something is beeing detected in front of Right Sensor(s), so we set timestepsAR to 0. 
-        prevFlagR = 0;       // Keeping previous value of flagR before changing it to 1.
+        digitalWrite(flagLedPin, HIGH);
+        timestepsAR = 0;  // If flagR was 0, that means it is the "first-after-nothing-was-detected" time, that something is beeing detected in front of Right Sensor(s), so we set timestepsAR to 0. 
+        prevFlagR = 0;    // Saving previous value of flagR before changing it to 1.
       }
       else{
-        prevFlagR = 1;       // Keeping previous value of flagR before changing it to 1.
+        prevFlagR = 1;    // Keeping previous value of flagR before changing it to 1.
       }
-      flagR = 1;  // ==1 means something was detected from Right Sensor(s) at maximum 3 timesteps ago.
-      timestepsLR=0; // timestepsLR = 0 because something is CURRENTLY in front of the sensors. When it is no longer detected, timestepsLR will increment.
-            
+      flagR = 1;          // Changing flagR value to 1.
+      timestepsLR = 0;    // timestepsLR = 0 because something is CURRENTLY in front of the sensors. When it is no longer detected, timestepsLR will increment.    
     }
     //else{
     //  avgDistR = -1;
@@ -291,35 +267,37 @@ void loop() {
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Comparing distances, recognising gestures for each set of sensors:
+// Comparing flags, recognising gestures:
 
-  if(flagL == 1 && flagR == 1){
-    if(prevFlagL == 0 && prevFlagR == 1){
+  if(flagL == 1 && flagR == 1){                 // If something was detected from the sensors of both Left and Right breadboard within the last 3 timesteps...
+    if(prevFlagL == 0 && prevFlagR == 1){       //... and it is the first timestep that Left breadboard sensors detect something, then a Left-to-Right gesture has just been recognised!
       //Serial.print("- - - MOVE RIGHT - - -");
       //Serial.print(" timestepsAR: ");
       //Serial.print(timestepsAR);
       //Serial.print("\n\n\n");
-      timestepsAR = 10 + timestepsAR;  //...increment timestepsAR's value by 10. (I do this so the value I send to Unity is 1-10 for right-to-left gestures and 11-20 for left-to-right gestures).
-      Serial.write(timestepsAR);       //...send the value of timestepsAR which moves the cube to the right.
-      Serial.flush();
-      
-
+      digitalWrite(flashingLedPin, HIGH);
+      timestepsAR = 10 + timestepsAR;           // Increment timestepsAR's value by 10. (I do this so the value I send to Unity is 1-10 for right-to-left gestures and 11-20 for left-to-right gestures).
+      Serial.write(timestepsAR);                // Send the value of timestepsAR which moves the cube to the right.
+      Serial.flush();                           // Wait for the data to be sent successfully to Unity.
     }
-    else if(prevFlagR == 0 && prevFlagL ==1){
+    else if(prevFlagR == 0 && prevFlagL ==1){   //... and it is the first timestep that Right breadboard sensors detect something, then a Right-to-Left gesture has just been recognised!
       //Serial.print("- - - MOVE LEFT - - -");
       //Serial.print(" timestepsAL: ");
       //Serial.print(timestepsAL);
-      Serial.print("\n\n\n");
-      Serial.write(timestepsAL); //...send the value of timestepsAL which moves the cube to the left.
-      Serial.flush();
-    }   
+      //Serial.print("\n\n\n");
+      digitalWrite(flashingLedPin, HIGH);
+      Serial.write(timestepsAL);                // Send the value of timestepsAL which moves the cube to the left.
+      Serial.flush();                           // Wait for the data to be sent successfully to Unity.
+    }
   }
-  else{
+  else{                                         // Else, if no movement was detected from BOTH Left and Right breadboard Sensors within the last 3 timesteps
     //Serial.print("0\n");
-    Serial.write(0);                        // ...send value "0" to Unity which doesn't move the cube.
-    Serial.flush();
+    Serial.write(0);                            // Send value "0" to Unity which doesn't move the cube.
+    Serial.flush();                             // Wait for the data to be sent successfully to Unity.
   }
 
   
   delay(50);   // Delay between each time that either left or right sensor are "enabled".
+  digitalWrite(flagLedPin, LOW);
+  digitalWrite(flashingLedPin, LOW);
 }
