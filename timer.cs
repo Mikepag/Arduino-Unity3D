@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Timer : MonoBehaviour {
+public class timer : MonoBehaviour {
 
     public GameObject Compass;
 
@@ -52,8 +52,5 @@ public class Timer : MonoBehaviour {
         }
 
         timerText.text = minutes + ":" + seconds + ":" + miliseconds;
-
-
-        
 	}
 }
