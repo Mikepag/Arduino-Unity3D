@@ -14,6 +14,7 @@ public class compassRotation : MonoBehaviour
 
     private int directionSteps;
     private int timesteps;
+    private int isStationary;
     public int stopRotating;
     private int angle;
 
@@ -24,6 +25,7 @@ public class compassRotation : MonoBehaviour
     {
         sp.Open();
         angleText.color = Color.black;
+        isStationary = 1;
         stopRotating = 0;
     }
 
@@ -64,9 +66,14 @@ public class compassRotation : MonoBehaviour
             //timesteps = 0;
             while (timesteps < 10)
             {
+                isStationary = 0;
                 transform.Rotate(Vector3.up * directionSteps * Time.deltaTime);
                 yield return new WaitForSeconds(0.00000000001F);    // Suspends the coroutine execution for the given amount of seconds using scaled time.
                 timesteps++;
+                if(timesteps >= 10)
+                {
+                    isStationary = 1;
+                }
             }
         }
         else if (directionSteps > 10)
@@ -76,12 +83,17 @@ public class compassRotation : MonoBehaviour
             //timesteps = 0;
             while (timesteps < 10)
             {
+                isStationary = 0;
                 transform.Rotate(Vector3.down * directionSteps * Time.deltaTime);
                 yield return new WaitForSeconds(0.00000000001F);    //Suspends the coroutine execution for the given amount of seconds using scaled time.
                 timesteps++;
+                if (timesteps >= 10)
+                {
+                    isStationary = 1;
+                }
             }
         }
-        if (angle >= 95 && angle <= 105)
+        if (isStationary == 1 && angle >= 95 && angle <= 105)
         {
             angleText.color = Color.green;
             stopRotating = 1;
