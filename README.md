@@ -75,3 +75,66 @@ ___
 
 ## qUSHGRPCircuitSchema.JPG
 **--> Arduino's Circuit Schema.**
+___
+
+# Project 3.1 (QUSHGRProject_BF)
+##### *Q*uad *U*ltrasonic *S*ensor - *H*and *G*esture *R*ecognition *Project* ("*B*ook *F*lipping" Gestures)
+###### Related Files: [qUSHGRP_BF.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/qUSHGRP_BF.ino), [qUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/qUSHGRProject.ino) [cubeRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/cubeRotation.cs).
+
+## qUSHGRP_BF.ino
+**--> C++ code uploaded to the Arduino.**
+* Uses four (Top Left, Top Right, Bottom Left, Bottom Right) Ultrasonic Sensors (hc-sr04) to calculate four distances and detect whether something (a human hand) is in front of each sensor.
+* Prints the distances to the IDE's Serial Monitor so I can detect possible "patterns" if they exist.
+* It sends nothing to Unity. It was used just for testing which gestures the sensors can detect, by observing the distances displayed on the Serial Monitor.
+
+## qUSHGRProject.ino && cubeRotation.cs
+**--> C++ code uploaded to the Arduino.**
+**--> C Sharp script attached to a cube in Unity.**
+* They were used together without any changes to their code (exactly the same as it is in Project 3), to test how the new gestures are recognised.
+___
+# Project 4 (QTUSHGRProject)
+##### *Q*uad *T*ilted *U*ltrasonic *S*ensor - *H*and *G*esture *R*ecognition *Project*
+###### Related Files: [qTUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/qTUSHGRProject.ino), [cubeRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/cubeRotation.cs)
+
+## qTUSHGRProject.ino
+**--> C++ code uploaded to the Arduino.**
+* Uses four (Top Left, Top Right, Bottom Left, Bottom Right) Ultrasonic Sensors (hc-sr04) to calculate four distances and detect whether something (a human hand) is in front of each sensor.
+* By comparing the time that something was detected by each sensor, it can recognise left-to-right and right-to-left "book flipping" hand gestures and determine their speed.
+* The difference from previous projects is that now the sensors are not parallel but at an angle of 90 degrees to each other.
+* In addition, the two breadboars are placed one next to each other instead off one above the other.
+* The "book flipping" gestures are more user-friendly than the previous recognisable gestures.
+
+## cubeRotation.cs
+**--> C Sharp script attached to a cube in Unity.**
+* It was used without any changes to its code (exactly the same as it is in Project 3), to rotate the cube in Unity.
+* A minnor error was found and fixed, so now the cube rotates even in successive or too slow gestures.
+___
+
+# Project 4.1 (QTUSHGRProject2)
+##### *Q*uad *T*ilted *U*ltrasonic *S*ensor - *H*and *G*esture *R*ecognition *Project 2*
+###### Related Files: [qTUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/qTUSHGRProject.ino), [compassRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/compassRotation.cs), [timer.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/timer.cs).
+
+## qTUSHGRProject.ino
+**--> C++ code uploaded to the Arduino.**
+* It was used without any changes to its code (exactly the same as it is in Project 4)
+
+## compassRotation.cs
+**--> C Sharp script attached to a cylinder named "Compass" in Unity.**
+* C# scrips created to rotate the new game object "Compass"
+* Similar to cubeRotate.cs but in this there is extra functionality:
+  * Compass angle is printed on screen.
+  * After the compass has stopped rotating, I check whether its angle is between 95° and 105°.
+    If it is:
+    * Compass angle text becomes green.
+    * Compass stops rotating for recognised gestures.
+    
+## timer.cs
+**--> C Sharp script attached to a cylinder named "Compass" in Unity.**
+* Prints a stopwatch on the screen.
+* Time starts when player presses Play button.
+* Time is updated once per frame.
+* Format is 00:00:00 (Minutes : Seconds : Miliseconds).
+* It gets the value of variable stopRotating from the compassRotation.cs script.
+* If stopRotating's value is equal to 1:
+  * Time stops counting.
+  * Time text becomes red.
