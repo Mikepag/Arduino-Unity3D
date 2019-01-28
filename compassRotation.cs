@@ -36,8 +36,12 @@ public class compassRotation : MonoBehaviour
     {
         if (sp.IsOpen)
         {
-            directionSteps = sp.ReadByte();
-            //RotateObject (direction);
+            if (isStationary == 1)
+            {
+                directionSteps = sp.ReadByte();
+                //RotateObject (direction);
+            }
+
 
             angle = (int)Compass.transform.localRotation.eulerAngles.y;
             angleText.text = "Angle: " + angle.ToString() + "°" ;
@@ -62,13 +66,13 @@ public class compassRotation : MonoBehaviour
         if (directionSteps > 0 && directionSteps <= 10)
         {
             timesteps = 10 - directionSteps;
-            directionSteps = (11 - directionSteps) * 20;
+            directionSteps = (11 - directionSteps) * 7;
             //timesteps = 0;
             while (timesteps < 10)
             {
                 isStationary = 0;
                 transform.Rotate(Vector3.up * directionSteps * Time.deltaTime);
-                yield return new WaitForSeconds(0.00000000001F);    // Suspends the coroutine execution for the given amount of seconds using scaled time.
+                yield return new WaitForSeconds(0.05F);    // Suspends the coroutine execution for the given amount of seconds using scaled time.
                 timesteps++;
                 if(timesteps >= 10)
                 {
@@ -79,13 +83,13 @@ public class compassRotation : MonoBehaviour
         else if (directionSteps > 10)
         {
             timesteps = 10 - (directionSteps - 10);
-            directionSteps = (11 - (directionSteps - 10)) * 20;
+            directionSteps = (11 - (directionSteps - 10)) * 7;
             //timesteps = 0;
             while (timesteps < 10)
             {
                 isStationary = 0;
                 transform.Rotate(Vector3.down * directionSteps * Time.deltaTime);
-                yield return new WaitForSeconds(0.00000000001F);    //Suspends the coroutine execution for the given amount of seconds using scaled time.
+                yield return new WaitForSeconds(0.05F);    //Suspends the coroutine execution for the given amount of seconds using scaled time.
                 timesteps++;
                 if (timesteps >= 10)
                 {
