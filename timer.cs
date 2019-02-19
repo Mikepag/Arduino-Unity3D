@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class timer : MonoBehaviour {
 
@@ -13,12 +14,22 @@ public class timer : MonoBehaviour {
     private int secondsInt;
     private int milisecInt;
     private int stopTime;
+    private int updatedFile;    // ==1 when the time has already been writen to test.txt, ==0 when it need to be written.
 
-	// Use this for initialization
-	void Start () {
+    private string filename = "test.txt";
+    private string textToWrite = "Time: ";
+
+
+    // Use this for initialization
+    void Start () {
         startTime = Time.time;  // Time.time gives us the time since the application started.
-		
-	}
+
+        updatedFile = 0;
+        if (File.Exists(filename))  // If test.txt already exists...
+        {
+            File.Delete(filename);  // ...I delete it so that all the previous data stored is deleted. The file is created again when I send data to it, but it is empty.
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -27,6 +38,14 @@ public class timer : MonoBehaviour {
 
         if (stopTime == 1){
             timerText.color = Color.red;
+
+            if (updatedFile == 0)
+            {
+                textToWrite = textToWrite + " " + timerText.text.ToString() + "\n";    //create a proper string.
+                File.AppendAllText(filename, textToWrite);  //write to the file.
+                updatedFile = 1;
+            }
+
             return;
         }
 
