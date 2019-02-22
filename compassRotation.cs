@@ -12,12 +12,16 @@ public class compassRotation : MonoBehaviour
     //Recieving data from the arduino:
     SerialPort sp = new SerialPort("COM3", 9600);
 
+    public int goalReached;
+
     private int directionSteps;
     private int timesteps;
     private int isStationary;
-    public int stopRotating;
     private int angle;
 
+    private int resBtnClicked;
+    private int unfinCD;
+    private int didCntdown;
 
 
     // Use this for initialization
@@ -26,7 +30,7 @@ public class compassRotation : MonoBehaviour
         sp.Open();
         angleText.color = Color.black;
         isStationary = 1;
-        stopRotating = 0;
+        goalReached = 0;
     }
 
 
@@ -51,10 +55,21 @@ public class compassRotation : MonoBehaviour
             //    stopRotating = 1;
             //}
 
-            if (stopRotating != 1)
+            resBtnClicked = Compass.GetComponent<restart>().resBtnClicked;  // Getting the value of resBtnClicked from the restart.cs script.
+            unfinCD = Compass.GetComponent<timer>().unfinCD;  // Getting the value of unfinCD from the timer.cs script.
+            didCntdown = Compass.GetComponent<timer>().didCntdown; // Getting the value of didCntdown from the timer.cs script.
+            if (resBtnClicked == 1)
+            {
+                transform.Rotate(Vector3.down * 100);
+                angleText.color = Color.black;
+                goalReached = 0;
+            }
+            
+            
+            if (goalReached == 0 && unfinCD == 0 && didCntdown == 1)    // If the the goal is Not reached yet AND the countdown is not taking place AND there already was a countdown...
             {
                 //StopCoroutine (RotateObject(direction));
-                StartCoroutine(RotateObject(directionSteps));
+                StartCoroutine(RotateObject(directionSteps));   // Call RotateObject() to rotate the compass.
             }
         }
     }
@@ -97,10 +112,13 @@ public class compassRotation : MonoBehaviour
                 }
             }
         }
-        if (isStationary == 1 && angle >= 95 && angle <= 105)
+
+        
+        if (isStationary == 1 && angle >= 95 && angle <= 105 && resBtnClicked == 0)
         {
             angleText.color = Color.green;
-            stopRotating = 1;
+            goalReached = 1;
         }
+        
     }
 }
