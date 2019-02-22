@@ -8,28 +8,26 @@ public class timer : MonoBehaviour {
 
     public GameObject Compass;
     public int unfinCD = 0;   // Finished Countdown
+    public int didCntdown;  // ==1 when I already counted down, ==0 at the start of the game, when I need to do a countdown.
 
     public Text timerText;      // Declaring a public Text called timerText
     private float startTime;    // 
     private int minutesInt;
     private int secondsInt;
     private int milisecInt;
-    private int stopTime;
     private int updatedFile;    // ==1 when the time has already been writen to test.txt, ==0 when it need to be written.
-    private int toCountdown;
-    private int didCntdown;  // ==1 when I already counted down, ==0 at the start of the game, when I need to do a countdown.
     private float passedTime;
-
     private string filename = "test.txt";
     private string textToWrite = "Time: ";
 
+    private int goalReached;
+    private int resBtnClicked;
 
 
     // Use this for initialization
     void Start() {
         //startTime = Time.time;  // Time.time gives us the time since the application started.
-        stopTime = 0;
-        toCountdown = 0;
+        goalReached = 0;
         secondsInt = 0;
         didCntdown = 0;
         timerText.text = "Press The Button";
@@ -45,22 +43,23 @@ public class timer : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        stopTime = Compass.GetComponent<compassRotation>().stopRotating;    // Getting the value of stopRotating from the compassRotation script.
-        if (stopTime == 1) {
-            timerText.color = Color.red;
+        goalReached = Compass.GetComponent<compassRotation>().goalReached;    // Getting the value of goalReached from the compassRotation script.
+        resBtnClicked = Compass.GetComponent<restart>().resBtnClicked;  // Getting the value of resBtnClicked from the restart script.
+
+        if (goalReached == 1 && resBtnClicked == 0) {  // If the user reached the goal and has not clicked the restart button yet...
+            timerText.color = Color.red;    // Set the timer's text's colour to red
 
             if (updatedFile == 0) {   // If I haven't printed the data to the file yet...
                 textToWrite = textToWrite + " " + timerText.text.ToString() + "\n";    // Create a proper string of the time's value.
                 File.AppendAllText(filename, textToWrite);  // Print it to the file.
                 updatedFile = 1;
             }
-            return;
+            //return;
         }
 
-        toCountdown = Compass.GetComponent<restart>().toRestart;
-        if (toCountdown == 1)
+        if (resBtnClicked == 1)
         {
-            //unfinCD = 1;
+            timerText.color = Color.black;    // Set the timer's text's colour to black
             didCntdown = 0;
             
             StartCoroutine(Countdown());
@@ -70,7 +69,7 @@ public class timer : MonoBehaviour {
             //startTime = Time.time;
         }
 
-        if (didCntdown == 1)
+        if (didCntdown == 1 && goalReached == 0)
         {
             passedTime = Time.time - startTime;  // Gives the time in seconds since timer started.
 
@@ -109,6 +108,7 @@ public class timer : MonoBehaviour {
     IEnumerator Countdown()
     {
         //startTime = Time.time;
+        unfinCD = 1;
         secondsInt = 0;
         while (secondsInt <= 3)
         {
@@ -140,7 +140,6 @@ public class timer : MonoBehaviour {
         }
         unfinCD = 0;
         didCntdown = 1;
-        toCountdown = 0;
         startTime = Time.time;
     }
 
