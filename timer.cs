@@ -32,6 +32,7 @@ public class timer : MonoBehaviour {
         toCountdown = 0;
         secondsInt = 0;
         didCntdown = 0;
+        timerText.text = "Press The Button";
 
         updatedFile = 0;
         if (File.Exists(filename))  // If test.txt already exists...
@@ -59,40 +60,14 @@ public class timer : MonoBehaviour {
         toCountdown = Compass.GetComponent<restart>().toRestart;
         if (toCountdown == 1)
         {
+            //unfinCD = 1;
+            didCntdown = 0;
+            
+            StartCoroutine(Countdown());
+            //unfinCD = 0;
+            //didCntdown = 1;
+            //toCountdown = 0;
             //startTime = Time.time;
-            secondsInt = 0;
-            while (secondsInt <= 3)
-            {
-                //passedTime = Time.time - startTime;  // Gives the time in seconds since timer started.
-                //secondsInt = ((int)passedTime % 60);
-                
-                if (secondsInt == 0)
-                {
-                    timerText.text = "3";
-                    secondsInt = 1;
-                }
-                else if (secondsInt == 1)
-                {
-                    timerText.text = "2";
-                    secondsInt = 2;
-                }
-                else if (secondsInt == 2)
-                {
-                    timerText.text = "1";
-                    secondsInt = 3;
-                }
-                else
-                {
-                    timerText.text = "GO!";
-                    secondsInt = 4;
-                }
-                //yield return new WaitForSeconds(0.05F);    // Suspends the coroutine execution for the given amount of seconds using scaled time.
-                //secondsInt++;
-            }
-            unfinCD = 0;
-            didCntdown = 1;
-            toCountdown = 0;
-            startTime = Time.time;
         }
 
         if (didCntdown == 1)
@@ -122,16 +97,57 @@ public class timer : MonoBehaviour {
 
             timerText.text = minutes + ":" + seconds + ":" + miliseconds;
         }
-        else
-        {
-            timerText.text = "Press The Fucking Button";
-        }
+        //else
+        //{
+        //    timerText.text = "Press The Button";
+        //}
     }
-    
-    
 
 
-	
+
+
+    IEnumerator Countdown()
+    {
+        //startTime = Time.time;
+        secondsInt = 0;
+        while (secondsInt <= 3)
+        {
+            //passedTime = Time.time - startTime;  // Gives the time in seconds since timer started.
+            //secondsInt = ((int)passedTime % 60);
+
+            if (secondsInt == 0)
+            {
+                timerText.text = "3";
+                secondsInt = 1;
+            }
+            else if (secondsInt == 1)
+            {
+                timerText.text = "2";
+                secondsInt = 2;
+            }
+            else if (secondsInt == 2)
+            {
+                timerText.text = "1";
+                secondsInt = 3;
+            }
+            else
+            {
+                timerText.text = "GO!";
+                secondsInt = 4;
+            }
+            yield return new WaitForSeconds(1);    // Suspends the coroutine execution for the given amount of seconds using scaled time.
+            //secondsInt++;
+        }
+        unfinCD = 0;
+        didCntdown = 1;
+        toCountdown = 0;
+        startTime = Time.time;
+    }
+
+
+
+
+
 }
 
 /*
