@@ -22,6 +22,7 @@ public class compassRotation : MonoBehaviour
     private int resBtnClicked;
     private int unfinCD;
     private int didCntdown;
+    private int randomAngle;
 
 
     // Use this for initialization
@@ -58,9 +59,14 @@ public class compassRotation : MonoBehaviour
             resBtnClicked = Compass.GetComponent<restart>().resBtnClicked;  // Getting the value of resBtnClicked from the restart.cs script.
             unfinCD = Compass.GetComponent<timer>().unfinCD;  // Getting the value of unfinCD from the timer.cs script.
             didCntdown = Compass.GetComponent<timer>().didCntdown; // Getting the value of didCntdown from the timer.cs script.
+
             if (resBtnClicked == 1)
             {
-                transform.Rotate(Vector3.down * 100);
+
+                randomAngle = Random.Range(180, 360);   // Return a random integer number between 180 and 359.
+
+                //transform.Rotate(Vector3.down * 100);
+                transform.localRotation = Quaternion.Euler(0, randomAngle, 0);  // Set compass's rotation of Y axis to the randomAngle.
                 angleText.color = Color.black;
                 goalReached = 0;
             }
