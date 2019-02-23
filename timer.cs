@@ -18,10 +18,11 @@ public class timer : MonoBehaviour {
     private int updatedFile;    // ==1 when the time has already been writen to test.txt, ==0 when it need to be written.
     private float passedTime;
     private string filename = "test.txt";
-    private string textToWrite = "Time: ";
+    private string textToWrite = "Times:\n";
 
     private int goalReached;
     private int resBtnClicked;
+    private int roundNum;
 
 
     // Use this for initialization
@@ -30,6 +31,7 @@ public class timer : MonoBehaviour {
         goalReached = 0;
         secondsInt = 0;
         didCntdown = 0;
+        roundNum = 0;
         timerText.text = "Press The Button";
 
         updatedFile = 0;
@@ -37,23 +39,33 @@ public class timer : MonoBehaviour {
         {
             File.Delete(filename);  // ...I delete it so that all the previous data stored is deleted. The file is created again when I send data to it, but it is empty.
         }
+        File.AppendAllText(filename, textToWrite);  // Print it to the file.
 
         //Countdown(startTime);
     }
 
     // Update is called once per frame
     void Update() {
-        goalReached = Compass.GetComponent<compassRotation>().goalReached;    // Getting the value of goalReached from the compassRotation script.
-        resBtnClicked = Compass.GetComponent<restart>().resBtnClicked;  // Getting the value of resBtnClicked from the restart script.
+        goalReached = Compass.GetComponent<compassRotation>().goalReached;    // Getting the value of goalReached from the compassRotation.cs script.
+        resBtnClicked = Compass.GetComponent<restart>().resBtnClicked;  // Getting the value of resBtnClicked from the restart.cs script.
+        roundNum = Compass.GetComponent<restart>().roundNum;  // Getting the value of roundNum from the restart.cs script.
 
         if (goalReached == 1 && resBtnClicked == 0) {  // If the user reached the goal and has not clicked the restart button yet...
             timerText.color = Color.red;    // Set the timer's text's colour to red
 
-            if (updatedFile == 0) {   // If I haven't printed the data to the file yet...
-                textToWrite = textToWrite + " " + timerText.text.ToString() + "\n";    // Create a proper string of the time's value.
+            if (updatedFile != roundNum) {   // If I haven't printed the data to the file yet...
+                //textToWrite = textToWrite + " " + timerText.text.ToString() + "\n";    // Create a proper string of the time's value.
+                textToWrite = timerText.text.ToString() + "\n";    // Create a proper string of the time's value.
                 File.AppendAllText(filename, textToWrite);  // Print it to the file.
-                updatedFile = 1;
+                updatedFile = roundNum;
             }
+            //else
+            //{   // If I have already printed data to the file yet...
+            //    textToWrite = "\n" + textToWrite + " " + timerText.text.ToString() + "\n";    // Create a proper string of the time's value.
+            //    File.AppendAllText(filename, textToWrite);  // Print it to the file.
+            //    updatedFile = 1;
+            //}
+
             //return;
         }
 
