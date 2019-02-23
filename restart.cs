@@ -23,21 +23,36 @@ public class restart : MonoBehaviour {
         resBtnClicked = 0;
         //resBtnClicked = Compass.GetComponent<timer>().unfinCD;  // For as long as the countdown takes place in timer.cs, I want the variable to restart to be ==1.
 
-        if (Compass.GetComponent<compassRotation>().goalReached == 1)
+        if (Compass.GetComponent<compassRotation>().goalReached == 1)  // If the goal had been reached and round 10 hasn't started yet...
         {
-            resButObject.SetActive(true);
+            resButObject.SetActive(true);   // Show the restart button to start the next round.
+
+            if (roundNum == 1)
+            {
+                resButObject.GetComponentInChildren<Text>().text = "Quit";
+            }
         }
         
     }
 
 
     void TaskOnClick(){
-        //Debug.Log("You have clicked the button!");
-        resBtnClicked = 1;
-        resButObject.SetActive(false);
-        //restartButton.enabled = false;
-        //restartButton.interactable = false;
-        roundNum++;
+
+        if (roundNum == 1)
+        {
+            UnityEditor.EditorApplication.isPlaying = false;
+            Application.Quit();
+        }
+        else
+        {
+            //Debug.Log("You have clicked the button!");
+            resBtnClicked = 1;
+            resButObject.SetActive(false);
+            //restartButton.enabled = false;
+            //restartButton.interactable = false;
+            roundNum++;
+        }
+        
     }
 
 }
