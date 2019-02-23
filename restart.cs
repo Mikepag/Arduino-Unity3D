@@ -9,11 +9,13 @@ public class restart : MonoBehaviour {
     public GameObject resButObject; // I use this to hide the restart button when it is clicked.
     public Button restartButton;    // I use this to know when the restart button gets clicked.
     public int resBtnClicked;
+    public int roundNum;
 
     void Start()
     {
         restartButton.onClick.AddListener(TaskOnClick); // Whenever the restart button is clicked, call the TaskOnClick() function.
         resButObject.SetActive(true);
+        roundNum = 0;
     }
 
     void Update()
@@ -35,6 +37,7 @@ public class restart : MonoBehaviour {
         resButObject.SetActive(false);
         //restartButton.enabled = false;
         //restartButton.interactable = false;
+        roundNum++;
     }
 
 }
