@@ -17,7 +17,7 @@ public class timer : MonoBehaviour {
     private int milisecInt;
     private int updatedFile;    // ==1 when the time has already been writen to test.txt, ==0 when it need to be written.
     private float passedTime;
-    private string filename = "test.txt";
+    private string filename = "Times.txt";
     private string textToWrite = "Times:\n";
 
     private int goalReached;
