@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class compassRotation : MonoBehaviour
 {
     public GameObject Compass;
-    public Text angleText;      // Declaring a public Text called angleText
+    //TOREMOVE public Text angleText;      // Declaring a public Text called angleText
 
     //Recieving data from the arduino:
     SerialPort sp = new SerialPort("COM3", 9600);
@@ -29,7 +29,7 @@ public class compassRotation : MonoBehaviour
     void Start()
     {
         sp.Open();
-        angleText.color = Color.black;
+        //TOREMOVE angleText.color = Color.black;
         isStationary = 1;
         goalReached = 0;
     }
@@ -49,7 +49,7 @@ public class compassRotation : MonoBehaviour
 
 
             angle = (int)Compass.transform.localRotation.eulerAngles.y;
-            angleText.text = "Angle: " + angle.ToString() + "°" ;
+            //TOREMOVE angleText.text = "Angle: " + angle.ToString() + "°" ;
             //if (angle >= 95 && angle <= 105)
             //{
             //    angleText.color = Color.green;
@@ -62,12 +62,16 @@ public class compassRotation : MonoBehaviour
 
             if (resBtnClicked == 1)
             {
+                randomAngle = Random.Range(0, 180);   // Returns a random integer number between 0 and 179.
+                if (randomAngle >= 90)
+                {
+                    randomAngle += 180; // I want randomAngle to take values in: [0,90) or in [270,360).
+                }
 
-                randomAngle = Random.Range(180, 360);   // Return a random integer number between 180 and 359.
 
                 //transform.Rotate(Vector3.down * 100);
                 transform.localRotation = Quaternion.Euler(0, randomAngle, 0);  // Set compass's rotation of Y axis to the randomAngle.
-                angleText.color = Color.black;
+                //TOREMOVE angleText.color = Color.black;
                 goalReached = 0;
             }
             
@@ -119,10 +123,10 @@ public class compassRotation : MonoBehaviour
             }
         }
 
-        
-        if (isStationary == 1 && angle >= 95 && angle <= 105 && resBtnClicked == 0)
+        //if (isStationary == 1 && angle >= 95 && angle <= 105 && resBtnClicked == 0)
+        if (isStationary == 1 && angle >= 175 && angle <= 185 && resBtnClicked == 0)
         {
-            angleText.color = Color.green;
+            //TOREMOVE angleText.color = Color.green;
             goalReached = 1;
         }
         
