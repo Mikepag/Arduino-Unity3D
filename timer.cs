@@ -7,182 +7,124 @@ using System.IO;
 public class timer : MonoBehaviour {
 
     public GameObject Compass;
-    public int unfinCD = 0;   // Finished Countdown
-    public int didCntdown;  // ==1 when I already counted down, ==0 at the start of the game, when I need to do a countdown.
+    public int unfinCD = 0;                     // ==0 if the Countdown has finished, ==1 while the Countdown is still taking place.
+    public int didCntdown;                      // ==1 if there has been a Countdown for this round, ==0 at the start of the round, when I need to start a countdown.
 
-    public Text timerText;      // Declaring a public Text called timerText
-    private float startTime;    // 
-    private int minutesInt;
-    private int secondsInt;
-    private int milisecInt;
-    private int updatedFile;    // ==1 when the time has already been writen to test.txt, ==0 when it need to be written.
-    private float passedTime;
-    private string filename = "Times.txt";
-    private string textToWrite = "Times:\n";
+    public Text timerText;                      // Declaring a public Text called timerText
+    private float startTime;                    // Gets the time right after the countdown's execution ends. Used to calculate and print the elapsed time on the timer.
+    private int minutesInt;                     // Elapsed minutes sinse start of time.
+    private int secondsInt;                     // Elapsed seconds sinse start of time.
+    private int milisecInt;                     // Elapsed miliseconds since start of time.
+    private int updatedFile;                    // Is equal to the round's number the file has last been updated.
+    private float elapsedTime;                  // Elapsed time since start of time.
+    private string filename = "Times.txt";      // External file where the elapsed time of each round is beeing written.
+    private string textToWrite = "Times:\n";    // The text that is beeing written to Times.txt. The first line is "Times:".
 
-    private int goalReached;
-    private int resBtnClicked;
-    private int roundNum;
+    private int goalReached;                    // Used to save the value of the goalReached variable from the compassRotation.cs script.
+    private int resBtnClicked;                  // Used to save the value of the resBtnClicked variable from the restart.cs script.
+    private int roundNum;                       // Used to save the value of the roundNum variable from the restart.cs script.
 
 
     // Use this for initialization
     void Start() {
-        //startTime = Time.time;  // Time.time gives us the time since the application started.
-        goalReached = 0;
-        secondsInt = 0;
-        didCntdown = 0;
-        roundNum = 0;
-        timerText.text = "Press The Button";
+        goalReached = 0;    // Goal has not been reached yet.
+        secondsInt = 0;     // Elapsed seconds are ==0.
+        didCntdown = 0;     // There has been no Countdown yet.
+        roundNum = 0;       // Current round ==0.
+        timerText.text = "Press The Button";    // Print a message to the player to press the button to start the first round.
 
-        updatedFile = 0;
-        if (File.Exists(filename))  // If test.txt already exists...
+        if (File.Exists(filename))                  // If Times.txt already exists...
         {
-            File.Delete(filename);  // ...I delete it so that all the previous data stored is deleted. The file is created again when I send data to it, but it is empty.
+            File.Delete(filename);                  // ...Delete it so that all the previous data stored is deleted. The file is created again when new data is send to it, but it is empty.
         }
-        File.AppendAllText(filename, textToWrite);  // Print it to the file.
-
-        //Countdown(startTime);
+        File.AppendAllText(filename, textToWrite);  // Print textToWrite to the file.
+        updatedFile = 0;                            // The file has been updated for round 0.
     }
 
     // Update is called once per frame
     void Update() {
-        goalReached = Compass.GetComponent<compassRotation>().goalReached;    // Getting the value of goalReached from the compassRotation.cs script.
-        resBtnClicked = Compass.GetComponent<restart>().resBtnClicked;  // Getting the value of resBtnClicked from the restart.cs script.
-        roundNum = Compass.GetComponent<restart>().roundNum;  // Getting the value of roundNum from the restart.cs script.
+        goalReached = Compass.GetComponent<compassRotation>().goalReached;  // Getting the value of goalReached from the compassRotation.cs script.
+        resBtnClicked = Compass.GetComponent<restart>().resBtnClicked;      // Getting the value of resBtnClicked from the restart.cs script.
+        roundNum = Compass.GetComponent<restart>().roundNum;                // Getting the value of roundNum from the restart.cs script.
 
-        if (goalReached == 1 && resBtnClicked == 0) {  // If the user reached the goal and has not clicked the restart button yet...
-            timerText.color = Color.red;    // Set the timer's text's colour to red
+        if (goalReached == 1 && resBtnClicked == 0) {               // If the user reached the goal and has not clicked the restart button yet...
+            timerText.color = Color.red;                            //...Set the timer's text's colour to red.
 
-            if (updatedFile != roundNum) {   // If I haven't printed the data to the file yet...
-                //textToWrite = textToWrite + " " + timerText.text.ToString() + "\n";    // Create a proper string of the time's value.
-                textToWrite = timerText.text.ToString() + "\n";    // Create a proper string of the time's value.
-                File.AppendAllText(filename, textToWrite);  // Print it to the file.
-                updatedFile = roundNum;
+            if (updatedFile != roundNum) {                          // If I haven't printed the data to the file yet in this round...
+                textToWrite = timerText.text.ToString() + "\n";     // Create a proper string of the time's value.
+                File.AppendAllText(filename, textToWrite);          // Append it to the file (print it without deleting previous data).
+                updatedFile = roundNum;                             // I use this to know in which round the file has last been updated.
             }
-            //else
-            //{   // If I have already printed data to the file yet...
-            //    textToWrite = "\n" + textToWrite + " " + timerText.text.ToString() + "\n";    // Create a proper string of the time's value.
-            //    File.AppendAllText(filename, textToWrite);  // Print it to the file.
-            //    updatedFile = 1;
-            //}
-
-            //return;
         }
 
-        if (resBtnClicked == 1)
+        if (resBtnClicked == 1)             // If the restart button got clicked...
         {
-            timerText.color = Color.black;    // Set the timer's text's colour to black
-            didCntdown = 0;
-            
-            StartCoroutine(Countdown());
-            //unfinCD = 0;
-            //didCntdown = 1;
-            //toCountdown = 0;
-            //startTime = Time.time;
+            timerText.color = Color.black;  // Set the timer's text's colour to black
+            didCntdown = 0;                 // There has been no Countdown yet (for this round).
+
+            StartCoroutine(Countdown());    // Start the Countdown.
         }
 
-        if (didCntdown == 1 && goalReached == 0)
+        if (didCntdown == 1 && goalReached == 0)    // If there has been a Countdown for this round and the goal has not been reached yet...
         {
-            passedTime = Time.time - startTime;  // Gives the time in seconds since timer started.
+            elapsedTime = Time.time - startTime;    // Gives the time in seconds since timer started.
 
-            string minutes = ((int)passedTime / 60).ToString();  // gives number of minutes by dividing the integer value of t by 60.
-            string seconds = ((int)passedTime % 60).ToString();
-            string miliseconds = ((int)(passedTime * 100f) % 100).ToString();
+            string minutes = ((int)elapsedTime / 60).ToString();                // Calculates number of elapsed minutes by dividing the integer value of elapsedTime by 60. Then it converts it to String.
+            string seconds = ((int)elapsedTime % 60).ToString();                // Calculates number of elapsed seconds by dividing the integer value of elapsedTime by 60 and getting its modulo. Then it converts it to String.
+            string miliseconds = ((int)(elapsedTime * 100f) % 100).ToString();  // Calculates number of elapsed miliseconds. Then it converts it to String.
 
-            minutesInt = ((int)passedTime / 60);
-            secondsInt = ((int)passedTime % 60);
-            milisecInt = ((int)(passedTime * 100f) % 100);
+            minutesInt = ((int)elapsedTime / 60);           // Calculates integer number of elapsed minutes.
+            secondsInt = ((int)elapsedTime % 60);           // Calculates integer number of elapsed seconds.
+            milisecInt = ((int)(elapsedTime * 100f) % 100); // Calculates integer number of elapsed miliseconds.
 
-            if (minutesInt < 10)
+            if (minutesInt < 10)                    // If < 10...
             {
-                minutes = "0" + minutes;
+                minutes = "0" + minutes;            //...Add a zero so it looks better.
             }
-            if (secondsInt < 10)
+            if (secondsInt < 10)                    // If < 10...
             {
-                seconds = "0" + seconds;
+                seconds = "0" + seconds;            //...Add a zero so it looks better.
             }
-            if (milisecInt < 10)
+            if (milisecInt < 10)                    // If < 10...
             {
-                miliseconds = "0" + miliseconds;
+                miliseconds = "0" + miliseconds;    //...Add a zero so it looks better.
             }
 
-            timerText.text = minutes + ":" + seconds + ":" + miliseconds;
+            timerText.text = minutes + ":" + seconds + ":" + miliseconds;   // Set UI timersText's text to the elapsed minutes:seconds:miliseconds.
         }
-        //else
-        //{
-        //    timerText.text = "Press The Button";
-        //}
     }
 
 
-
-
-    IEnumerator Countdown()
+    IEnumerator Countdown() // Prints a Countdown.
     {
-        //startTime = Time.time;
-        unfinCD = 1;
-        secondsInt = 0;
+        unfinCD = 1;        // The countdown has not finished yet.
+        secondsInt = 0;     // Counts elapsed seconds since the Countdown started.
         while (secondsInt <= 3)
         {
-            //passedTime = Time.time - startTime;  // Gives the time in seconds since timer started.
-            //secondsInt = ((int)passedTime % 60);
-
             if (secondsInt == 0)
             {
-                timerText.text = "3";
+                timerText.text = "3";   // Print "3".
                 secondsInt = 1;
             }
             else if (secondsInt == 1)
             {
-                timerText.text = "2";
+                timerText.text = "2";   // Print "2".
                 secondsInt = 2;
             }
             else if (secondsInt == 2)
             {
-                timerText.text = "1";
+                timerText.text = "1";   // Print "1".
                 secondsInt = 3;
             }
             else
             {
-                timerText.text = "GO!";
+                timerText.text = "GO!";   // Print "GO!".
                 secondsInt = 4;
             }
             yield return new WaitForSeconds(1);    // Suspends the coroutine execution for the given amount of seconds using scaled time.
-            //secondsInt++;
         }
-        unfinCD = 0;
-        didCntdown = 1;
-        startTime = Time.time;
+        unfinCD = 0;            // The Countdown has finished.
+        didCntdown = 1;         // There has been a Countdown for this round.
+        startTime = Time.time;  // Timer starts now.
     }
-
-
-
-
-
 }
-
-/*
-public int Countdown(float startTime) {
-    float passedTime; 
-    int secondsInt = 0;
-
-    while(secondsInt <= 3)
-    {
-        passedTime = Time.time - startTime;  // Gives the time in seconds since timer started.
-        secondsInt = ((int)passedTime % 60);
-        if(secondsInt == 0) {
-            timerText.text = "3";
-        }
-        else if(secondsInt == 1) {
-            timerText.text = "2";
-        }
-        else if (secondsInt == 2) {
-            timerText.text = "1";
-        }
-        else {
-            timerText.text = "GO!";
-        }
-    }
-    return 1;    // == "didCntdown = 1;"
-}
-*/
