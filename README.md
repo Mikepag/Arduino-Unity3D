@@ -4,7 +4,7 @@
 
 # Project 1
 ##### Distance Calculation using an Ultrasonic Sensor - Unity's Cube Movement.
-###### Related Files: [distanceCalcUSS.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/distanceCalcUSS.ino), [cubeMovement.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/cubeMovement.cs), [distanceCalcUSS_circuitSchema.png](https://github.com/Mikepag/Arduino-Unity3D/commits/master/distanceCalcUSS_circuitSchema.png).
+###### Related Files: [distanceCalcUSS.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/distanceCalcUSS.ino), [cubeMovement.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/cubeMovement.cs), [distanceCalcUSS_circuitSchema.png](https://github.com/Mikepag/Arduino-Unity3D/commits/master/distanceCalcUSS_circuitSchema.png)
 
 ## distanceCalcUSS.ino
 **--> C++ code uploaded to the Arduino.**
@@ -25,7 +25,7 @@ ___
 
 # Project 2 (DUSHGRProject)
 ##### *D*ual *U*ltrasonic *S*ensor - *H*and *G*esture *R*ecognition *Project*
-###### Related Files: [dUSHGR_Project.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/dUSHGR_Project.ino), [cubeRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/cubeRotation.cs), [dUSHGRPCircuitSchema.JPG](https://github.com/Mikepag/Arduino-Unity3D/blob/master/dUSHGRPCircuitSchema.JPG).
+###### Related Files: [dUSHGR_Project.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/dUSHGR_Project.ino), [cubeRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/cubeRotation.cs), [dUSHGRPCircuitSchema.JPG](https://github.com/Mikepag/Arduino-Unity3D/blob/master/dUSHGRPCircuitSchema.JPG)
 
 ## dUSHGR_Project.ino
 **--> C++ code uploaded to the Arduino.**
@@ -52,7 +52,7 @@ ___
 
 # Project 3 (QUSHGRProject)
 ##### *Q*uad *U*ltrasonic *S*ensor - *H*and *G*esture *R*ecognition *Project*
-###### Related Files: [qUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/qUSHGRProject.ino), [cubeRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/cubeRotation.cs), [qUSHGRPCircuitSchema.JPG](https://github.com/Mikepag/Arduino-Unity3D/blob/master/qUSHGRPCircuitSchema.JPG).
+###### Related Files: [qUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/qUSHGRProject.ino), [cubeRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/cubeRotation.cs), [qUSHGRPCircuitSchema.JPG](https://github.com/Mikepag/Arduino-Unity3D/blob/master/qUSHGRPCircuitSchema.JPG)
 
 ## qUSHGRProject.ino
 **--> C++ code uploaded to the Arduino.**
@@ -79,7 +79,7 @@ ___
 
 # Project 3.1 (QUSHGRProject_BF)
 ##### *Q*uad *U*ltrasonic *S*ensor - *H*and *G*esture *R*ecognition *Project* ("*B*ook *F*lipping" Gestures)
-###### Related Files: [qUSHGRP_BF.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/qUSHGRP_BF.ino), [qUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/qUSHGRProject.ino) [cubeRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/cubeRotation.cs).
+###### Related Files: [qUSHGRP_BF.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/qUSHGRP_BF.ino), [qUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/qUSHGRProject.ino) [cubeRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/cubeRotation.cs)
 
 ## qUSHGRP_BF.ino
 **--> C++ code uploaded to the Arduino.**
@@ -112,7 +112,7 @@ ___
 
 # Project 4.1 (QTUSHGRProject2)
 ##### *Q*uad *T*ilted *U*ltrasonic *S*ensor - *H*and *G*esture *R*ecognition *Project 2*
-###### Related Files: [qTUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/qTUSHGRProject.ino), [compassRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/compassRotation.cs), [timer.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/timer.cs).
+###### Related Files: [qTUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/qTUSHGRProject.ino), [compassRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/compassRotation.cs), [timer.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/timer.cs), [restart.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/restart.cs)
 
 ## qTUSHGRProject.ino
 **--> C++ code uploaded to the Arduino.**
@@ -120,21 +120,41 @@ ___
 
 ## compassRotation.cs
 **--> C Sharp script attached to a cylinder named "Compass" in Unity.**
-* C# scrips created to rotate the new game object "Compass"
-* Similar to cubeRotate.cs but in this there is extra functionality:
-  * Compass angle is printed on screen.
-  * After the compass has stopped rotating, I check whether its angle is between 95° and 105°.
-    If it is:
-    * Compass angle text becomes green.
-    * Compass stops rotating for recognised gestures.
-    
+* **It is used to rotate the game object "Compass"**
+* Similar to cubeRotate.cs but in this there is extra functionality.
+* It gets the value of variables resBtnClicked, unfinCD and didCntdown from the restart.cs and timer.cs scripts.
+* If the restart button gets clicked:
+  * Compass gets rotated to a random angle.
+* For as long as the the goal is not reached yet, the countdown is not currently taking place and a countdown already took place in the current round:
+  * The RotateObject() coroutine is called to rotate the compass.
+* After the compass has stopped rotating, I check whether its angle is between 175° and 185°.
+  If it is:
+  * The goal has been successfully reached (for this round).
+  * Compass stops rotating for recognised gestures.
+  
 ## timer.cs
 **--> C Sharp script attached to a cylinder named "Compass" in Unity.**
-* Prints a stopwatch on the screen.
-* Time starts when player presses Play button.
+* **It is used to print a stopwatch on the screen.**
 * Time is updated once per frame.
 * Format is 00:00:00 (Minutes : Seconds : Miliseconds).
-* It gets the value of variable stopRotating from the compassRotation.cs script.
-* If stopRotating's value is equal to 1:
+* It gets the value of variables goalReached, resBtnClicked and roundNum from the compassRotation.cs and restart.cs scripts.
+* If the goal has been reached and the restart button has not been clicked yet:
   * Time stops counting.
-  * Time text becomes red.
+  * Timer text becomes red.
+  * Time is printed to Times.txt.
+* If the restart button gets clicked:
+  * Timer text becomes black again.
+  * The countdown starts.
+* When the countdown ends, the timer (stopwatch) starts.
+
+## restart.cs
+**--> C Sharp script attached to a cylinder named "Compass" in Unity.**
+* **It is used to control the restart button and print the current round's number on the screen.**
+* It gets the value of variable goalReached from the compassRotation.cs script.
+* If the goal has been reached:
+  * The restart button becomes visible.
+  * Round text becomes green.
+* If the restart button gets clicked:
+  * The restart button becomes non-visible.
+  * Τhe next round starts.
+  * If it gets clicked in the final round, the application shuts down.
