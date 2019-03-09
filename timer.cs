@@ -16,14 +16,13 @@ public class timer : MonoBehaviour
     private float startTime;                    // Gets the time right after the countdown's execution ends. Used to calculate and print the elapsed time on the timer.
     private int minutesInt;                     // Elapsed minutes sinse start of time.
     private int secondsInt;                     // Elapsed seconds sinse start of time.
-    private int millisecInt;                     // Elapsed milliseconds since start of time.
+    private int millisecInt;                    // Elapsed milliseconds since start of time.
     private int updatedFile;                    // Is equal to the round's number the file has last been updated.
-    //private double elapsedTime;                  // Elapsed time since start of time.
     private string filename = "Times.txt";      // External file where the elapsed time of each round is beeing written.
     private string textToWrite = "Times:\n";    // The text that is beeing written to Times.txt. The first line is "Times:".
-    private DateTime startSysTime;
-    private DateTime currentSysTime;
- 
+    private DateTime startSysTime;              // Gets a System Time timestamp at the start of each round.
+    private DateTime currentSysTime;            // Gets a System Time timestamp once for each frame.
+
     private int goalReached;                    // Used to save the value of the goalReached variable from the compassRotation.cs script.
     private int resBtnClicked;                  // Used to save the value of the resBtnClicked variable from the restart.cs script.
     private int roundNum;                       // Used to save the value of the roundNum variable from the restart.cs script.
@@ -53,11 +52,11 @@ public class timer : MonoBehaviour
         resBtnClicked = Compass.GetComponent<restart>().resBtnClicked;      // Getting the value of resBtnClicked from the restart.cs script.
         roundNum = Compass.GetComponent<restart>().roundNum;                // Getting the value of roundNum from the restart.cs script.
 
-        if (goalReached == 1 && resBtnClicked == 0)               // If the user reached the goal and has not clicked the restart button yet...
+        if (goalReached == 1 && resBtnClicked == 0)                 // If the user reached the goal and has not clicked the restart button yet...
         {
             timerText.color = Color.red;                            //...Set the timer's text's colour to red.
 
-            if (updatedFile != roundNum)                          // If I haven't printed the data to the file yet in this round...
+            if (updatedFile != roundNum)                            // If I haven't printed the data to the file yet in this round...
             {
                 textToWrite = timerText.text.ToString() + "\n";     // Create a proper string of the time's value.
                 File.AppendAllText(filename, textToWrite);          // Append it to the file (print it without deleting previous data).
@@ -75,50 +74,34 @@ public class timer : MonoBehaviour
 
         if (didCntdown == 1 && goalReached == 0)    // If there has been a Countdown for this round and the goal has not been reached yet...
         {
-            //elapsedTime = Time.time - startTime;    // Gives the time in seconds since timer started.
-            currentSysTime = System.DateTime.Now;
+            currentSysTime = System.DateTime.Now;   // Get a timestamp of the current System Time.
 
-            minutesInt = (int)(currentSysTime - startSysTime).TotalMinutes;
-            secondsInt = (int)(currentSysTime - startSysTime).TotalSeconds;
-            millisecInt = ((int)(currentSysTime - startSysTime).TotalMilliseconds)%1000;
+            minutesInt = (int)(currentSysTime - startSysTime).TotalMinutes;                 // Calculates integer number of elapsed minutes using two timestamps of System Time.
+            secondsInt = ((int)(currentSysTime - startSysTime).TotalSeconds)%60;            // Calculates integer number of elapsed seconds using two timestamps of System Time.
+            millisecInt = ((int)(currentSysTime - startSysTime).TotalMilliseconds)%1000;    // Calculates integer number of elapsed milliseconds using two timestamps of System Time.
 
-            string minutes = minutesInt.ToString();
-            string seconds = secondsInt.ToString();
-            string milliseconds = millisecInt.ToString();
+            string minutes = minutesInt.ToString();         // Converts integer value of elapsed minutes to String.
+            string seconds = secondsInt.ToString();         // Converts integer value of elapsed seconds to String.
+            string milliseconds = millisecInt.ToString();   // Converts integer value of elapsed milliseconds to String.
 
-
-            //string minutes = ((int)elapsedTime / 60).ToString();                // Calculates number of elapsed minutes by dividing the integer value of elapsedTime by 60. Then it converts it to String.
-            //string seconds = ((int)elapsedTime % 60).ToString();                // Calculates number of elapsed seconds by dividing the integer value of elapsedTime by 60 and getting its modulo. Then it converts it to String.
-            //string milliseconds = ((int)(elapsedTime * 100f) % 100).ToString();  // Calculates number of elapsed milliseconds. Then it converts it to String.
-
-            //minutesInt = ((int)elapsedTime / 60);           // Calculates integer number of elapsed minutes.
-            //secondsInt = ((int)elapsedTime % 60);           // Calculates integer number of elapsed seconds.
-            //millisecInt = ((int)(elapsedTime * 100f) % 100); // Calculates integer number of elapsed milliseconds.
-
-            if (minutesInt < 10)                    // If < 10...
+            if (minutesInt < 10)                        // If < 10...
             {
-                minutes = "0" + minutes;            //...Add a zero so it looks better.
+                minutes = "0" + minutes;                //...Add a zero so it looks better.
             }
-            if (secondsInt < 10)                    // If < 10...
+            if (secondsInt < 10)                        // If < 10...
             {
-                seconds = "0" + seconds;            //...Add a zero so it looks better.
+                seconds = "0" + seconds;                //...Add a zero so it looks better.
             }
-            if (millisecInt < 100)                    // If < 100...
+            if (millisecInt < 100)                      // If < 100...
             {
-                milliseconds = "0" + milliseconds;    //...Add a zero so it looks better.
+                milliseconds = "0" + milliseconds;      //...Add a zero so it looks better.
                 if(millisecInt < 10)                    // If also < 10...
                 {
-                    milliseconds = "0" + milliseconds;    //...Add another zero so it looks better.
+                    milliseconds = "0" + milliseconds;  //...Add another zero so it looks better.
                 }
             }
 
-            timerText.text = minutes + ":" + seconds + ":" + milliseconds;   // Set UI timersText's text to the elapsed minutes:seconds:milliseconds.
-
-            //TEST:
-            //endSysTime = System.DateTime.Now;
-            //elapsedTime = (endSysTime - startSysTime).TotalSeconds;
-            //seconds = elapsedTime.ToString();
-            //timerText.text = seconds;
+            timerText.text = minutes + ":" + seconds + "," + milliseconds;   // Set UI timersText's text to the elapsed minutes:seconds:milliseconds.
         }
     }
 
@@ -131,37 +114,28 @@ public class timer : MonoBehaviour
         {
             if (secondsInt == 0)
             {
-                timerText.text = "3";   // Print "3".
+                timerText.text = "3";       // Print "3".
                 secondsInt = 1;
             }
             else if (secondsInt == 1)
             {
-                timerText.text = "2";   // Print "2".
+                timerText.text = "2";       // Print "2".
                 secondsInt = 2;
             }
             else if (secondsInt == 2)
             {
-                timerText.text = "1";   // Print "1".
+                timerText.text = "1";       // Print "1".
                 secondsInt = 3;
             }
             else
             {
-                timerText.text = "GO!";   // Print "GO!".
+                timerText.text = "GO!";     // Print "GO!".
                 secondsInt = 4;
             }
             yield return new WaitForSeconds(1);    // Suspends the coroutine execution for the given amount of seconds using scaled time.
         }
-        unfinCD = 0;            // The Countdown has finished.
-        didCntdown = 1;         // There has been a Countdown for this round.
-        //startTime = Time.time;  // Timer starts now.
-
-        //LabCode
-        //System.DateTime.Now.Millisecond;
-        //System.TimeSpan ts = System.DateTime.Now - System.DateTime.Now;
-        //int x = 0;
-
-        //TEST:
-        startSysTime = System.DateTime.Now;
-
+        unfinCD = 0;                        // The Countdown has finished.
+        didCntdown = 1;                     // There has been a Countdown for this round.
+        startSysTime = System.DateTime.Now; // Timer starts now.
     }
 }
