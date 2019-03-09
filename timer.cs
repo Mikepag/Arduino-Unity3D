@@ -3,8 +3,10 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System;
 
-public class timer : MonoBehaviour {
+public class timer : MonoBehaviour
+{
 
     public GameObject Compass;
     public int unfinCD = 0;                     // ==0 if the Countdown has finished, ==1 while the Countdown is still taking place.
@@ -14,19 +16,22 @@ public class timer : MonoBehaviour {
     private float startTime;                    // Gets the time right after the countdown's execution ends. Used to calculate and print the elapsed time on the timer.
     private int minutesInt;                     // Elapsed minutes sinse start of time.
     private int secondsInt;                     // Elapsed seconds sinse start of time.
-    private int milisecInt;                     // Elapsed miliseconds since start of time.
+    private int millisecInt;                     // Elapsed milliseconds since start of time.
     private int updatedFile;                    // Is equal to the round's number the file has last been updated.
-    private float elapsedTime;                  // Elapsed time since start of time.
+    //private double elapsedTime;                  // Elapsed time since start of time.
     private string filename = "Times.txt";      // External file where the elapsed time of each round is beeing written.
     private string textToWrite = "Times:\n";    // The text that is beeing written to Times.txt. The first line is "Times:".
-
+    private DateTime startSysTime;
+    private DateTime currentSysTime;
+ 
     private int goalReached;                    // Used to save the value of the goalReached variable from the compassRotation.cs script.
     private int resBtnClicked;                  // Used to save the value of the resBtnClicked variable from the restart.cs script.
     private int roundNum;                       // Used to save the value of the roundNum variable from the restart.cs script.
 
 
     // Use this for initialization
-    void Start() {
+    void Start()
+    {
         goalReached = 0;    // Goal has not been reached yet.
         secondsInt = 0;     // Elapsed seconds are ==0.
         didCntdown = 0;     // There has been no Countdown yet.
@@ -42,15 +47,18 @@ public class timer : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
         goalReached = Compass.GetComponent<compassRotation>().goalReached;  // Getting the value of goalReached from the compassRotation.cs script.
         resBtnClicked = Compass.GetComponent<restart>().resBtnClicked;      // Getting the value of resBtnClicked from the restart.cs script.
         roundNum = Compass.GetComponent<restart>().roundNum;                // Getting the value of roundNum from the restart.cs script.
 
-        if (goalReached == 1 && resBtnClicked == 0) {               // If the user reached the goal and has not clicked the restart button yet...
+        if (goalReached == 1 && resBtnClicked == 0)               // If the user reached the goal and has not clicked the restart button yet...
+        {
             timerText.color = Color.red;                            //...Set the timer's text's colour to red.
 
-            if (updatedFile != roundNum) {                          // If I haven't printed the data to the file yet in this round...
+            if (updatedFile != roundNum)                          // If I haven't printed the data to the file yet in this round...
+            {
                 textToWrite = timerText.text.ToString() + "\n";     // Create a proper string of the time's value.
                 File.AppendAllText(filename, textToWrite);          // Append it to the file (print it without deleting previous data).
                 updatedFile = roundNum;                             // I use this to know in which round the file has last been updated.
@@ -67,15 +75,25 @@ public class timer : MonoBehaviour {
 
         if (didCntdown == 1 && goalReached == 0)    // If there has been a Countdown for this round and the goal has not been reached yet...
         {
-            elapsedTime = Time.time - startTime;    // Gives the time in seconds since timer started.
+            //elapsedTime = Time.time - startTime;    // Gives the time in seconds since timer started.
+            currentSysTime = System.DateTime.Now;
 
-            string minutes = ((int)elapsedTime / 60).ToString();                // Calculates number of elapsed minutes by dividing the integer value of elapsedTime by 60. Then it converts it to String.
-            string seconds = ((int)elapsedTime % 60).ToString();                // Calculates number of elapsed seconds by dividing the integer value of elapsedTime by 60 and getting its modulo. Then it converts it to String.
-            string miliseconds = ((int)(elapsedTime * 100f) % 100).ToString();  // Calculates number of elapsed miliseconds. Then it converts it to String.
+            minutesInt = (int)(currentSysTime - startSysTime).TotalMinutes;
+            secondsInt = (int)(currentSysTime - startSysTime).TotalSeconds;
+            millisecInt = ((int)(currentSysTime - startSysTime).TotalMilliseconds)%1000;
 
-            minutesInt = ((int)elapsedTime / 60);           // Calculates integer number of elapsed minutes.
-            secondsInt = ((int)elapsedTime % 60);           // Calculates integer number of elapsed seconds.
-            milisecInt = ((int)(elapsedTime * 100f) % 100); // Calculates integer number of elapsed miliseconds.
+            string minutes = minutesInt.ToString();
+            string seconds = secondsInt.ToString();
+            string milliseconds = millisecInt.ToString();
+
+
+            //string minutes = ((int)elapsedTime / 60).ToString();                // Calculates number of elapsed minutes by dividing the integer value of elapsedTime by 60. Then it converts it to String.
+            //string seconds = ((int)elapsedTime % 60).ToString();                // Calculates number of elapsed seconds by dividing the integer value of elapsedTime by 60 and getting its modulo. Then it converts it to String.
+            //string milliseconds = ((int)(elapsedTime * 100f) % 100).ToString();  // Calculates number of elapsed milliseconds. Then it converts it to String.
+
+            //minutesInt = ((int)elapsedTime / 60);           // Calculates integer number of elapsed minutes.
+            //secondsInt = ((int)elapsedTime % 60);           // Calculates integer number of elapsed seconds.
+            //millisecInt = ((int)(elapsedTime * 100f) % 100); // Calculates integer number of elapsed milliseconds.
 
             if (minutesInt < 10)                    // If < 10...
             {
@@ -85,12 +103,22 @@ public class timer : MonoBehaviour {
             {
                 seconds = "0" + seconds;            //...Add a zero so it looks better.
             }
-            if (milisecInt < 10)                    // If < 10...
+            if (millisecInt < 100)                    // If < 100...
             {
-                miliseconds = "0" + miliseconds;    //...Add a zero so it looks better.
+                milliseconds = "0" + milliseconds;    //...Add a zero so it looks better.
+                if(millisecInt < 10)                    // If also < 10...
+                {
+                    milliseconds = "0" + milliseconds;    //...Add another zero so it looks better.
+                }
             }
 
-            timerText.text = minutes + ":" + seconds + ":" + miliseconds;   // Set UI timersText's text to the elapsed minutes:seconds:miliseconds.
+            timerText.text = minutes + ":" + seconds + ":" + milliseconds;   // Set UI timersText's text to the elapsed minutes:seconds:milliseconds.
+
+            //TEST:
+            //endSysTime = System.DateTime.Now;
+            //elapsedTime = (endSysTime - startSysTime).TotalSeconds;
+            //seconds = elapsedTime.ToString();
+            //timerText.text = seconds;
         }
     }
 
@@ -125,6 +153,15 @@ public class timer : MonoBehaviour {
         }
         unfinCD = 0;            // The Countdown has finished.
         didCntdown = 1;         // There has been a Countdown for this round.
-        startTime = Time.time;  // Timer starts now.
+        //startTime = Time.time;  // Timer starts now.
+
+        //LabCode
+        //System.DateTime.Now.Millisecond;
+        //System.TimeSpan ts = System.DateTime.Now - System.DateTime.Now;
+        //int x = 0;
+
+        //TEST:
+        startSysTime = System.DateTime.Now;
+
     }
 }
