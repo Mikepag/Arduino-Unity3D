@@ -46,33 +46,42 @@ void loop() {
   // Calculating distances:
   if(sensorSwitch == 0){                    // When sensorSwitch == 0, LEFT SENSORS emit and receive signal.
     distLLInt = distCalc(trigLLPin, echoLLPin, flashingLedPin);
-
     distLRInt = distCalc(trigLRPin, echoLRPin, flashingLedPin);
     sensorSwitch = 1;                       // In the next loop, switch Right sensors On.
   }
   else{
-    //distRLInt = distCalc(trigRLPin, echoRLPin, flashingLedPin);
-    //distRRInt = distCalc(trigRRPin, echoRRPin, flashingLedPin);
+    distRLInt = distCalc(trigRLPin, echoRLPin, flashingLedPin);
+    distRRInt = distCalc(trigRRPin, echoRRPin, flashingLedPin);
     sensorSwitch = 0;                       // In the next loop, switch Left sensors On.
   }
 
-  // Calculating average distances for left and right breadboard.
-  avgDistL = -1;
-  avgDistR = -1;
-  
-  if(distLLInt <= 30 || distLRInt <= 30 || distRLInt <= 30 || distRRInt <= 30){ // If at least one of the Sensors of the Left or Right Breadboard detects something...
+  // Calculating average distances for left and right breadboard.  
+  //if(distLLInt <= 30 || distLRInt <= 30 || distRLInt <= 30 || distRRInt <= 30){ // If at least one of the Sensors of the Left or Right Breadboard detects something...
     //LEFT BREADBOARD
     avgDistL = avgDistCalc(distLLInt, distLRInt);
   
     //RIGHT BREADBOARD
     avgDistR = avgDistCalc(distRLInt, distRRInt);
+  //}
 
+  Serial.print("LL: ");
+  Serial.print(distLLInt);
+  Serial.print("  LR: ");
+  Serial.print(distLRInt);
+   Serial.print(" RL: ");
+  Serial.print(distRLInt);
+  Serial.print("  RR: ");
+  Serial.print(distRRInt);
   
-
-  //Serial.println(distLLInt);
-  Serial.write(distLLInt);                // Send the value of timestepsAR which moves the cube to the right.
-  Serial.flush();                           // Wait for the data to be sent successfully to Unity.
-  delay(100);   // Delay between each time that either left or right sensor are "enabled".
+  Serial.print("\nLEFT: ");
+  Serial.print(avgDistL);
+  Serial.print("  RIGHT: ");
+  Serial.print(avgDistR);
+  Serial.print("\n\n");
+  
+  //Serial.write(distLLInt);                // Send the value of timestepsAR which moves the cube to the right.
+  //Serial.flush();                           // Wait for the data to be sent successfully to Unity.
+  delay(200);   // Delay between each time that either left or right sensor are "enabled".
   
   digitalWrite(flagLedPin, LOW);
 }
@@ -81,7 +90,7 @@ void loop() {
 
 //_________________________FUNCTIONS:_________________________
 int distCalc(int trigPin, int echoPin, int flashingLedPin){
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO: DELETE DISTANCES AND DURATIONS FROM TOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO: DELETE DISTANCES AND DURATIONS FROM TOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   float duration;
   float distance;
   int distInt;
@@ -114,7 +123,7 @@ int avgDistCalc(int distLInt, int distRInt){
     else if(distRInt <= 30){                 //  Else, if only R Sensor detects something...
       avgDist = distRInt;                   //... avgDist = distance calculated by R sensor.
     }
-    digitalWrite(flagLedPin, LOW);
+    //digitalWrite(flagLedPin, LOW);
   }
   return avgDist;
 }
