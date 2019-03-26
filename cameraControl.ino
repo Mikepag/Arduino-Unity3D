@@ -12,17 +12,17 @@ const int echoRRPin = 13;   // Echo pin of Right Right Ultrasonic Ranging Module
 const int flagLedPin = 2;
 const int flashingLedPin = 3;
 
-float durationLL;       // Time duration between emiting and receiving signal from the left left sensor.
-float durationLR;       // Time duration between emiting and receiving signal from the left right sensor.
-float distanceLL;       // Distance calulated based on durationLL.
-float distanceLR;       // Distance calulated based on durationLR.
+//float durationLL;       // Time duration between emiting and receiving signal from the left left sensor.
+//float durationLR;       // Time duration between emiting and receiving signal from the left right sensor.
+//float distanceLL;       // Distance calulated based on durationLL.
+//float distanceLR;       // Distance calulated based on durationLR.
 int distLLInt;          // Integer value of float distanceLL.
 int distLRInt;          // Integer value of float distanceLR.
 
-float durationRL;       // Time duration between emiting and receiving signal from the Right left sensor.
-float durationRR;       // Time duration between emiting and receiving signal from the Right right sensor.
-float distanceRL;       // Distance calulated based on durationRL.
-float distanceRR;       // Distance calulated based on durationRR.
+//float durationRL;       // Time duration between emiting and receiving signal from the Right left sensor.
+//float durationRR;       // Time duration between emiting and receiving signal from the Right right sensor.
+//float distanceRL;       // Distance calulated based on durationRL.
+//float distanceRR;       // Distance calulated based on durationRR.
 int distRLInt;          // Integer value of float distanceRL.
 int distRRInt;          // Integer value of float distanceRR.
 
@@ -30,6 +30,8 @@ int avgDistL = -1;      // Average distance value from the Left Sensors. ==-1 me
 int avgDistR = -1;      // Average distance value from the Right Sensors. ==-1 means there were not any distances from Right sensors in this timestep, so could not calculate average distance.
 
 int sensorSwitch = 0;  // 0== Switch Left Sensors ON, 1== Switch Right Sensors ON.
+
+int finalValue = 0; // Contains the value that will be sent to Unity.
 
 //_________________________SETUP():_________________________
 void setup() {
@@ -64,24 +66,30 @@ void loop() {
     avgDistR = avgDistCalc(distRLInt, distRRInt);
   //}
 
-  Serial.print("LL: ");
-  Serial.print(distLLInt);
-  Serial.print("  LR: ");
-  Serial.print(distLRInt);
-   Serial.print(" RL: ");
-  Serial.print(distRLInt);
-  Serial.print("  RR: ");
-  Serial.print(distRRInt);
+  //Serial.print("LL: ");
+  //Serial.print(distLLInt);
+  //Serial.print("  LR: ");
+  //Serial.print(distLRInt);
+  //Serial.print(" RL: ");
+  //Serial.print(distRLInt);
+  //Serial.print("  RR: ");
+  //Serial.print(distRRInt);
   
-  Serial.print("\nLEFT: ");
-  Serial.print(avgDistL);
-  Serial.print("  RIGHT: ");
-  Serial.print(avgDistR);
+  //Serial.print("\nLEFT: ");
+  //Serial.print(avgDistL);
+  //Serial.print("  RIGHT: ");
+  //Serial.print(avgDistR);
+  //Serial.print("\n\n");
+
+  finalValue = finalValueCalc(avgDistL, avgDistR);
+  Serial.print("\nFinal Value: ");
+  Serial.print(finalValue);
   Serial.print("\n\n");
+
   
-  //Serial.write(distLLInt);                // Send the value of timestepsAR which moves the cube to the right.
+  //Serial.write(distLLInt);                // Send the data to Unity.
   //Serial.flush();                           // Wait for the data to be sent successfully to Unity.
-  delay(200);   // Delay between each time that either left or right sensor are "enabled".
+  delay(100);   // Delay between each time that either left or right sensor are "enabled".
   
   digitalWrite(flagLedPin, LOW);
 }
@@ -110,8 +118,9 @@ int distCalc(int trigPin, int echoPin, int flashingLedPin){
 
 int avgDistCalc(int distLInt, int distRInt){
   //!!!!!!!!!!!!!!!!!!!!!SAME HERE MAYBE!!!!!!!!!!!!!!!!!!!
-  int avgDist = -1;
-
+  //int avgDist = 0;  // Default value.
+  int avgDist = -1; // For debugging reasons. It is converted to 0 before calculating finalValue.
+  
   if(distLInt <= 30 || distRInt <= 30){     // If at least one of the Sensors of the Breadboard detects something...
     digitalWrite(flagLedPin, HIGH);
     if(distLInt <= 30 && distRInt <= 30){   // If both Sensors detect something at the same time...
@@ -126,4 +135,19 @@ int avgDistCalc(int distLInt, int distRInt){
     //digitalWrite(flagLedPin, LOW);
   }
   return avgDist;
+}
+
+int finalValueCalc(int avgDistL, int avgDistR){
+  int finalValue = 0;
+
+  if(avgDistL == -1){ //For debugging reasons.
+    avgDistL = 0;
+  }
+  if(avgDistR == -1){ //For debugging reasons.
+    avgDistR = 0;
+  }
+  
+  finalValue = avgDistL - avgDistR;
+  return finalValue;
+
 }
