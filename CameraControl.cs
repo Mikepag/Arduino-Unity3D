@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using System.IO;
+using System.IO.Ports;
 
 
 
@@ -20,17 +20,21 @@ public class UltraSonicCameraControl : MonoBehaviour {
     bool goForward = false;
     bool goBack = false;
 
-    float [] recentValues = new float[10];
-    float recentAverage = 0;
+    int[] recentValues = new int[10];
+    public int recentAverage = 0;
     int recentCounter = 0;
 
-    System.IO.Ports.SerialPort stream = new System.IO.Ports.SerialPort("COM7", 9600); 
+    public int tempInput;
+
+    SerialPort sp = new SerialPort("COM3", 9600);
+    //System.IO.Ports.SerialPort stream = new System.IO.Ports.SerialPort("COM7", 9600); 
     //System.IO.Ports.SerialPort stream = new System.IO.Ports.SerialPort("\\\\.\\COM11", 9600);
 
     // Use this for initialization
     void Start ()
     {
-        stream.Open();
+        sp.Open();
+        //stream.Open();
 
         posX = this.transform.position.x;
         posY = this.transform.position.y;
@@ -41,17 +45,6 @@ public class UltraSonicCameraControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-
-        //Debug.Log(stream.ReadLine());
-      
-
-       /*
-       string value = stream.ReadLine();
-       Debug.Log(value);
-
-       this.transform.position = new Vector3(posX + float.Parse(value), this.transform.position.y, this.transform.position.z);
-       */
-
         checkMotion();
     }
 
@@ -60,7 +53,12 @@ public class UltraSonicCameraControl : MonoBehaviour {
         if (recentCounter > 9)
             recentCounter = 0;
 
-        float tempInput = float.Parse(stream.ReadLine());
+        //float tempInput = float.Parse(stream.ReadLine());
+        
+        //if (sp.IsOpen)
+        //{
+            tempInput = sp.ReadByte();
+        //}
 
         if (tempInput >= minDistance && tempInput <= maxDistance)
         {
@@ -68,6 +66,10 @@ public class UltraSonicCameraControl : MonoBehaviour {
             getDirection();
 
             recentCounter++;
+        }
+        else
+        {
+            DeleteRecentValues();
         }
     }
 
@@ -98,15 +100,25 @@ public class UltraSonicCameraControl : MonoBehaviour {
         }
 
         if (goForward)
-            this.transform.position = new Vector3(this.transform.position.x + 1, this.transform.position.y, this.transform.position.z);
+            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z + 1);
 
         if (goBack)
-            this.transform.position = new Vector3(this.transform.position.x - 1, this.transform.position.y, this.transform.position.z);
+            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - 1);
 
         if (goForward || goBack)
         {
             Debug.Log("Recent input: " + recentValues[recentCounter] + " & Recent average: " + recentAverage);
         }
+    }
+
+    void DeleteRecentValues()
+    {
+        for(int i=0; i<9; i++)
+        {
+            recentValues[i] = 0;
+        }
+        recentCounter = 0;
+        recentAverage = 0;
     }
 
 }
