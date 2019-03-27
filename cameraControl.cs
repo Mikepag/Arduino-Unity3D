@@ -62,7 +62,8 @@ public class UltraSonicCameraControl : MonoBehaviour {
         //if (sp.IsOpen)
         //{
         tempInput = sp.ReadByte();  // Get input from Serial Port.
-                                    //}
+        tempInput -= 32; // I added 32 before sending it so, I have to subtract 32 now to get the real value.
+        //}
 
         //if (tempInput >= minDistance && tempInput <= maxDistance)
         //if((tempInput >= minLeftDistance && tempInput <= maxLeftDistance) || (tempInput >= minRightDistance && tempInput <= maxRightDistance))  // If the input value is between the boundaries...
