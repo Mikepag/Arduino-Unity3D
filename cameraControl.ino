@@ -105,8 +105,8 @@ int distCalc(int trigPin, int echoPin, int flashingLedPin){ // Gets the sensor's
 }
 
 int avgDistCalc(int distLInt, int distRInt){  // Gets two distance values and calculates and returns their average value.
-  //int avgDist = 0;  // Default value. Switch to this after debugging.
-  int avgDist = -1; // For debugging reasons. It is converted to 0 before calculating totalAvgDistance.
+  //int avgDist = 0;                      // Default value. Switch to this after debugging.
+  int avgDist = -1;                       // For debugging reasons. It is converted to 0 before calculating totalAvgDistance.
   
   if(distLInt <= 30 || distRInt <= 30){   // If at least one of the Sensors of the Breadboard detects something...
     digitalWrite(flagLedPin, HIGH);
@@ -133,6 +133,7 @@ int totalAvgDistCalc(int avgDistL, int avgDistR){ // Gets the left and right ave
     avgDistR = 0;
   }
   
-  totalAvgDistance = avgDistL - avgDistR; // Position is equal to avgL - avgR. It takes values between -32 and +32.
+  totalAvgDistance = avgDistL - avgDistR; // Position is equal to avgL - avgR. It takes values between in [-32,32]
+  totalAvgDistance += 32;                 // I want it to take values in [0,64] because negative values can not be sent to Unity.
   return totalAvgDistance;                // Return the calculated total average distance from the middle of the two breadboards.
 }
