@@ -78,7 +78,7 @@ public class diskRotation : MonoBehaviour
 
         if (goalReached == 0 && unfinCD == 0 && didCntdown == 1)    // If the the goal is Not reached yet AND the countdown is not currently taking place AND there was a countdown already...
         {
-            CheckMotion();           // Call CheckMotion() to rotate the disk.
+            CheckMotion();           // Call CheckMotion() to check if the disk should be rotated.
         }
     }
 
@@ -108,12 +108,21 @@ public class diskRotation : MonoBehaviour
         }
         else                                        // Else, if the input is out of bounds...
         {
+            isStationary = 1;   // The disk stops rotating.
+
+            //if (isStationary == 1 && angle >= 175 && angle <= 185 && resBtnClicked == 0)    // If the current angle is between 175 and 185 and the button has not been clicked yet to start the next round...
+            if (angle >= 175 && angle <= 185 && resBtnClicked == 0)    // If the current angle is between 175 and 185 and the button has not been clicked yet to start the next round...
+            {
+                goalReached = 1;    // ...The goal has been successfully reached (for this round).
+            }
+
             DeleteRecentValues();                   //...Call DeleteRecentValues() to delete all array's values.
         }
     }
 
     void GetDirection()
     {
+        isStationary = 0;
         recentAverage = 0;
         for (int i = 0; i < arrSize; i++)             // Calculating average value for all array's not-empty cells:
         {
@@ -154,12 +163,6 @@ public class diskRotation : MonoBehaviour
         if (goForward || goBack)
         {
             Debug.Log("Recent input: " + recentValues[arrIn] + " & Recent average: " + recentAverage);
-        }
-
-        //if (isStationary == 1 && angle >= 175 && angle <= 185 && resBtnClicked == 0)    // If the current angle is between 175 and 185 and the button has not been clicked yet to start the next round...
-        if (angle >= 175 && angle <= 185 && resBtnClicked == 0)    // If the current angle is between 175 and 185 and the button has not been clicked yet to start the next round...
-        {
-            goalReached = 1;    // ...The goal has been successfully reached (for this round).
         }
     }
 
