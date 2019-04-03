@@ -149,19 +149,31 @@ public class diskRotation : MonoBehaviour
 
         //ADD: moveDist = (recentAverage + recentValues[arrIn]) / 2; // I have to make this work somehow, maybe add another function.
 
-        if (goBack)
-        {
-            //angleToRotate = (float)(maxRotationalSpeed / ((recentValues[arrIn] +1) - recentAverage));
-            Disk.transform.Rotate(0, -5, 0);
-        }
 
-        if (goForward)
-        {
-            Disk.transform.Rotate(0, + 5, 0);
-        }
+		angleToRotate = (10*(tempInput - recentAverage))/64;
+		if(angleToRotate <1 && angleToRotate >0){
+			angleToRotate++;
+		}
+		else if(angleToRotate >-1 && angleToRotate <0)
+		{
+			angleToRotate--;
+		}
+			
+		
+		//if (goBack)
+        //{
+        //    //angleToRotate = (float)(maxRotationalSpeed / ((recentValues[arrIn] +1) - recentAverage));
+        //    Disk.transform.Rotate(0, -5, 0);
+        //}
+
+        //if (goForward)
+        //{
+        //    Disk.transform.Rotate(0, + 5, 0);
+        //}
         
         if (goForward || goBack)
         {
+			Disk.transform.Rotate(0, angleToRotate, 0);
             Debug.Log("Recent input: " + recentValues[arrIn] + " & Recent average: " + recentAverage);
         }
     }
