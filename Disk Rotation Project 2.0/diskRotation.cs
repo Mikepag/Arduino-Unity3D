@@ -14,10 +14,6 @@ public class diskRotation : MonoBehaviour
     SerialPort sp = new SerialPort("COM3", 9600);
 
     public int goalReached;     // ==1 when the goal is reached, ==0 when the goal is not reached yet.
-
-    private int directionSteps; // Every time arduino sends a value via the Serial Port, that value is saved in the directionSteps variable. (==1-10 for right-to-left gestures, ==11-20 for left-to-right gestures, ==0 to not move).
-    private int timesteps;      // Is used to suspend the coroutine execution.
-    //private int isStationary;   // ==0 when the disk is Stationary, ==1 when the disk is currently rotating and has not finished its rotation.
     private int angle;          // Gets the disk's current rotation value of Y Axis (Disk.transform.localRotation.eulerAngles.y).
 
     private int resBtnClicked;  // Used to save the value of the resBtnClicked variable from the restart.cs script.
@@ -25,13 +21,13 @@ public class diskRotation : MonoBehaviour
     private int didCntdown;     // Used to save the value of the didCntdown variable from the timer.cs script.
     private int randomAngle;    // Gets a "random" value which is used when rotating the disk each time the restart button is clicked.
 
-    const int minLeftDistance = -32;    // Used for setting boundaries for the Input value.
-    const int maxLeftDistance = -2;
-    const int minRightDistance = 2;
-    const int maxRightDistance = 32;
+    private const int MinLeftDistance = -32;    // Used for setting boundaries for the Input value.
+    private const int MaxLeftDistance = -2;
+    private const int MinRightDistance = 2;
+    private const int MaxRightDistance = 32;
 
-    bool goForward = false;             // Flag to move (rotate) forward (to-the-left).
-    bool goBack = false;                // Flag to move (rotate) backward (to-the-right).
+    private bool rotateCW = false;  // Flag to rotate disk Clockwise.
+    private bool rotateCCW = false; // Flag to rotate disk Counterclockwise.
 
     public int tempInput;               // Variable that gets input from Arduino.
 
@@ -39,16 +35,15 @@ public class diskRotation : MonoBehaviour
     public int recentAverage = 0;       // Average value of all array's values.
     int arrIn = 0;                      // Is equal to the number of the array's cell into which we can insert data. When the array is full, the oldest value gets overwritten.
     int arrSize = 0;                    // Is equal to the array's size (number of not empty cells). Used for calculating average value.
-    //ADD: float moveDist = 0;
 
-    float angleToRotate = 0;
+    public float angleToRotate = 0;    // Contains the value in which the disk will be rotated.
     const int maxRotationalSpeed = 5;
 
     // Use this for initialization
     void Start()
     {
         sp.Open();
-        //isStationary = 1;
+        //TODELETE: isStationary = 1;
         goalReached = 0;
     }
 
@@ -57,7 +52,7 @@ public class diskRotation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        angle = (int)Disk.transform.localRotation.eulerAngles.y;     // Get the current Y Axis rotation value.
+        angle = (int)Disk.transform.localRotation.eulerAngles.y;     // Get the current Y-Axis rotation value.
 
         resBtnClicked = Disk.GetComponent<restart>().resBtnClicked;  // Getting the value of resBtnClicked from the restart.cs script.
         unfinCD = Disk.GetComponent<timer>().unfinCD;                // Getting the value of unfinCD from the timer.cs script.
@@ -87,9 +82,9 @@ public class diskRotation : MonoBehaviour
     void CheckMotion()
     {
         tempInput = sp.ReadByte();  // Get input from Serial Port.
-        tempInput -= 32;            // I added 32 before sending it, so I have to subtract 32 now to get the real value.
+        tempInput -= 32;            // I added 32 before sending it here, so I have to subtract 32 now to get the real value.
 
-        if ((tempInput >= minLeftDistance && tempInput <= maxLeftDistance) || (tempInput >= minRightDistance && tempInput <= maxRightDistance))  // If the input value is between the boundaries...
+        if ((tempInput >= MinLeftDistance && tempInput <= MaxLeftDistance) || (tempInput >= MinRightDistance && tempInput <= MaxRightDistance))  // If the input value is between the boundaries...
         {
             recentValues[arrIn] = tempInput;    //...Add the input to the array.
 
@@ -98,7 +93,7 @@ public class diskRotation : MonoBehaviour
                 arrSize++;                          // Increment arrSize every time a new value gets added, until arrSize == 10.
             }
 
-            GetDirection();                         // Call GetDirection() to move the Main Camera.
+            GetDirection();                         // Call GetDirection() to rotate the Disk.
 
             arrIn++;                                // Increment array's counter.
             if (arrIn > 9)                          // If the end of the array is reached...
@@ -110,7 +105,7 @@ public class diskRotation : MonoBehaviour
         {
             //DELETE THIS: isStationary = 1;   // The disk stops rotating.
 
-            //if (isStationary == 1 && angle >= 175 && angle <= 185 && resBtnClicked == 0)    // If the current angle is between 175 and 185 and the button has not been clicked yet to start the next round...
+            //TODELETE: if (isStationary == 1 && angle >= 175 && angle <= 185 && resBtnClicked == 0)    // If the current angle is between 175 and 185 and the button has not been clicked yet to start the next round...
             if (angle >= 175 && angle <= 185 && resBtnClicked == 0)    // If the current angle is between 175 and 185 and the button has not been clicked yet to start the next round...
             {
                 goalReached = 1;    // ...The goal has been successfully reached (for this round).
@@ -124,51 +119,51 @@ public class diskRotation : MonoBehaviour
     {
         //DELETE THIS: isStationary = 0;
         recentAverage = 0;
-        for (int i = 0; i < arrSize; i++)             // Calculating average value for all array's not-empty cells:
+        for (int i = 0; i < arrSize; i++)             // Calculating average value for all array's "not-empty" cells:
         {
             recentAverage += recentValues[i];
         }
-
         recentAverage = recentAverage / arrSize;
 
-        if (recentValues[arrIn] > recentAverage)    // If the latest Input value is greater than the average value, moves the camera to the left (wrong, should be right).
+        if (recentValues[arrIn] > recentAverage)    // If the latest Input value is greater than the average value...
         {
-            Debug.Log("Back");
-            goBack = true;                          // REPLACE "Back" with "Right".
-            goForward = false;                      // REPLACE "Forward" with "Left".
+            Debug.Log("Gesture-to-the-Right, Clockwise rotation");
+            rotateCW = false; //the disk needs to be rotated Clockwise.
+            rotateCCW = true;
+        }
+        else if (recentValues[arrIn] < recentAverage)    // If the latest Input value is smaller than the average value... the disk needs to be rotated Counterclockwise.
+        {
+            Debug.Log("Gesture-to-the-Left, Counterclockwise rotation");
+            rotateCCW = false;   // the disk needs to be rotated Counterclockwise.
+            rotateCW = true;
         }
 
-        if (recentValues[arrIn] < recentAverage)    // If the latest Input value is smaller than the average value, moves the camera to the right (wrong, should be left).
+        //TO DELETE: //ADD: if recentValues[] == recentAverage ---> false; false;
+
+        //TO DELETE: //ADD: moveDist = (recentAverage + recentValues[arrIn]) / 2; // I have to make this work somehow, maybe add another function.
+
+
+        angleToRotate = (float)(25 * (recentValues[arrIn] - recentAverage)) / 64;   // Gets a value based on the difference between the latest Input value and array's average value. The value expresses the direction and total degrees of rotation angle...
+                                                                                    //...I also change the variable's value's range from [-64,64] to [-MaxATR,MaxATR].
+        angleToRotate = -angleToRotate; // Setting angleToRotate to its opposite value so the disk rotates in the right direction. aTR<0 == CW, aTR>0 == CCW.
+
+        if (angleToRotate < 1 && angleToRotate > 0) // If 0<angleToRotate<1...
         {
-            Debug.Log("Forward");
-            goForward = true;                       // REPLACE "Forward" with "Left".
-            goBack = false;                         // REPLACE "Back" with "Right".
+            angleToRotate = 1;  //...I set angleToRotate back to 1. That helps by rotating the disk even for very small hand gestures and improves accuracy.
+        }
+        else if (angleToRotate > -1 && angleToRotate < 0)   // If -1<angleToRotate<0...
+        {
+            angleToRotate = -1; //...I set angleToRotate back to -1. That helps by rotating the disk even for very small hand gestures and improves accuracy.
+        }
+        else if (angleToRotate == 0 && rotateCW)    // When angleToRotate reaches 0, I need the disk to continue rotating (really slow) in the same direction for as long as my hand is detected inside the boundaries.
+        {
+            angleToRotate = 1; // If rotateCW == true, I set angleToRotate to 1 so it rotates 1 degree Clockwise.
+        }
+        else if (angleToRotate == 0 && rotateCCW)   // When angleToRotate reaches 0, I need the disk to continue rotating (really slow) in the same direction for as long as my hand is detected inside the boundaries.
+        {
+            angleToRotate = -1; // If rotateCCW == true, I set angleToRotate to 1 so it rotates 1 degree Counterclockwise.
         }
 
-        //ADD: if recentValues[] == recentAverage ---> false; false;
-
-        //ADD: moveDist = (recentAverage + recentValues[arrIn]) / 2; // I have to make this work somehow, maybe add another function.
-
-
-        angleToRotate = (float)(25 * (recentValues[arrIn] - recentAverage)) / 64;
-        if (angleToRotate < 1 && angleToRotate > 0)
-        {
-            angleToRotate = 1;
-        }
-        else if (angleToRotate > -1 && angleToRotate < 0)
-        {
-            angleToRotate = -1;
-        }
-        //else if (angleToRotate == 0 && goForward)
-        //{
-        //    angleToRotate = 1;
-        //}
-        //else if (angleToRotate == 0 && goBack)
-        //{
-        //    angleToRotate = -1;
-        //}
-
-        angleToRotate = -angleToRotate;
 
         //if (goBack)
         //{
@@ -181,11 +176,11 @@ public class diskRotation : MonoBehaviour
         //    Disk.transform.Rotate(0, + 5, 0);
         //}
 
-        if (goForward || goBack)
-        {
-            Disk.transform.Rotate(0, angleToRotate, 0);
-            Debug.Log("Recent input: " + recentValues[arrIn] + " & Recent average: " + recentAverage);
-        }
+        //if (rotateCW || rotateCCW)
+        //{
+            Disk.transform.Rotate(0, angleToRotate, 0); // Rotate the disk in the Y-Axis in the direction and degrees provided by angleToRotate.
+            //Debug.Log("Recent input: " + recentValues[arrIn] + " & Recent average: " + recentAverage);
+        //}
     }
 
     void DeleteRecentValues()   // Function used for "deleting" all recent values from the array.
