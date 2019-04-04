@@ -17,7 +17,7 @@ public class diskRotation : MonoBehaviour
 
     private int directionSteps; // Every time arduino sends a value via the Serial Port, that value is saved in the directionSteps variable. (==1-10 for right-to-left gestures, ==11-20 for left-to-right gestures, ==0 to not move).
     private int timesteps;      // Is used to suspend the coroutine execution.
-    private int isStationary;   // ==0 when the disk is Stationary, ==1 when the disk is currently rotating and has not finished its rotation.
+    //private int isStationary;   // ==0 when the disk is Stationary, ==1 when the disk is currently rotating and has not finished its rotation.
     private int angle;          // Gets the disk's current rotation value of Y Axis (Disk.transform.localRotation.eulerAngles.y).
 
     private int resBtnClicked;  // Used to save the value of the resBtnClicked variable from the restart.cs script.
@@ -108,7 +108,7 @@ public class diskRotation : MonoBehaviour
         }
         else                                        // Else, if the input is out of bounds...
         {
-            isStationary = 1;   // The disk stops rotating.
+            //DELETE THIS: isStationary = 1;   // The disk stops rotating.
 
             //if (isStationary == 1 && angle >= 175 && angle <= 185 && resBtnClicked == 0)    // If the current angle is between 175 and 185 and the button has not been clicked yet to start the next round...
             if (angle >= 175 && angle <= 185 && resBtnClicked == 0)    // If the current angle is between 175 and 185 and the button has not been clicked yet to start the next round...
@@ -122,7 +122,7 @@ public class diskRotation : MonoBehaviour
 
     void GetDirection()
     {
-        isStationary = 0;
+        //DELETE THIS: isStationary = 0;
         recentAverage = 0;
         for (int i = 0; i < arrSize; i++)             // Calculating average value for all array's not-empty cells:
         {
@@ -150,17 +150,27 @@ public class diskRotation : MonoBehaviour
         //ADD: moveDist = (recentAverage + recentValues[arrIn]) / 2; // I have to make this work somehow, maybe add another function.
 
 
-		angleToRotate = (10*(tempInput - recentAverage))/64;
-		if(angleToRotate <1 && angleToRotate >0){
-			angleToRotate++;
-		}
-		else if(angleToRotate >-1 && angleToRotate <0)
-		{
-			angleToRotate--;
-		}
-			
-		
-		//if (goBack)
+        angleToRotate = (float)(25 * (recentValues[arrIn] - recentAverage)) / 64;
+        if (angleToRotate < 1 && angleToRotate > 0)
+        {
+            angleToRotate = 1;
+        }
+        else if (angleToRotate > -1 && angleToRotate < 0)
+        {
+            angleToRotate = -1;
+        }
+        //else if (angleToRotate == 0 && goForward)
+        //{
+        //    angleToRotate = 1;
+        //}
+        //else if (angleToRotate == 0 && goBack)
+        //{
+        //    angleToRotate = -1;
+        //}
+
+        angleToRotate = -angleToRotate;
+
+        //if (goBack)
         //{
         //    //angleToRotate = (float)(maxRotationalSpeed / ((recentValues[arrIn] +1) - recentAverage));
         //    Disk.transform.Rotate(0, -5, 0);
@@ -170,10 +180,10 @@ public class diskRotation : MonoBehaviour
         //{
         //    Disk.transform.Rotate(0, + 5, 0);
         //}
-        
+
         if (goForward || goBack)
         {
-			Disk.transform.Rotate(0, angleToRotate, 0);
+            Disk.transform.Rotate(0, angleToRotate, 0);
             Debug.Log("Recent input: " + recentValues[arrIn] + " & Recent average: " + recentAverage);
         }
     }
