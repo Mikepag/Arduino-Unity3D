@@ -18,7 +18,7 @@ public class diskRotation : MonoBehaviour
     private const int MinRightDistance = 2;     // Used for setting boundaries for the Input value.
     private const int MaxRightDistance = 32;    // Used for setting boundaries for the Input value.
     private const int MaxATR = 25;              // MaxAngleToRotate. Maximum degrees angle the Disk can be rotated.
-    private const int SIZE = 10;                // recentValues[] size.
+    private const int SIZE = 15;                // recentValues[] size.
 
     private int resBtnClicked;                  // Used to save the value of the resBtnClicked variable from the restart.cs script.
     private int unfinCD;                        // Used to save the value of the unfinCD variable from the timer.cs script.
