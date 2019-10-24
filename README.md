@@ -1,5 +1,5 @@
 # Arduino-Unity3D
-#### Arduino - Unity3D integration project. 
+#### Arduino - Unity3D integration projects. 
 ---
 
 # Project 1
@@ -196,18 +196,23 @@ ___
 
 ## diskRotation.cs
 **&#x27BD; C Sharp script attached to a Game Object called "Disk".**
-* **Receives the average value from the Serial Port, saves it in an array, calculates the average value of all array's values, compares the latest input with that average value and rotates the disk clockwise/counterclockwise accordingly.**
+* **Receives the average value from the Serial Port, saves it in an array, calculates the average value of all array's values, compares the latest input with that average value and rotates the Disk clockwise/counterclockwise accordingly.**
 It gets the value of variables resBtnClicked, unfinCD and didCntdown from the restart.cs and timer.cs scripts.
-* If the restart button gets clicked:
+* If the (re)start button gets clicked:
   * Disk gets rotated to a random angle.
 * For as long as the the goal is not reached yet, the countdown is not currently taking place and a countdown already took place in the current round:
    * If the recieved value (tempInput) is between the range [-32,-2]υ[2,32]:
    * tempInput's value is added to an array (recentValues[]).
    * The array's average value (recentAverage) is calculated.
-      * If tempInput < recentAverage &#x279C; The Disk rotates Right-to-Left.
-      * If tempInput > recentAverage &#x279C; The camera moves Left-to-Right.
-   * The DeleteRecentValues() function is used to empty the array when the tempInput gets out-of-bounds.
-* After the compass has stopped rotating, I check whether its angle is between 175° and 185°.
+      * If tempInput < recentAverage &#x279C; The Disk rotates Counterclockwise.
+      * If tempInput > recentAverage &#x279C; The Disk rotates Clockwise.
+   * **SMOOTH ROTATION:**
+      * angleToRotate gets a value in [-maxATR, maxATR] == [-25, 25] based on the difference between the latest Input value and array's average value. The value expresses the direction and total degrees of rotation angle:
+         * **angleToRotate = (float)(MaxATR * (recentValues[arrIn] - recentAverage)) / 64;**
+      * If 0<angleToRotate<1, I set angleToRotate back to 1. If -1<angleToRotate<0, I set angleToRotate back to -1. That helps by rotating the disk even for very small hand gestures and improves accuracy.
+      * When angleToRotate reaches 0, I programmed the disk to continue rotating (really slow) in the same direction for as long as my hand is detected inside the boundaries.
+      * The DeleteRecentValues() function is used to empty the array when the tempInput gets out-of-bounds.
+* After the Disk has stopped rotating, I check whether its angle is between 175° and 185°.
   If it is:
   * The goal has been successfully reached (for this round).
-  * Compass stops rotating for recognised gestures.
+  * Disk stops rotating for recognised gestures.
