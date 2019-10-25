@@ -185,8 +185,8 @@ ___
 ___
 
 # Project 6 (Disk Rotation)
-##### This project combines the Position Detection of Project5/cameraControl.ino, the algorithm for moving/rotating a GameObject of Project5/cameraControl.cs and the extra functionality of having countdown, timer, restart button, round's number, goal achievement, log files etc of Project4.1/compassRotation.cs, Project4.1/timer.cs and Project4.1/restart.cs.
-###### Related Files: [cameraControl.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project5/cameraControl.ino), [diskRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project6/diskRotation.cs)
+##### This project combines the Position Detection of Project5/cameraControl.ino, the algorithm for moving/rotating a GameObject of Project5/cameraControl.cs and the extra functionality of having countdown, timer, restart button, round's number, goal achievement, log files etc. of Project4.1/compassRotation.cs, Project4.1/timer.cs and Project4.1/restart.cs.
+###### Related Files: [cameraControl.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project5/cameraControl.ino), [diskRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project6/diskRotation.cs), [timer.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4.1/timer.cs), [restart.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4.1/restart.cs)
 
 ## cameraControl.ino
 **&#x27BD; C++ code uploaded to the Arduino. Performs Position Detection in 1D.**
@@ -197,9 +197,9 @@ ___
 ## diskRotation.cs
 **&#x27BD; C Sharp script attached to a Game Object called "Disk".**
 * **Receives the average value from the Serial Port, saves it in an array, calculates the average value of all array's values, compares the latest input with that average value and rotates the Disk clockwise/counterclockwise accordingly.**
-It gets the value of variables resBtnClicked, unfinCD and didCntdown from the restart.cs and timer.cs scripts.
+* It gets the value of variables resBtnClicked, unfinCD and didCntdown from the restart.cs and timer.cs scripts.
 * If the (re)start button gets clicked:
-  * Disk gets rotated to a random angle.
+  * The Disk gets rotated to a random angle.
 * For as long as the the goal is not reached yet, the countdown is not currently taking place and a countdown already took place in the current round:
    * If the recieved value (tempInput) is between the range [-32,-2]υ[2,32]:
    * tempInput's value is added to an array (recentValues[]).
@@ -216,3 +216,33 @@ It gets the value of variables resBtnClicked, unfinCD and didCntdown from the re
   If it is:
   * The goal has been successfully reached (for this round).
   * Disk stops rotating for recognised gestures.
+  
+## timer.cs
+**&#x27BD; C Sharp script attached to a Game Object called "Disk".**
+* **It is used to print a stopwatch on the screen.**
+* It was used without any changes to its code (exactly the same as it is in Project4.1).
+* Time is updated once per frame.
+* Format is 00:00:00 (Minutes : Seconds : Miliseconds).
+* It gets the value of variables goalReached, resBtnClicked and roundNum from the diskRotation.cs and restart.cs scripts.
+* If the goal has been reached and the restart button has not been clicked yet:
+  * Time stops counting.
+  * Timer text becomes red.
+  * Time is printed to Times.txt.
+* If the restart button gets clicked:
+  * Timer text becomes black again.
+  * The countdown starts.
+* When the countdown ends, the timer (stopwatch) starts.
+
+## restart.cs
+**&#x27BD; C Sharp script attached to a Game Object called "Disk".**
+* **It is used to control the restart button and print the current round's number on the screen.**
+* It was used without any changes to its code (exactly the same as it is in Project4.1).
+* It gets the value of variable goalReached from the diskRotation.cs script.
+* If the goal has been reached:
+  * The restart button becomes visible.
+  * Round text becomes green.
+* If the restart button gets clicked:
+  * The restart button becomes non-visible.
+  * Τhe next round starts.
+  * If it gets clicked in the final round, the application shuts down.
+  
