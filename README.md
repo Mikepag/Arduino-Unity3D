@@ -2,6 +2,17 @@
 #### Arduino - Unity3D integration projects. 
 ---
 
+# Index
+#### [Project1](https://github.com/Mikepag/Arduino-Unity3D#project-1): Distance Calculation using an Ultrasonic Sensor - Unity's Cube Movement.
+#### [Project2](https://github.com/Mikepag/Arduino-Unity3D#project-2-dushgrproject): Dual Ultrasonic Sensor - Hand Gesture Recognition Project
+#### [Project3](https://github.com/Mikepag/Arduino-Unity3D#project-3-qushgrproject): Quad Ultrasonic Sensor - Hand Gesture Recognition Project
+#### [Project3.1](https://github.com/Mikepag/Arduino-Unity3D#project-31-qushgrproject_bf): Quad Ultrasonic Sensor - Hand Gesture Recognition Project ("Book Flipping" Gestures)
+#### [Project4](https://github.com/Mikepag/Arduino-Unity3D#project-4-qtushgrproject): Quad Tilted Ultrasonic Sensor - Hand Gesture Recognition Project
+#### [Project4.1](https://github.com/Mikepag/Arduino-Unity3D#project-41-qtushgrproject2): Quad Tilted Ultrasonic Sensor - Hand Gesture Recognition (+ Extra Functionality)
+#### [Project5](https://github.com/Mikepag/Arduino-Unity3D#project-5-camera-control-project): Camera Control (Experimental Project)
+#### [Project6](https://github.com/Mikepag/Arduino-Unity3D#project-6-disk-rotation): Disk Rotation (Combination of Project4.1 & Project5)
+---
+
 # Project 1
 ##### Distance Calculation using an Ultrasonic Sensor - Unity's Cube Movement.
 ###### Related Files: [distanceCalcUSS.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project1/distanceCalcUSS.ino), [cubeMovement.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project1/cubeMovement.cs), [distanceCalcUSS_circuitSchema.png](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project1/distanceCalcUSS_circuitSchema.png)
