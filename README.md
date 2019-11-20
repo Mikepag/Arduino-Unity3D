@@ -90,7 +90,7 @@ ___
 
 # Project 3.1 (QUSHGRProject_BF)
 ##### *Q*uad *U*ltrasonic *S*ensor - *H*and *G*esture *R*ecognition *Project* ("*B*ook *F*lipping" Gestures)
-###### Related Files: [qUSHGRP_BF.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project3.1/qUSHGRP_BF.ino), [qUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project3/qUSHGRProject.ino), [cubeRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project2/cubeRotation.cs)
+###### Related Files: [qUSHGRP_BF.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project3.1/qUSHGRP_BF.ino), [qUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project3/qUSHGRProject.ino), [cubeRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project2/cubeRotation.cs), [qUSHGRPCircuitSchema.JPG](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project3/qUSHGRPCircuitSchema.JPG)
 
 ## qUSHGRP_BF.ino
 **&#x27BD; C++ code uploaded to the Arduino.**
@@ -102,10 +102,13 @@ ___
 **&#x27BD; C++ code uploaded to the Arduino.**
 **&#x27BD; C Sharp script attached to a cube in Unity.**
 * They were used together without any changes to their code (exactly the same as it is in Projects 2 & 3), to test how the new gestures are recognised.
+
+## qUSHGRPCircuitSchema.JPG
+**&#x27BD; Arduino's Circuit Schema.**
 ___
 # Project 4 (QTUSHGRProject)
 ##### *Q*uad *T*ilted *U*ltrasonic *S*ensor - *H*and *G*esture *R*ecognition *Project*
-###### Related Files: [qTUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/qTUSHGRProject.ino), [cubeRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project2/cubeRotation.cs)
+###### Related Files: [qTUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/qTUSHGRProject.ino), [cubeRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project2/cubeRotation.cs), [quadTiltedUS.png](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/quadTiltedUS.png)
 
 ## qTUSHGRProject.ino
 **&#x27BD; C++ code uploaded to the Arduino.**
@@ -118,11 +121,14 @@ ___
 **&#x27BD; C Sharp script attached to a cube in Unity.**
 * It was used without any changes to its code (exactly the same as it is in Projects 2 & 3), to rotate the cube in Unity.
 * A minnor error was found and fixed, so now the cube rotates even in successive or too slow gestures.
+
+## quadTiltedUS.png
+**&#x27BD; Arduino's Circuit Schema.**
 ___
 
 # Project 4.1 (QTUSHGRProject2)
 ##### *Q*uad *T*ilted *U*ltrasonic *S*ensor - *H*and *G*esture *R*ecognition *Project 2*
-###### Related Files: [qTUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/qTUSHGRProject.ino), [compassRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4.1/compassRotation.cs), [timer.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4.1/timer.cs), [restart.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4.1/restart.cs)
+###### Related Files: [qTUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/qTUSHGRProject.ino), [compassRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4.1/compassRotation.cs), [timer.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4.1/timer.cs), [restart.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4.1/restart.cs), [quadTiltedUS.png](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/quadTiltedUS.png)
 
 ## qTUSHGRProject.ino
 **&#x27BD; C++ code uploaded to the Arduino.**
@@ -168,11 +174,14 @@ ___
   * The restart button becomes non-visible.
   * Τhe next round starts.
   * If it gets clicked in the final round, the application shuts down.
+  
+## quadTiltedUS.png
+**&#x27BD; Arduino's Circuit Schema.**
 ___
 
 # Project 5 (Camera Control Project)
 ##### This project was just an experiment and its code will be used to improve previous projects that did not work very well.
-###### Related Files: [cameraControl.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project5/cameraControl.ino), [cameraControl.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project5/cameraControl.cs)
+###### Related Files: [cameraControl.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project5/cameraControl.ino), [cameraControl.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project5/cameraControl.cs), [quadTiltedUS.png](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/quadTiltedUS.png)
 
 ## cameraControl.ino
 **&#x27BD; C++ code uploaded to the Arduino. Performs Position Detection in 1D.**
@@ -193,11 +202,14 @@ ___
    * If tempInput < recentAverage &#x279C; The camera moves Right-to-Left.
    * If tempInput > recentAverage &#x279C; The camera moves Left-to-Right.
 * Using the DeleteRecentValues() function to empty the array when the tempInput gets out-of-bounds.
+
+## quadTiltedUS.png
+**&#x27BD; Arduino's Circuit Schema.**
 ___
 
 # Project 6 (Disk Rotation)
 ##### This project combines the Position Detection of Project5/cameraControl.ino, the algorithm for moving/rotating a GameObject of Project5/cameraControl.cs and the extra functionality of having countdown, timer, restart button, round's number, goal achievement, log files etc. of Project4.1/compassRotation.cs, Project4.1/timer.cs and Project4.1/restart.cs.
-###### Related Files: [cameraControl.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project5/cameraControl.ino), [diskRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project6/diskRotation.cs), [timer.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4.1/timer.cs), [restart.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4.1/restart.cs)
+###### Related Files: [cameraControl.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project5/cameraControl.ino), [diskRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project6/diskRotation.cs), [timer.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4.1/timer.cs), [restart.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4.1/restart.cs), [quadTiltedUS.png](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/quadTiltedUS.png)
 
 ## cameraControl.ino
 **&#x27BD; C++ code uploaded to the Arduino. Performs Position Detection in 1D.**
@@ -257,3 +269,5 @@ ___
   * Τhe next round starts.
   * If it gets clicked in the final round, the application shuts down.
   
+## quadTiltedUS.png
+**&#x27BD; Arduino's Circuit Schema.**
