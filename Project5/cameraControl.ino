@@ -30,6 +30,12 @@ void setup() {
   Serial.begin(9600);
   pinMode(trigLLPin, OUTPUT);
   pinMode(echoLLPin, INPUT);
+  pinMode(trigLRPin, OUTPUT);
+  pinMode(echoLRPin, INPUT);
+  pinMode(trigRLPin, OUTPUT);
+  pinMode(echoRLPin, INPUT);
+  pinMode(trigRRPin, OUTPUT);
+  pinMode(echoRRPin, INPUT);
 
   pinMode(flagLedPin, OUTPUT);
   pinMode(flashingLedPin, OUTPUT);
@@ -53,6 +59,9 @@ void loop() {
   avgDistL = avgDistCalc(distLLInt, distLRInt); // Calling avgDistCalc() to calcualte the average distance for the Left sensors.
   avgDistR = avgDistCalc(distRLInt, distRRInt); // Calling avgDistCalc() to calcualte the average distance for the Right sensors.
 
+  // Calculating total average distance and sending it to Unity.
+  totalAvgDistance = totalAvgDistCalc(avgDistL, avgDistR);  // Calling totalAvgDistCalc() to calculate the total average distance from all four sensors.
+  
   /*// Printing all the distances while debugging.
   Serial.print("LL: ");
   Serial.print(distLLInt);
@@ -67,16 +76,13 @@ void loop() {
   Serial.print(avgDistL);
   Serial.print("  RIGHT: ");
   Serial.print(avgDistR);
+  
+  Serial.print("\nTotal Avg Distance: ");
+  Serial.print(totalAvgDistance);
   Serial.print("\n\n");
   */
-
-  // Calculating total average distance and sending it to Unity.
-  totalAvgDistance = totalAvgDistCalc(avgDistL, avgDistR);  // Calling totalAvgDistCalc() to calculate the total average distance from all four sensors.
   
-  //Serial.print("\nTotal Avg Distance: ");
-  //Serial.print(totalAvgDistance);
-  //Serial.print("\n");
-
+  
   Serial.write(totalAvgDistance); // Send totalAvgDistance to Unity.
   Serial.flush();                 // Wait for the data to be sent successfully to Unity.
   delay(100);                     // Delay between each time that either left or right sensor are "enabled".
@@ -105,8 +111,8 @@ int distCalc(int trigPin, int echoPin, int flashingLedPin){ // Gets the sensor's
 }
 
 int avgDistCalc(int distLInt, int distRInt){  // Gets two distance values and calculates and returns their average value.
-  //int avgDist = 0;                      // Default value. Switch to this after debugging.
-  int avgDist = -1;                       // For debugging reasons. It is converted to 0 before calculating totalAvgDistance.
+  int avgDist = 0;                      // Default value. Switch to this after debugging.
+  //int avgDist = -1;                       // For debugging reasons. It is converted to 0 before calculating totalAvgDistance.
   
   if(distLInt <= 30 || distRInt <= 30){   // If at least one of the Sensors of the Breadboard detects something...
     digitalWrite(flagLedPin, HIGH);
@@ -126,12 +132,12 @@ int avgDistCalc(int distLInt, int distRInt){  // Gets two distance values and ca
 int totalAvgDistCalc(int avgDistL, int avgDistR){ // Gets the left and right average distances and calculates and returns the position of what is beeing detected by the sensors.
   int totalAvgDistance = 0;
 
-  if(avgDistL == -1){                     //For debugging reasons. Remove it afterwards.
-    avgDistL = 0;
-  }
-  if(avgDistR == -1){                     //For debugging reasons. Remove it afterwards.
-    avgDistR = 0;
-  }
+  //if(avgDistL == -1){                     //For debugging reasons. Remove it afterwards.
+  //  avgDistL = 0;
+  //}
+  //if(avgDistR == -1){                     //For debugging reasons. Remove it afterwards.
+  //  avgDistR = 0;
+  //}
   
   totalAvgDistance = avgDistL - avgDistR; // Position is equal to avgL - avgR. It takes values between in [-32,32]
   totalAvgDistance += 32;                 // I want it to take values in [0,64] because negative values can not be sent to Unity.
