@@ -27,61 +27,50 @@ public class restartP1 : MonoBehaviour
 
     void Update()
     {
-        goalReached = Disk.GetComponent<diskRotationP1>().goalReached;
+        goalReached = Disk.GetComponent<diskRotationP1>().goalReached;  // Getting the value of goalReached from the diskRotationP1.cs script.
+        roundText.text = "Round: " + roundNum.ToString() + " /10";      // Setting the current round's number to the UI roundText.
 
-        //resBtnClicked = 0;                                          // It is equal to 0 unless it gets clicked. ! ! ! ! ! DELETE IF NEW METHOD WORKS ! ! ! ! !
-        roundText.color = Color.black;                              // It is black unless the goal is reached.
-        roundText.text = "Round: " + roundNum.ToString() + " /10";  // Printing the round's number to the UI roundText.
-
-        if (roundNum == 0)                                                          // If the current round is 0 (If the player has not clicked the button to start the first round)...
-        {
-            resButObject.GetComponentInChildren<Text>().text = "Start!";            //...Set the buttons text to "Start!".
-        }
-        else                                                                        // Else, if the player has started at least the first round...
-        {
-            resButObject.GetComponentInChildren<Text>().text = "Start next round";  //...Set the buttons text to "Start next round".
-        }
-
-        if (goalReached == 1 || roundNum == 0)       // If the goal has been reached, OR the first round has not yet started...
-        {
-            resButObject.SetActive(true);                                   // Set the restart button active (and visible) for the player to start the next round.
-
+        if (goalReached == 0)
+        {                                                                               // If the goal has not been reached in this round yet:
+            roundText.color = Color.black;                                              // Set the roundText color to black.
             if (roundNum == 0)
-            {
-                roundText.color = Color.black;
+            {                                                                           // If not even the first round has started yet:
+                resButObject.SetActive(true);                                           // Activate the restart button to be able to start the first round.
+                resButObject.GetComponentInChildren<Text>().text = "Start!";            // Set the button's text to "Start".
             }
             else
-            {
-                roundText.color = Color.green;                                  // If the goal is reached for this round, set roundText colour to green.
-            }
-
-            if (roundNum == 10)                                             // If the current round is 10 and the goal has been reached (parent if)...
-            {
-                resButObject.GetComponentInChildren<Text>().text = "Return to Menu";  //...Set the buttons text to "Quit".
+            {                                                                           // Else if roundNum !=0 && the goal has not been reached yet:
+                resButObject.SetActive(false);                                          // Disable the restart button.
             }
         }
         else
-        {
-            resButObject.SetActive(false);  // Disable the restart button.
+        {                                                                               // Else if the goal has been reached:
+            resButObject.SetActive(true);                                               // Activate the restart button.
+            roundText.color = Color.green;                                              // Set the roundText's color to green to show that the round has finished successfully.
+            if ( roundNum == 10)
+            {                                                                           // When the goal is reached in the Final round:
+                resButObject.GetComponentInChildren<Text>().text = "Return to Menu";    // Set the button's text to "Return to Menu".
+            }
+            else
+            {                                                                           // Else,  if the round, in which the goal has been reached, is not the final one:
+                resButObject.GetComponentInChildren<Text>().text = "Start Next Round";  // Set the button's text to "Start Next Round".
+            }
         }
     }
 
 
     void TaskOnClick()
-    { // The following code is executed only when the restart button gets clicked.
+    { // The following code is only executed when the restart button gets clicked.
 
         if (roundNum == 10)                                     // If the button gets clicked in the final round...
         {
-            SceneManager.LoadScene("Assets/Scenes/Menu.unity"); // Loads Menu Scene.
-            //UnityEditor.EditorApplication.isPlaying = false;  // [IMPORTANT: COMMENT IT OUT BEFORE BUILD!] Quit the application (works when playing on the Editor).
-            //Application.Quit();                               // Quit the application (works when playing on a Build).
+            SceneManager.LoadScene("Assets/Scenes/Menu.unity"); // Load Menu Scene.
         }
-        else                                // Else, if not in final round yet...
+        else                                                    // Else, if not in final round yet...
         {
-            //resBtnClicked = 1;              // Set resBtnClicked equal to 1. ! ! ! ! ! DELETE IF NEW METHOD WORKS ! ! ! ! !
-            roundNum++;                     // Increment the current round number by one because the next round starts.
-            resBtnClicked = roundNum;              // Set resBtnClicked equal to the current round number.
-            resButObject.SetActive(false);  // Set the restart button inactive (and non-visible).
+            roundNum++;                                         // Increment the current round number by one because the next round starts.
+            resBtnClicked = roundNum;                           // Set resBtnClicked equal to the current round number.
+            resButObject.SetActive(false);                      // Set the restart button inactive (and non-visible).
         }
     }
 }
