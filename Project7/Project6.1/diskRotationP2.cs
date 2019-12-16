@@ -20,7 +20,8 @@ public class diskRotationP2 : MonoBehaviour
     private const int MaxATR = 25;              // MaxAngleToRotate. Maximum degrees angle the Disk can be rotated.
     private const int SIZE = 15;                // recentValues[] size.
 
-    private int resBtnClicked;                  // Used to save the value of the resBtnClicked variable from the restart.cs script.
+    private int previous_resBtnClicked;         // Used to save the previous value of the resBtnClicked variable from the restartP2.cs script. (I use it to know when the restart button gets clicked by compairing it to the current resBtnClicked).
+    private int resBtnClicked;                  // Used to save the current value of the resBtnClicked variable from the restartP2.cs script. (resBtnClicked contains the last round's number in which the restart button got clicked).
     private int unfinCD;                        // Used to save the value of the unfinCD variable from the timer.cs script.
     private int didCntdown;                     // Used to save the value of the didCntdown variable from the timer.cs script.
 
@@ -44,6 +45,8 @@ public class diskRotationP2 : MonoBehaviour
     {
         sp.Open();
 
+        previous_resBtnClicked = 0;             // The restart button has not been clicked in the previous frame.
+        resBtnClicked = 0;                      // The restart button has not been clicked yet.
         goalReached = 0;
         angleToRotate = 0;
         rotateCW = false;
@@ -59,11 +62,12 @@ public class diskRotationP2 : MonoBehaviour
     {
         angle = (int)Disk.transform.localRotation.eulerAngles.y;            // Get the current Y-Axis rotation value.
 
-        resBtnClicked = Disk.GetComponent<restartP2>().resBtnClicked;       // Getting the value of resBtnClicked from the restart.cs script.
+        previous_resBtnClicked = resBtnClicked;                             //Save the previous frame's resBtnClicked value.
+        resBtnClicked = Disk.GetComponent<restartP2>().resBtnClicked;       // Getting the current value of resBtnClicked from the restartP2.cs script.
         unfinCD = Disk.GetComponent<timerP2>().unfinCD;                     // Getting the value of unfinCD from the timer.cs script.
         didCntdown = Disk.GetComponent<timerP2>().didCntdown;               // Getting the value of didCntdown from the timer.cs script.
 
-        if (resBtnClicked == 1)                                             // If the restart button has been clicked.
+        if ((resBtnClicked - previous_resBtnClicked) == 1)                  // If the restart button has been clicked...
         {
             randomAngle = Random.Range(0, 180);                             // Returns a random integer number between 0 and 179.
             if (randomAngle >= 90)
@@ -108,7 +112,7 @@ public class diskRotationP2 : MonoBehaviour
         }
         else                                                            // Else, if the input is out of bounds...
         {
-            if (angle >= 175 && angle <= 185 && resBtnClicked == 0)     // If the current angle is between 175 and 185 and the button has not been clicked yet to start the next round...
+            if (angle >= 175 && angle <= 185 && (resBtnClicked - previous_resBtnClicked) == 0)     // If the current angle is between 175 and 185 and the button has not been clicked yet to start the next round...
             {
                 goalReached = 1;                                        //...The goal has been successfully reached (for this round).
             }
