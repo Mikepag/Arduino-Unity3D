@@ -9,24 +9,24 @@ public class timerP2 : MonoBehaviour
 {
 
     public GameObject Disk;
-    public int unfinCD = 0;                     // ==0 if the Countdown has finished, ==1 while the Countdown is still taking place.
-    public int didCntdown;                      // ==1 if there has been a Countdown for this round, ==0 at the start of the round, when I need to start a countdown.
+    public int unfinCD = 0;                         // ==0 if the Countdown has finished, ==1 while the Countdown is still taking place.
+    public int didCntdown;                          // ==1 if there has been a Countdown for this round, ==0 at the start of the round, when I need to start a countdown.
 
-    public Text timerText;                      // Declaring a public Text called timerText
-    private float startTime;                    // Gets the time right after the countdown's execution ends. Used to calculate and print the elapsed time on the timer.
-    private int minutesInt;                     // Elapsed minutes sinse start of time.
-    private int secondsInt;                     // Elapsed seconds sinse start of time.
-    private int millisecInt;                    // Elapsed milliseconds since start of time.
-    private int updatedFile;                    // Is equal to the round's number the file has last been updated.
-    private string filename = "Times.txt";      // External file where the elapsed time of each round is beeing written.
-    private string textToWrite = "Times:\n";    // The text that is beeing written to Times.txt. The first line is "Times:".
-    private DateTime startSysTime;              // Gets a System Time timestamp at the start of each round.
-    private DateTime currentSysTime;            // Gets a System Time timestamp once for each frame.
+    public Text timerText;                          // Declaring a public Text called timerText
+    private float startTime;                        // Gets the time right after the countdown's execution ends. Used to calculate and print the elapsed time on the timer.
+    private int minutesInt;                         // Elapsed minutes sinse start of time.
+    private int secondsInt;                         // Elapsed seconds sinse start of time.
+    private int millisecInt;                        // Elapsed milliseconds since start of time.
+    private int updatedFile;                        // Is equal to the round's number the file has last been updated.
+    private string filename = "LogTimes_P2.txt";    // External file where the elapsed time of each round is beeing written.
+    private string textToWrite = "Times:\n";        // The text that is beeing written to LogTimes_P2.txt. The first line is "Times:".
+    private DateTime startSysTime;                  // Gets a System Time timestamp at the start of each round.
+    private DateTime currentSysTime;                // Gets a System Time timestamp once for each frame.
 
-    private int goalReached;                    // Used to save the value of the goalReached variable from the diskRotationP1.cs script.
-    private int roundNum;                       // Used to save the value of the roundNum variable from the restartP2.cs script.
-    private int resBtnClicked;                  // Used to save the current value of the resBtnClicked variable from the restartP2.cs script. (resBtnClicked contains the last round's number in which the restart button got clicked).
-    private int previous_resBtnClicked;         // Used to save the previous value of the resBtnClicked variable from the restartP2.cs script. (I use it to know when the restart button gets clicked by compairing it to the current resBtnClicked).
+    private int goalReached;                        // Used to save the value of the goalReached variable from the diskRotationP1.cs script.
+    private int roundNum;                           // Used to save the value of the roundNum variable from the restartP2.cs script.
+    private int resBtnClicked;                      // Used to save the current value of the resBtnClicked variable from the restartP2.cs script. (resBtnClicked contains the last round's number in which the restart button got clicked).
+    private int previous_resBtnClicked;             // Used to save the previous value of the resBtnClicked variable from the restartP2.cs script. (I use it to know when the restart button gets clicked by compairing it to the current resBtnClicked).
 
     // Use this for initialization
     void Start()
@@ -50,8 +50,8 @@ public class timerP2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        goalReached = Disk.GetComponent<diskRotationP2>().goalReached;          // Getting the value of goalReached from the diskRotation.cs script.
-        roundNum = Disk.GetComponent<restartP2>().roundNum;                     // Getting the value of roundNum from the restart.cs script.
+        goalReached = Disk.GetComponent<diskRotationP2>().goalReached;          // Getting the value of goalReached from the diskRotationP2.cs script.
+        roundNum = Disk.GetComponent<restartP2>().roundNum;                     // Getting the value of roundNum from the restartP2.cs script.
 
         previous_resBtnClicked = resBtnClicked;                                 //Save the previous frame's resBtnClicked value.
         resBtnClicked = Disk.GetComponent<restartP2>().resBtnClicked;           // Getting the current value of resBtnClicked from the restartP2.cs script.
