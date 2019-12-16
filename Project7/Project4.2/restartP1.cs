@@ -15,7 +15,7 @@ public class restartP1 : MonoBehaviour
     public int resBtnClicked;       // ==1 when the restart button gets clicked.
     public int roundNum;            // Is equal to the current round's number.
 
-    private int goalReached;  // Getting the value of goalReached from the diskRotationP1.cs script.
+    private int goalReached;        // Getting the value of goalReached from the diskRotationP1.cs script.
 
     void Start()
     {
@@ -27,8 +27,8 @@ public class restartP1 : MonoBehaviour
 
     void Update()
     {
-        goalReached = Disk.GetComponent<diskRotationP1>().goalReached;  // Getting the value of goalReached from the diskRotationP1.cs script.
-        roundText.text = "Round: " + roundNum.ToString() + " /10";      // Setting the current round's number to the UI roundText.
+        goalReached = Disk.GetComponent<diskRotationP1>().goalReached;                  // Getting the value of goalReached from the diskRotationP1.cs script.
+        roundText.text = "Round: " + roundNum.ToString() + " /10";                      // Setting the current round's number to the UI roundText.
 
         if (goalReached == 0)
         {                                                                               // If the goal has not been reached in this round yet:
@@ -62,12 +62,12 @@ public class restartP1 : MonoBehaviour
     void TaskOnClick()
     { // The following code is only executed when the restart button gets clicked.
 
-        if (roundNum == 10)                                     // If the button gets clicked in the final round...
-        {
+        if (roundNum == 10)
+        {                                                       // If the button gets clicked in the final round...
             SceneManager.LoadScene("Assets/Scenes/Menu.unity"); // Load Menu Scene.
         }
-        else                                                    // Else, if not in final round yet...
-        {
+        else
+        {                                                       // Else, if not in final round yet...
             roundNum++;                                         // Increment the current round number by one because the next round starts.
             resBtnClicked = roundNum;                           // Set resBtnClicked equal to the current round number.
             resButObject.SetActive(false);                      // Set the restart button inactive (and non-visible).
