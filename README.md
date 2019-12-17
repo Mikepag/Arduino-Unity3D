@@ -9,8 +9,11 @@
 #### [Project3.1](https://github.com/Mikepag/Arduino-Unity3D#project-31-qushgrproject_bf): Quad Ultrasonic Sensor - Hand Gesture Recognition Project ("Book Flipping" Gestures)
 #### [Project4](https://github.com/Mikepag/Arduino-Unity3D#project-4-qtushgrproject): Quad Tilted Ultrasonic Sensor - Hand Gesture Recognition Project
 #### [Project4.1](https://github.com/Mikepag/Arduino-Unity3D#project-41-qtushgrproject2): Quad Tilted Ultrasonic Sensor - Hand Gesture Recognition (+ Extra Functionality)
+#### [Project4.2](): P1: Disk Rotation Using Timesteps (Sub-Project of Project7)
 #### [Project5](https://github.com/Mikepag/Arduino-Unity3D#project-5-camera-control-project): Camera Control (Experimental Project)
 #### [Project6](https://github.com/Mikepag/Arduino-Unity3D#project-6-disk-rotation): Disk Rotation (Combination of Project4.1 & Project5)
+#### [Project6.1](): P2: Disk Rotation Using Average Distance (Sub-Project of Project7)
+#### [Project7](https://github.com/Mikepag/Arduino-Unity3D#project-7-disk-rotation-integration): Disk Rotation Integration (Comparison of Project4.2 & Project6.1)
 ---
 
 # Project 1
@@ -179,6 +182,11 @@ ___
 **&#x27BD; Arduino's Circuit Schema.**
 ___
 
+# Project4.2 (P1: Disk Rotation Using Timesteps)
+##### This project is an evolution of Project4.1 with which only has minnor differences.
+###### For more details see the full project's description under the Main Project7 here: [Project7/Project4.2](https://github.com/Mikepag/Arduino-Unity3D#project7-project42-p1).
+___
+
 # Project 5 (Camera Control Project)
 ##### This project was just an experiment and its code will be used to improve previous projects that did not work very well.
 ###### Related Files: [cameraControl.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project5/cameraControl.ino), [cameraControl.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project5/cameraControl.cs), [quadTiltedUS.png](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/quadTiltedUS.png)
@@ -209,7 +217,7 @@ ___
 
 # Project 6 (Disk Rotation)
 ##### This project combines the Position Detection of Project5/cameraControl.ino, the algorithm for moving/rotating a GameObject of Project5/cameraControl.cs and the extra functionality of having countdown, timer, restart button, round's number, goal achievement, log files etc. of Project4.1/compassRotation.cs, Project4.1/timer.cs and Project4.1/restart.cs.
-###### Related Files: [cameraControl.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project5/cameraControl.ino), [diskRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project6/diskRotation.cs), [timer.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4.1/timer.cs), [restart.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4.1/restart.cs), [quadTiltedUS.png](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/quadTiltedUS.png)
+###### Related Files: [cameraControl.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project5/cameraControl.ino), [diskRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project6/diskRotation.cs), [timer.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project6/timer.cs), [restart.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project6/restart.cs), [quadTiltedUS.png](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/quadTiltedUS.png)
 
 ## cameraControl.ino
 **&#x27BD; C++ code uploaded to the Arduino. Performs Position Detection in 1D.**
@@ -272,12 +280,18 @@ ___
 ## quadTiltedUS.png
 **&#x27BD; Arduino's Circuit Schema.**
 ___
+# Project6.1 (P2: Disk Rotation Using Average Distance)
+##### This project is an evolution of Project6 with which only has minnor differences.
+###### For more details see the full project's description under the Main Project7 here: [Project7/Project6.1](https://github.com/Mikepag/Arduino-Unity3D#project7-project61-p2).
+___
 
-# Project 7 (Disk Rotation Integration)
-##### This project is consisted of two individual projects (Project4.2 & Project6.1) and aims in the comparison of them to find which is the most preferable of the two, regarding human-computer interaction. The projects are almost identical as they both rotate a disk object in Unity using an Arduino Uno and four Ultrasonic Sensors to recognise the user's hand gestures. The only difference is the way the hand gestures are recognised. In more detail:
+# Project7 (Disk Rotation Integration)
+##### This project is consisted of two individual projects (Project4.2 & Project6.1) and aims in the comparison of them to find which is the most preferable of the two, regarding human-computer interaction. The projects are almost identical as they both rotate a disk object in Unity using an Arduino Uno and four Ultrasonic Sensors to recognise the user's hand gestures. The only difference is the way the hand gestures are recognised.
+###### For more details see: [Project4.2 (P1)](https://github.com/Mikepag/Arduino-Unity3D#project7-project42-p1), [Project6.1 (P2)](https://github.com/Mikepag/Arduino-Unity3D#project7-project61-p2).
+___
 
-# Project7/ Project4.2 (P1)
-##### This project is an evolution of Project4.1 with which has only minnor differences.
+# Project7/ Project4.2 (P1: Disk Rotation Using Timesteps)
+##### This project is an evolution of Project4.1 with which only has minnor differences.
 ###### Related Files: [qTUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/qTUSHGRProject.ino), [diskRotationP1.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project7/Project4.2/diskRotationP1.cs), [restartP1.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project7/Project4.2/restartP1.cs), [timerP1.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project7/Project4.2/timerP1.cs), [quadTiltedUS.png](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/quadTiltedUS.png).
 
 ## qTUSHGRProject.ino
@@ -331,3 +345,71 @@ ___
 
 ## quadTiltedUS.png
 **&#x27BD; Arduino's Circuit Schema.**
+___
+
+# Project7/ Project6.1 (P2)
+##### This project is an evolution of Project6 with which only has minnor differences.
+###### Related Files: [cameraControl.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project5/cameraControl.ino), [diskRotationP2.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project7/Project6.1/diskRotationP2.cs), [restartP2.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project7/Project6.1/restartP2.cs), [timerP2.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project7/Project6.1/timerP2.cs), [quadTiltedUS.png](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/quadTiltedUS.png).
+
+## cameraControl.ino
+**&#x27BD; C++ code uploaded to the Arduino. Performs Position Detection in 1D.**
+* **Calculates an average distance value of all four Ultrasonic Sensors and sends it to Unity via the Serial Port.**
+* Project5/cameraControl.ino code.
+* It uses the four Ultrasonic Sensors to calculate four distances.
+* Two average distances are calculated, one for the left breadboard (avgDistL) and one for the right breadboard (avgDistR).
+* Finally, the value of the variable totalAvgDist is calculated based on the average value of avgDistL & avgDistR. This value gets sent to Unity.
+
+## diskRotationP2.cs
+**&#x27BD; C Sharp script attached to a Game Object called "Disk".**
+* **Receives the average value from the Serial Port, saves it in an array, calculates the average value of all array's values, compares the latest input with that average value and rotates the Disk clockwise/counterclockwise accordingly.**
+* Project6/diskRotation.cs code was used as a base.
+* It gets the value of variables resBtnClicked, unfinCD and didCntdown from the restartP2.cs and timerP2.cs scripts.
+* I use the previous_resBtnClicked variable to know when the restart button gets clicked by compairing it to the current resBtnClicked as shown below:
+  * if ((resBtnClicked - previous_resBtnClicked) == 1)  // If it's True --> The restart button got clicked.
+* If the restart button gets clicked:
+  * The Disk gets rotated to a random angle.
+* For as long as the the goal is not reached yet, the countdown is not currently taking place and a countdown already took place in the current round:
+   * If the recieved value (tempInput) is between the range [-32,-2]υ[2,32]:
+   * tempInput's value is added to an array (recentValues[]).
+   * The array's average value (recentAverage) is calculated.
+      * If tempInput < recentAverage &#x279C; The Disk rotates Counterclockwise.
+      * If tempInput > recentAverage &#x279C; The Disk rotates Clockwise.
+   * **SMOOTH ROTATION:**
+      * angleToRotate gets a value in [-maxATR, maxATR] == [-25, 25] based on the difference between the latest Input value and array's average value. The value expresses the direction and total degrees of rotation angle:
+         * **angleToRotate = (float)(MaxATR * (recentValues[arrIn] - recentAverage)) / 64;**
+      * If 0<angleToRotate<1, I set angleToRotate back to 1. If -1<angleToRotate<0, I set angleToRotate back to -1. That helps by rotating the disk even for very small hand gestures and improves accuracy.
+      * When angleToRotate reaches 0, I programmed the disk to continue rotating (really slow) in the same direction for as long as my hand is detected inside the boundaries.
+      * The DeleteRecentValues() function is used to empty the array when the tempInput gets out-of-bounds.
+* After the Disk has stopped rotating, I check whether its angle is between 175° and 185°.
+  If it is:
+  * The goal has been successfully reached (for this round).
+  * Disk stops rotating for recognised gestures.
+
+## restartP2.cs
+**&#x27BD; C Sharp script attached to a Game Object called "Disk".**
+* **The script is responsible for the restart button's functionality.**
+* In more detail:
+  * Enabling/Disabling the restart button whenever necessary.
+  * "Informing" the other scripts when the restart button gets clicked.
+  * Changing the restart button's text and text's colour.
+  * Changing the UI's roundText text and text's colour.
+  * Returning to Menu when the 10th round is over and the button gets clicked.
+* restartP2.cs has the code from Project6/restart.cs with some changes and adjustments.
+* Because of having issues in passing public variables' values between the scripts (when loading the P1 Scene from the Menu Scene for unknown reasons), changes had to be made in the Update() function regarding the activation/deactivation of the restart button and the round number's text colour. After the changes, the function was created from the start, this time having much better organized if statements.
+  * When the restart button gets clicked, the resButClicked variable gets the current round's number.
+* After the 10th round is over, the button opens the Menu Scene instead of quiting the application.
+
+## timerP2.cs
+**&#x27BD; C Sharp script attached to a Game Object called "Disk".**
+* **The script is responsible for the countdown and stopwatch functionality.**
+* In more detail:
+  * Displaying a countdown timer before each round begins.
+  * Calculating and displaying a stopwatch (elapsed time) which starts when a new round begins and stops when the goal gets reached.
+  * Saving the elapsed time of each round to an external file (LogTimes_P1.txt).
+* timerP2.cs has the code from Project6/timer.cs with some changes and adjustments.
+* I use the previous_resBtnClicked variable to know when the restart button gets clicked by compairing it to the current resBtnClicked as shown below:
+  * if ((resBtnClicked - previous_resBtnClicked) == 1)  // If it's True --> The restart button got clicked.
+
+## quadTiltedUS.png
+**&#x27BD; Arduino's Circuit Schema.**
+________________________
