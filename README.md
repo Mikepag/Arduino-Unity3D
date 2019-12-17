@@ -9,11 +9,11 @@
 #### [Project3.1](https://github.com/Mikepag/Arduino-Unity3D#project-31-qushgrproject_bf): Quad Ultrasonic Sensor - Hand Gesture Recognition Project ("Book Flipping" Gestures)
 #### [Project4](https://github.com/Mikepag/Arduino-Unity3D#project-4-qtushgrproject): Quad Tilted Ultrasonic Sensor - Hand Gesture Recognition Project
 #### [Project4.1](https://github.com/Mikepag/Arduino-Unity3D#project-41-qtushgrproject2): Quad Tilted Ultrasonic Sensor - Hand Gesture Recognition (+ Extra Functionality)
-#### [Project4.2](): P1: Disk Rotation Using Timesteps (Sub-Project of Project7)
+#### [Project4.2](https://github.com/Mikepag/Arduino-Unity3D#project42-p1-disk-rotation-using-timesteps): P1: Disk Rotation Using Timesteps (Sub-Project of Project7)
 #### [Project5](https://github.com/Mikepag/Arduino-Unity3D#project-5-camera-control-project): Camera Control (Experimental Project)
 #### [Project6](https://github.com/Mikepag/Arduino-Unity3D#project-6-disk-rotation): Disk Rotation (Combination of Project4.1 & Project5)
-#### [Project6.1](): P2: Disk Rotation Using Average Distance (Sub-Project of Project7)
-#### [Project7](https://github.com/Mikepag/Arduino-Unity3D#project-7-disk-rotation-integration): Disk Rotation Integration (Comparison of Project4.2 & Project6.1)
+#### [Project6.1](https://github.com/Mikepag/Arduino-Unity3D#project61-p2-disk-rotation-using-average-distance): P2: Disk Rotation Using Average Distance (Sub-Project of Project7)
+#### [Project7](https://github.com/Mikepag/Arduino-Unity3D#project7-disk-rotation-integration): Disk Rotation Integration (Comparison of Project4.2 & Project6.1)
 ---
 
 # Project 1
@@ -109,6 +109,7 @@ ___
 ## qUSHGRPCircuitSchema.JPG
 **&#x27BD; Arduino's Circuit Schema.**
 ___
+
 # Project 4 (QTUSHGRProject)
 ##### *Q*uad *T*ilted *U*ltrasonic *S*ensor - *H*and *G*esture *R*ecognition *Project*
 ###### Related Files: [qTUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/qTUSHGRProject.ino), [cubeRotation.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project2/cubeRotation.cs), [quadTiltedUS.png](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/quadTiltedUS.png)
@@ -184,7 +185,7 @@ ___
 
 # Project4.2 (P1: Disk Rotation Using Timesteps)
 ##### This project is an evolution of Project4.1 with which only has minnor differences.
-###### For more details see the full project's description under the Main Project7 here: [Project7/Project4.2](https://github.com/Mikepag/Arduino-Unity3D#project7-project42-p1).
+###### For more details see the full project's description under the Main Project7 here: [Project7/Project4.2](https://github.com/Mikepag/Arduino-Unity3D#project7-project42-p1-disk-rotation-using-timesteps).
 ___
 
 # Project 5 (Camera Control Project)
@@ -280,14 +281,15 @@ ___
 ## quadTiltedUS.png
 **&#x27BD; Arduino's Circuit Schema.**
 ___
+
 # Project6.1 (P2: Disk Rotation Using Average Distance)
 ##### This project is an evolution of Project6 with which only has minnor differences.
-###### For more details see the full project's description under the Main Project7 here: [Project7/Project6.1](https://github.com/Mikepag/Arduino-Unity3D#project7-project61-p2).
+###### For more details see the full project's description under the Main Project7 here: [Project7/Project6.1](https://github.com/Mikepag/Arduino-Unity3D#project7-project61-p2-disk-rotation-using-average-distance).
 ___
 
 # Project7 (Disk Rotation Integration)
 ##### This project is consisted of two individual projects (Project4.2 & Project6.1) and aims in the comparison of them to find which is the most preferable of the two, regarding human-computer interaction. The projects are almost identical as they both rotate a disk object in Unity using an Arduino Uno and four Ultrasonic Sensors to recognise the user's hand gestures. The only difference is the way the hand gestures are recognised.
-###### For more details see: [Project4.2 (P1)](https://github.com/Mikepag/Arduino-Unity3D#project7-project42-p1), [Project6.1 (P2)](https://github.com/Mikepag/Arduino-Unity3D#project7-project61-p2).
+###### For more details see: [Project4.2 (P1)](https://github.com/Mikepag/Arduino-Unity3D#project7-project42-p1-disk-rotation-using-timesteps), [Project6.1 (P2)](https://github.com/Mikepag/Arduino-Unity3D#project7-project61-p2-disk-rotation-using-average-distance).
 ___
 
 # Project7/ Project4.2 (P1: Disk Rotation Using Timesteps)
@@ -347,7 +349,7 @@ ___
 **&#x27BD; Arduino's Circuit Schema.**
 ___
 
-# Project7/ Project6.1 (P2)
+# Project7/ Project6.1 (P2: Disk Rotation Using Average Distance)
 ##### This project is an evolution of Project6 with which only has minnor differences.
 ###### Related Files: [cameraControl.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project5/cameraControl.ino), [diskRotationP2.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project7/Project6.1/diskRotationP2.cs), [restartP2.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project7/Project6.1/restartP2.cs), [timerP2.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project7/Project6.1/timerP2.cs), [quadTiltedUS.png](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/quadTiltedUS.png).
 
@@ -412,4 +414,3 @@ ___
 
 ## quadTiltedUS.png
 **&#x27BD; Arduino's Circuit Schema.**
-________________________
