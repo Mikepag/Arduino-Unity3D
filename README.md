@@ -271,3 +271,63 @@ ___
   
 ## quadTiltedUS.png
 **&#x27BD; Arduino's Circuit Schema.**
+___
+
+# Project 7 (Disk Rotation Integration)
+##### This project is consisted of two individual projects (Project4.2 & Project6.1) and aims in the comparison of them to find which is the most preferable of the two, regarding human-computer interaction. The projects are almost identical as they both rotate a disk object in Unity using an Arduino Uno and four Ultrasonic Sensors to recognise the user's hand gestures. The only difference is the way the hand gestures are recognised. In more detail:
+
+# Project7/ Project4.2 (P1)
+##### This project is an evolution of Project4.1 with which has only minnor differences.
+###### Related Files: [qTUSHGRProject.ino](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/qTUSHGRProject.ino), [diskRotationP1.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project7/Project4.2/diskRotationP1.cs), [restartP1.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project7/Project4.2/restartP1.cs), [timerP1.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project7/Project4.2/timerP1.cs), [quadTiltedUS.png](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/quadTiltedUS.png).
+
+## qTUSHGRProject.ino
+**&#x27BD; C++ code uploaded to the Arduino.**
+* **Uses timesteps to recognise hand gestures and determine their direction and speed.**
+* It was used without any changes to its code (exactly the same as it is in Project 4)
+* Uses four (Left-Left, Left-Right, Right-Left, Right-Right) Ultrasonic Sensors (HC-SR04) to calculate four distances and detect whether something (a human hand) is in front of each sensor.
+* By comparing the time that something was detected by each sensor, it can recognise left-to-right and right-to-left "book flipping" hand gestures and determine their speed.
+* The sensors are not parallel but at an angle of 90 degrees to each other and the two breadboars are placed one next to each other.
+
+## diskRotationP1.cs
+**&#x27BD; C Sharp script attached to a Game Object called "Disk".**
+* **It rotates a Disk object in Unity by recognising hand gestures using the timesteps required for the hand to go from the one pair of Ultrasonic Sensors to the other.**
+* diskRotationP1.cs is the code from Project4.1/compassRotation.cs with some changes and adjustments.
+* It gets the value of variables resBtnClicked, unfinCD and didCntdown from the restartP1.cs and timerP1.cs scripts.
+* I use the previous_resBtnClicked variable to know when the restart button gets clicked by compairing it to the current resBtnClicked as shown below:
+  * if ((resBtnClicked - previous_resBtnClicked) == 1)  // If it's True --> The restart button got clicked.
+* If the restart button gets clicked:
+  * Disk gets rotated to a random angle.
+* For as long as the the goal is not reached yet, the countdown is not currently taking place and a countdown already took place in the current round:
+  * The RotateObject() coroutine is called to rotate the Disk.
+* After the Disk has stopped rotating, I check whether its angle is between 175° and 185°.
+  If it is:
+  * The goal has been successfully reached (for this round).
+  * The Disk stops rotating for recognised gestures.
+
+## restartP1.cs
+**&#x27BD; C Sharp script attached to a Game Object called "Disk".**
+* **The script is responsible for the restart button's functionality.**
+* In more detail:
+  * Enabling/Disabling the restart button whenever necessary.
+  * "Informing" the other scripts when the restart button gets clicked.
+  * Changing the restart button's text and text's colour.
+  * Changing the UI's roundText text and text's colour.
+  * Returning to Menu when the 10th round is over and the button gets clicked.
+* restartP1.cs has the code from Project4.1/restart.cs with some changes and adjustments.
+* Because of having issues in passing public variables' values between the scripts (when loading the P1 Scene from the Menu Scene for unknown reasons), changes had to be made in the Update() function regarding the activation/deactivation of the restart button and the round number's text colour. After the changes, the function was created from the start, this time having much better organized if statements.
+  * When the restart button gets clicked, the resButClicked variable gets the current round's number.
+* After the 10th round is over, the button opens the Menu Scene instead of quiting the application.
+
+## timerP1.cs
+**&#x27BD; C Sharp script attached to a Game Object called "Disk".**
+* **The script is responsible for the countdown and stopwatch functionality.**
+* In more detail:
+  * Displaying a countdown timer before each round begins.
+  * Calculating and displaying a stopwatch (elapsed time) which starts when a new round begins and stops when the goal gets reached.
+  * Saving the elapsed time of each round to an external file (LogTimes_P1.txt).
+* timerP1.cs has the code from Project4.1/timer.cs with some changes and adjustments.
+* I use the previous_resBtnClicked variable to know when the restart button gets clicked by compairing it to the current resBtnClicked as shown below:
+  * if ((resBtnClicked - previous_resBtnClicked) == 1)  // If it's True --> The restart button got clicked.
+
+## quadTiltedUS.png
+**&#x27BD; Arduino's Circuit Schema.**
