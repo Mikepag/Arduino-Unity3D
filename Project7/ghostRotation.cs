@@ -1,125 +1,157 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
 using System.IO.Ports;
+using UnityEngine.UI;
+using System.IO;
 
 public class ghostRotation : MonoBehaviour
 {
+    //__________________________________________________Variable Declaration:__________________________________________________
+    public GameObject Ghost;
+
+    //Recieving data from the arduino:
     SerialPort sp = new SerialPort("COM3", 9600);
-    //System.IO.Ports.SerialPort stream = new System.IO.Ports.SerialPort("COM7", 9600);  //ORIGINAL
 
-    const int minLeftDistance = -32;    // Used for setting boundaries for the Input value.
-    const int maxLeftDistance = -2;
-    const int minRightDistance = 2;
-    const int maxRightDistance = 32;
+    private const int MinLeftDistance = -32;    // Used for setting boundaries for the Input value.
+    private const int MaxLeftDistance = -2;     // Used for setting boundaries for the Input value.
+    private const int MinRightDistance = 2;     // Used for setting boundaries for the Input value.
+    private const int MaxRightDistance = 32;    // Used for setting boundaries for the Input value.
+    private const int MaxATR = 25;              // MaxAngleToRotate. Maximum degrees angle the Ghost can be rotated.
+    private const int SIZE = 15;                // recentValues[] size.
 
-    bool goForward = false;             // Flag to move (rotate) forward (to-the-left).
-    bool goBack = false;                // Flag to move (rotate) backward (to-the-right).
+    private int randomAngle;                    // Gets a "random" value which is used when rotating the Ghost each time the restart button is clicked.
+    private int angle;                          // Gets the Ghost's current rotation value of Y Axis (Ghost.transform.localRotation.eulerAngles.y).
+    public float angleToRotate;                 // Contains the value in which the Ghost will be rotated.
+    public int tempInput;                       // Variable that gets input from Arduino.
+    private bool rotateCW;                      // Flag to rotate Ghost Clockwise.
+    private bool rotateCCW;                     // Flag to rotate Ghost Counterclockwise.
 
-    public int tempInput;               // Variable that gets input from Arduino.
-
-    int[] recentValues = new int[10];   // (Circular) Array containing the ten most recent input values.
-    public int recentAverage = 0;       // Average value of all array's values.
-    int arrIn = 0;                      // Is equal to the number of the array's cell into which we can insert data. When the array is full, the oldest value gets overwritten.
-    int arrSize = 0;                    // Is equal to the array's size (number of not empty cells). Used for calculating average value.
-    //ADD: float moveDist = 0;
+    private int[] recentValues = new int[SIZE]; // (Circular) Array containing the [SIZE] most recent input values.
+    public int recentAverage;                   // Average value of all array's values.
+    private int arrIn;                          // Is equal to the number of the array's cell into which we can insert data. When the array is full, the oldest value gets overwritten.
+    private int currentArrSize;                 // Is equal to the array's current size (number of not empty cells). Used for calculating average value.
 
 
-    // Use this for initialization
-    void Start()
+    //__________________________________________________START():__________________________________________________
+    void Start()    // Use this for initialization
     {
         sp.Open();
-        //stream.Open(); //ORIGINAL
+
+        angleToRotate = 0;
+        rotateCW = false;
+        rotateCCW = false;
+        recentAverage = 0;
+        arrIn = 0;
+        currentArrSize = 0;
     }
 
 
-    // Update is called once per frame
-    void Update()
+    //__________________________________________________UPDATE():__________________________________________________
+    void Update()   // Update is called once per frame
     {
-        CheckMotion();
+        angle = (int)Ghost.transform.localRotation.eulerAngles.y;            // Get the current Y-Axis rotation value.
+
+        //CheckMotion();                                                  // Call CheckMotion() to check if the Ghost should be rotated.
+
+
+        //_____ Joystick _____
+        tempInput = sp.ReadByte();                                      // Get input from Serial Port.
+        tempInput -= 32;                                                // I added 32 before sending it here, so I have to subtract 32 now to get the real value.
+        if ((tempInput >= MinLeftDistance && tempInput <= MaxLeftDistance) || (tempInput >= MinRightDistance && tempInput <= MaxRightDistance))  // If the input value is between the boundaries...
+        {
+            angleToRotate = -tempInput/2;
+            Ghost.transform.Rotate(0, angleToRotate, 0);                     // Rotate the Ghost in the Y-Axis in the direction and degrees provided by angleToRotate.
+        }
     }
 
 
+    //__________________________________________________CHECKMOTION():__________________________________________________
     void CheckMotion()
     {
-        //float tempInput = float.Parse(stream.ReadLine()); //ORIGINAL
-        tempInput = sp.ReadByte();  // Get input from Serial Port.
-        tempInput -= 32;            // I added 32 before sending it, so I have to subtract 32 now to get the real value.
+        tempInput = sp.ReadByte();                                      // Get input from Serial Port.
+        tempInput -= 32;                                                // I added 32 before sending it here, so I have to subtract 32 now to get the real value.
 
-        if ((tempInput >= minLeftDistance && tempInput <= maxLeftDistance) || (tempInput >= minRightDistance && tempInput <= maxRightDistance))  // If the input value is between the boundaries...
+        if ((tempInput >= MinLeftDistance && tempInput <= MaxLeftDistance) || (tempInput >= MinRightDistance && tempInput <= MaxRightDistance))  // If the input value is between the boundaries...
         {
-            recentValues[arrIn] = tempInput;    //...Add the input to the array.
+            recentValues[arrIn] = tempInput;                            //...Add the input to the array.
 
-            if (arrSize < 10)
+            if (currentArrSize < SIZE)
             {
-                arrSize++;                          // Increment arrSize every time a new value gets added, until arrSize == 10.
+                currentArrSize++;                                       // Increment currentArrSize every time a new value gets added, until currentArrSize == 10.
             }
 
-            GetDirection();                         // Call GetDirection() to move the Main Camera.
+            GetDirection();                                             // Call GetDirection() to rotate the Ghost.
 
-            arrIn++;                                // Increment array's counter.
-            if (arrIn > 9)                          // If the end of the array is reached...
+            arrIn++;                                                    // Increment array's counter.
+            if (arrIn > (SIZE - 1))                                     // If the end of the array is reached...
             {
-                arrIn = 0;                          //..."Point" to the first cell again.
+                arrIn = 0;                                              //..."Point" to the first cell again.
             }
         }
-        else                                        // Else, if the input is out of bounds...
+        else                                                            // Else, if the input is out of bounds...
         {
-            DeleteRecentValues();                   //...Call DeleteRecentValues() to delete all array's values.
+            DeleteRecentValues();                                       //...Call DeleteRecentValues() to delete all array's values.
         }
     }
 
 
-    void GetDirection()
+    //__________________________________________________GETDIRECTION():__________________________________________________
+    void GetDirection()                                                 // Call GetDirection() to rotate the Ghost.
     {
         recentAverage = 0;
-        //for (int i = 0; i <= arrIn; i++)          // ORIGINAL
-        for (int i = 0; i < arrSize; i++)             // Calculating average value for all array's not-empty cells:
+        for (int i = 0; i < currentArrSize; i++)                        // Calculating average value for all array's "not-empty" cells:
         {
             recentAverage += recentValues[i];
         }
+        recentAverage = recentAverage / currentArrSize;
 
-        recentAverage = recentAverage / arrSize;
-
-        if (recentValues[arrIn] > recentAverage)    // If the latest Input value is greater than the average value, moves the camera to the left (wrong, should be right).
+        if (recentValues[arrIn] > recentAverage)                        // If the latest Input value is greater than the average value...
         {
-            Debug.Log("Back");
-            goBack = true;                          // REPLACE "Back" with "Right".
-            goForward = false;                      // REPLACE "Forward" with "Left".
+            Debug.Log("Gesture-to-the-Right, Counterclockwise rotation");
+            rotateCW = false;                                           //the Ghost needs to be rotated Clockwise.
+            rotateCCW = true;
+        }
+        else if (recentValues[arrIn] < recentAverage)                   // If the latest Input value is smaller than the average value... the Ghost needs to be rotated Counterclockwise.
+        {
+            Debug.Log("Gesture-to-the-Left, Clockwise rotation");
+            rotateCCW = false;                                          // the Ghost needs to be rotated Counterclockwise.
+            rotateCW = true;
         }
 
-        if (recentValues[arrIn] < recentAverage)    // If the latest Input value is smaller than the average value, moves the camera to the right (wrong, should be left).
+        // --- SMOOTH ROTATION ---
+        // angleToRotate gets a value based on the difference between the latest Input value and array's average value. The value expresses the direction and total degrees of rotation angle.
+        // Also, changed the variable's value range from [-64,64] to [-MaxATR,MaxATR].
+        angleToRotate = (float)(MaxATR * (recentValues[arrIn] - recentAverage)) / 64;
+        angleToRotate = -angleToRotate;                                 // Setting angleToRotate to its opposite value so the Ghost rotates in the right direction. aTR<0 == CW, aTR>0 == CCW.
+
+        if (angleToRotate < 1 && angleToRotate > 0)                     // If 0<angleToRotate<1...
         {
-            Debug.Log("Forward");
-            goForward = true;                       // REPLACE "Forward" with "Left".
-            goBack = false;                         // REPLACE "Back" with "Right".
+            angleToRotate = 1;                                          //...I set angleToRotate back to 1. That helps by rotating the Ghost even for very small hand gestures and improves accuracy.
+        }
+        else if (angleToRotate > -1 && angleToRotate < 0)               // If -1<angleToRotate<0...
+        {
+            angleToRotate = -1;                                         //...I set angleToRotate back to -1. That helps by rotating the Ghost even for very small hand gestures and improves accuracy.
+        }
+        else if (angleToRotate == 0 && rotateCW)                        // When angleToRotate reaches 0, I need the Ghost to continue rotating (really slow) in the same direction for as long as my hand is detected inside the boundaries.
+        {
+            angleToRotate = 1;                                          // If rotateCW == true, I set angleToRotate to 1 so it rotates 1 degree Clockwise.
+        }
+        else if (angleToRotate == 0 && rotateCCW)                       // When angleToRotate reaches 0, I need the Ghost to continue rotating (really slow) in the same direction for as long as my hand is detected inside the boundaries.
+        {
+            angleToRotate = -1;                                         // If rotateCCW == true, I set angleToRotate to 1 so it rotates 1 degree Counterclockwise.
         }
 
-        //ADD: if recentValues[] == recentAverage ---> false; false;
-
-        //ADD: moveDist = (recentAverage + recentValues[arrIn]) / 2; // I have to make this work somehow, maybe add another function.
-
-        if (goForward)
-            //this.transform.position = new Vector3(this.transform.position.x + 1, this.transform.position.y, this.transform.position.z);   // Moves the Main Camera to the Right (should be Left).
-            // --- DISK ROTATION ---
-            this.transform.Rotate(0, -10, 0);                     // Rotate the disk in the Y-Axis in the direction and degrees provided by angleToRotate.
-
-        if (goBack)
-            //this.transform.position = new Vector3(this.transform.position.x - 1, this.transform.position.y, this.transform.position.z);   // Moves the Main Camera to the Left (should be Right).
-            // --- DISK ROTATION ---
-            this.transform.Rotate(0, 10, 0);                     // Rotate the disk in the Y-Axis in the direction and degrees provided by angleToRotate.
-
-        if (goForward || goBack)
-        {
-            Debug.Log("Recent input: " + recentValues[arrIn] + " & Recent average: " + recentAverage);
-        }
+        // --- GHOST ROTATION ---
+        angleToRotate *= 2;
+        Ghost.transform.Rotate(0, angleToRotate, 0);                     // Rotate the Ghost in the Y-Axis in the direction and degrees provided by angleToRotate.
     }
 
 
-    void DeleteRecentValues()   // Function used for "deleting" all recent values from the array.
+    //__________________________________________________DELETERECENTVALUES():__________________________________________________
+    void DeleteRecentValues()                                           // Function used for "deleting" all recent values from the array.
     {
-        arrIn = 0;      // Put the next input value to the first array's cell.
-        arrSize = 0;    // Array's size == 0 means that it is empty.
+        arrIn = 0;                                                      // Put the next input value to the first array's cell.
+        currentArrSize = 0;                                             // Array's size == 0 means that array is currently empty.
     }
 }
