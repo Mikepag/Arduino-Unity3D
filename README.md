@@ -13,7 +13,8 @@
 #### [Project5](https://github.com/Mikepag/Arduino-Unity3D#project-5-camera-control-project): Camera Control (Experimental Project)
 #### [Project6](https://github.com/Mikepag/Arduino-Unity3D#project-6-disk-rotation): Disk Rotation (Combination of Project4.1 & Project5)
 #### [Project6.1](https://github.com/Mikepag/Arduino-Unity3D#project61-p2-disk-rotation-using-average-distance): P2: Disk Rotation Using Average Distance (Sub-Project of Project7)
-#### [Project7](https://github.com/Mikepag/Arduino-Unity3D#project7-disk-rotation-integration): Disk Rotation Integration (Comparison of Project4.2 & Project6.1 (& [Pepper's_Ghost](VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVINSERTURLHEREVVVVVVVVVVVVVVVVVVVVVVVV))
+#### [Project7](https://github.com/Mikepag/Arduino-Unity3D#project7-disk-rotation-integration): Disk Rotation Integration (Comparison of Project4.2 & Project6.1 (& [Pepper's_Ghost](https://github.com/Mikepag/Arduino-Unity3D#project7-peppers_ghost-peppers-ghost-hologram-rotation)))
+___
 
 # Project 1
 ##### Distance Calculation using an Ultrasonic Sensor - Unity's Cube Movement.
@@ -285,12 +286,11 @@ ___
 ##### This project is an evolution of Project6 with which only has minnor differences.
 ###### For more details see the full project's description under the Main Project7 here: [Project7/Project6.1](https://github.com/Mikepag/Arduino-Unity3D#project7-project61-p2-disk-rotation-using-average-distance).
 ___
-vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 # Project7 (Disk Rotation Integration)
 ##### This project is consisted of two individual projects (Project4.2 & Project6.1) and aims in the comparison of them to find which is the most preferable of the two, regarding human-computer interaction. The projects are almost identical as they both rotate a disk object in Unity using an Arduino Uno and four Ultrasonic Sensors to recognise the user's hand gestures. The only difference is the way the hand gestures are recognised.
 ##### - Another sub-project (Pepper's_Ghost) was added which rotates a Pepper's Ghost Hologram. Its purpose is to help new users to get used to hand gesture recognition in an interesting way.
-###### For more details see: [Project4.2 (P1)](https://github.com/Mikepag/Arduino-Unity3D#project7-project42-p1-disk-rotation-using-timesteps), [Project6.1 (P2)](https://github.com/Mikepag/Arduino-Unity3D#project7-project61-p2-disk-rotation-using-average-distance), [Pepper's_Ghost](VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVINSERTURLHEREVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV).
+###### For more details see: [Project4.2 (P1)](https://github.com/Mikepag/Arduino-Unity3D#project7-project42-p1-disk-rotation-using-timesteps), [Project6.1 (P2)](https://github.com/Mikepag/Arduino-Unity3D#project7-project61-p2-disk-rotation-using-average-distance), [Pepper's_Ghost](https://github.com/Mikepag/Arduino-Unity3D#project7-peppers_ghost-peppers-ghost-hologram-rotation).
 ___
 
 # Project7/ Pepper's_Ghost (Pepper's Ghost Hologram Rotation)
@@ -300,7 +300,7 @@ ___
 
 ## ghostRotation.cs
 **&#x27BD; C# script responsible for rotating the Ghost Game Object in the Pepper's Ghost Scene.**
-* **Receives the average distacne value from the Serial Port, saves it in an array, calculates the average value of all array's values, compares the latest input with that average value and rotates the Ghost clockwise/counterclockwise accordingly.**
+* **Receives the average distance value from the Serial Port, saves it in an array, calculates the average value of all array's values, compares the latest input with that average value and rotates the Ghost clockwise/counterclockwise accordingly.**
 * The code is from Project7/Project6.1/diskRotationP2.cs with minnor changes.
 * If the recieved value (tempInput) is between the range [-32,-2]υ[2,32]:
 * tempInput's value is added to an array (recentValues[]).
@@ -324,11 +324,6 @@ ___
 * When the distance is > 0 (The hand is detected in the RIGHT side of the sensors):
   * The ghost is rotated counterclockwise.
   * The greater the distance is, the faster the rotation becomes.
-
-
-
-
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ___
 
 # Project7/ Project4.2 (P1: Disk Rotation Using Timesteps)
