@@ -51,25 +51,11 @@ public class ghostRotation : MonoBehaviour
     void Update()   // Update is called once per frame
     {
         if (Input.GetKeyDown(KeyCode.Backspace))
-        {
-            SceneManager.LoadScene("Assets/Scenes/Menu.unity"); // Load Menu Scene.
+        {                                                               // Whenever the Backspace key is clicked...
+            SceneManager.LoadScene("Assets/Scenes/Menu.unity");         // Load Menu Scene.
         }
-
-
-        //CheckMotion();                                                  // Call CheckMotion() to check if the Ghost should be rotated.
-
-        //  |   |   |   |   |   Temporarily
-        //  |   |   |   |   |   replaced
-        //  v   v   v   v   v   with:
-
-        //_____ Joystick _____
-        tempInput = sp.ReadByte();                                      // Get input from Serial Port.
-        tempInput -= 32;                                                // I added 32 before sending it here, so I have to subtract 32 now to get the real value.
-        if ((tempInput >= MinLeftDistance && tempInput <= MaxLeftDistance) || (tempInput >= MinRightDistance && tempInput <= MaxRightDistance))  // If the input value is between the boundaries...
-        {
-            angleToRotate = -tempInput/2;
-            Ghost.transform.Rotate(0, angleToRotate, 0);                     // Rotate the Ghost in the Y-Axis in the direction and degrees provided by angleToRotate.
-        }
+        
+        CheckMotion();                                                  // Call CheckMotion() to check if the Ghost should be rotated.
     }
 
 
@@ -79,8 +65,8 @@ public class ghostRotation : MonoBehaviour
         tempInput = sp.ReadByte();                                      // Get input from Serial Port.
         tempInput -= 32;                                                // I added 32 before sending it here, so I have to subtract 32 now to get the real value.
 
-        if ((tempInput >= MinLeftDistance && tempInput <= MaxLeftDistance) || (tempInput >= MinRightDistance && tempInput <= MaxRightDistance))  // If the input value is between the boundaries...
-        {
+        if ((tempInput >= MinLeftDistance && tempInput <= MaxLeftDistance) || (tempInput >= MinRightDistance && tempInput <= MaxRightDistance))
+        {                                                               // If the input value is between the boundaries...
             recentValues[arrIn] = tempInput;                            //...Add the input to the array.
 
             if (currentArrSize < SIZE)
@@ -91,13 +77,13 @@ public class ghostRotation : MonoBehaviour
             GetDirection();                                             // Call GetDirection() to rotate the Ghost.
 
             arrIn++;                                                    // Increment array's counter.
-            if (arrIn > (SIZE - 1))                                     // If the end of the array is reached...
-            {
+            if (arrIn > (SIZE - 1))
+            {                                                           // If the end of the array is reached...
                 arrIn = 0;                                              //..."Point" to the first cell again.
             }
         }
-        else                                                            // Else, if the input is out of bounds...
-        {
+        else
+        {                                                               // Else, if the input is out of bounds...
             DeleteRecentValues();                                       //...Call DeleteRecentValues() to delete all array's values.
         }
     }
@@ -113,14 +99,14 @@ public class ghostRotation : MonoBehaviour
         }
         recentAverage = recentAverage / currentArrSize;
 
-        if (recentValues[arrIn] > recentAverage)                        // If the latest Input value is greater than the average value...
-        {
+        if (recentValues[arrIn] > recentAverage)
+        {                                                               // If the latest Input value is greater than the average value...
             Debug.Log("Gesture-to-the-Right, Counterclockwise rotation");
             rotateCW = false;                                           //the Ghost needs to be rotated Clockwise.
             rotateCCW = true;
         }
-        else if (recentValues[arrIn] < recentAverage)                   // If the latest Input value is smaller than the average value... the Ghost needs to be rotated Counterclockwise.
-        {
+        else if (recentValues[arrIn] < recentAverage)
+        {                                                               // If the latest Input value is smaller than the average value... the Ghost needs to be rotated Counterclockwise.
             Debug.Log("Gesture-to-the-Left, Clockwise rotation");
             rotateCCW = false;                                          // the Ghost needs to be rotated Counterclockwise.
             rotateCW = true;
@@ -132,20 +118,20 @@ public class ghostRotation : MonoBehaviour
         angleToRotate = (float)(MaxATR * (recentValues[arrIn] - recentAverage)) / 64;
         angleToRotate = -angleToRotate;                                 // Setting angleToRotate to its opposite value so the Ghost rotates in the right direction. aTR<0 == CW, aTR>0 == CCW.
 
-        if (angleToRotate < 1 && angleToRotate > 0)                     // If 0<angleToRotate<1...
-        {
+        if (angleToRotate < 1 && angleToRotate > 0)
+        {                                                               // If 0<angleToRotate<1...
             angleToRotate = 1;                                          //...I set angleToRotate back to 1. That helps by rotating the Ghost even for very small hand gestures and improves accuracy.
         }
-        else if (angleToRotate > -1 && angleToRotate < 0)               // If -1<angleToRotate<0...
-        {
+        else if (angleToRotate > -1 && angleToRotate < 0)
+        {                                                               // If -1<angleToRotate<0...
             angleToRotate = -1;                                         //...I set angleToRotate back to -1. That helps by rotating the Ghost even for very small hand gestures and improves accuracy.
         }
-        else if (angleToRotate == 0 && rotateCW)                        // When angleToRotate reaches 0, I need the Ghost to continue rotating (really slow) in the same direction for as long as my hand is detected inside the boundaries.
-        {
+        else if (angleToRotate == 0 && rotateCW)
+        {                                                               // When angleToRotate reaches 0, I need the Ghost to continue rotating (really slow) in the same direction for as long as my hand is detected inside the boundaries.
             angleToRotate = 1;                                          // If rotateCW == true, I set angleToRotate to 1 so it rotates 1 degree Clockwise.
         }
-        else if (angleToRotate == 0 && rotateCCW)                       // When angleToRotate reaches 0, I need the Ghost to continue rotating (really slow) in the same direction for as long as my hand is detected inside the boundaries.
-        {
+        else if (angleToRotate == 0 && rotateCCW)
+        {                                                               // When angleToRotate reaches 0, I need the Ghost to continue rotating (really slow) in the same direction for as long as my hand is detected inside the boundaries.
             angleToRotate = -1;                                         // If rotateCCW == true, I set angleToRotate to 1 so it rotates 1 degree Counterclockwise.
         }
 
