@@ -27,6 +27,11 @@ public class restartP1 : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {                                                                               // When the Backspace button gets clicked:
+            SceneManager.LoadScene("Assets/Scenes/Menu.unity");                         // Load Menu Scene.
+        }
+
         goalReached = Disk.GetComponent<diskRotationP1>().goalReached;                  // Getting the value of goalReached from the diskRotationP1.cs script.
         roundText.text = "Round: " + roundNum.ToString() + " /10";                      // Setting the current round's number to the UI roundText.
 
