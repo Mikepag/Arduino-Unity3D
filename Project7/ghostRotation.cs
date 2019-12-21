@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO.Ports;
 using UnityEngine.UI;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class ghostRotation : MonoBehaviour
 {
@@ -21,7 +22,6 @@ public class ghostRotation : MonoBehaviour
     private const int SIZE = 15;                // recentValues[] size.
 
     private int randomAngle;                    // Gets a "random" value which is used when rotating the Ghost each time the restart button is clicked.
-    private int angle;                          // Gets the Ghost's current rotation value of Y Axis (Ghost.transform.localRotation.eulerAngles.y).
     public float angleToRotate;                 // Contains the value in which the Ghost will be rotated.
     public int tempInput;                       // Variable that gets input from Arduino.
     private bool rotateCW;                      // Flag to rotate Ghost Clockwise.
@@ -50,10 +50,17 @@ public class ghostRotation : MonoBehaviour
     //__________________________________________________UPDATE():__________________________________________________
     void Update()   // Update is called once per frame
     {
-        angle = (int)Ghost.transform.localRotation.eulerAngles.y;            // Get the current Y-Axis rotation value.
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            SceneManager.LoadScene("Assets/Scenes/Menu.unity"); // Load Menu Scene.
+        }
+
 
         //CheckMotion();                                                  // Call CheckMotion() to check if the Ghost should be rotated.
 
+        //  |   |   |   |   |   Temporarily
+        //  |   |   |   |   |   replaced
+        //  v   v   v   v   v   with:
 
         //_____ Joystick _____
         tempInput = sp.ReadByte();                                      // Get input from Serial Port.
