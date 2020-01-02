@@ -17,13 +17,11 @@ public class diskRotationP3 : MonoBehaviour
     private const int MaxLeftDistance = -2;     // Used for setting boundaries for the Input value.
     private const int MinRightDistance = 2;     // Used for setting boundaries for the Input value.
     private const int MaxRightDistance = 32;    // Used for setting boundaries for the Input value.
-    private const int MaxATR = 25;              // MaxAngleToRotate. Maximum degrees angle the Disk can be rotated.
-    private const int SIZE = 15;                // recentValues[] size.
 
-    private int previous_resBtnClicked;         // Used to save the previous value of the resBtnClicked variable from the restartP2.cs script. (I use it to know when the restart button gets clicked by compairing it to the current resBtnClicked).
-    private int resBtnClicked;                  // Used to save the current value of the resBtnClicked variable from the restartP2.cs script. (resBtnClicked contains the last round's number in which the restart button got clicked).
-    private int unfinCD;                        // Used to save the value of the unfinCD variable from the timer.cs script.
-    private int didCntdown;                     // Used to save the value of the didCntdown variable from the timer.cs script.
+    private int previous_resBtnClicked;         // Used to save the previous value of the resBtnClicked variable from the restartP3.cs script. (I use it to know when the restart button gets clicked by compairing it to the current resBtnClicked).
+    private int resBtnClicked;                  // Used to save the current value of the resBtnClicked variable from the restartP3.cs script. (resBtnClicked contains the last round's number in which the restart button got clicked).
+    private int unfinCD;                        // Used to save the value of the unfinCD variable from the timerP3.cs script.
+    private int didCntdown;                     // Used to save the value of the didCntdown variable from the timerP3.cs script.
 
     public int goalReached;                     // ==1 when the goal is reached, ==0 when the goal is not reached yet.
 
@@ -31,13 +29,7 @@ public class diskRotationP3 : MonoBehaviour
     private int angle;                          // Gets the disk's current rotation value of Y Axis (Disk.transform.localRotation.eulerAngles.y).
     public float angleToRotate;                 // Contains the value in which the disk will be rotated.
     public int tempInput;                       // Variable that gets input from Arduino.
-    private bool rotateCW;                      // Flag to rotate disk Clockwise.
-    private bool rotateCCW;                     // Flag to rotate disk Counterclockwise.
 
-    private int[] recentValues = new int[SIZE]; // (Circular) Array containing the [SIZE] most recent input values.
-    public int recentAverage;                   // Average value of all array's values.
-    private int arrIn;                          // Is equal to the number of the array's cell into which we can insert data. When the array is full, the oldest value gets overwritten.
-    private int currentArrSize;                 // Is equal to the array's current size (number of not empty cells). Used for calculating average value.
 
 
     //__________________________________________________START():__________________________________________________
@@ -49,11 +41,6 @@ public class diskRotationP3 : MonoBehaviour
         resBtnClicked = 0;                      // The restart button has not been clicked yet.
         goalReached = 0;
         angleToRotate = 0;
-        rotateCW = false;
-        rotateCCW = false;
-        recentAverage = 0;
-        arrIn = 0;
-        currentArrSize = 0;
     }
 
 
@@ -76,27 +63,13 @@ public class diskRotationP3 : MonoBehaviour
             }
             transform.localRotation = Quaternion.Euler(0, randomAngle, 0);  // Set Disk's rotation of Y axis to the randomAngle.
             goalReached = 0;                                                // Every time the restart button gets clicked, a new round starts in which the goal has not been reached yet.
-            ////DeleteRecentValues();                                           // Call DeleteRecentValues() to delete all array's values.
         }
 
-
+ 
         if (goalReached == 0 && unfinCD == 0 && didCntdown == 1)            // If the the goal is Not reached yet AND the countdown is not currently taking place AND there was a countdown already...
         {
             CheckMotion();                                                  // Call CheckMotion() to check if the disk should be rotated.
-
-            /*
-            //_____ Joystick _____
-            tempInput = sp.ReadByte();                              // Get input from Serial Port.
-            tempInput -= 32;                                        // I added 32 before sending it here, so I have to subtract 32 now to get the real value.
-            if ((tempInput >= MinLeftDistance && tempInput <= MaxLeftDistance) || (tempInput >= MinRightDistance && tempInput <= MaxRightDistance))
-            {                                                       // If the input value is between the boundaries...
-                angleToRotate = -tempInput / 2;                     // Calculate the correct angle to rotate.
-                Disk.transform.Rotate(0, angleToRotate, 0);         // Rotate the Ghost in the Y-Axis in the direction and degrees provided by angleToRotate.
-            }
-            */
         }
-
-        
     }
 
     //__________________________________________________CHECKMOTION():__________________________________________________
@@ -108,7 +81,7 @@ public class diskRotationP3 : MonoBehaviour
         if ((tempInput >= MinLeftDistance && tempInput <= MaxLeftDistance) || (tempInput >= MinRightDistance && tempInput <= MaxRightDistance))
         {                                                       // If the input value is between the boundaries...
             //_____ Joystick _____
-            angleToRotate = -tempInput / 2;                     // Calculate the correct angle to rotate.
+            angleToRotate = -tempInput / 4;                     // Calculate the correct angle to rotate.
             Disk.transform.Rotate(0, angleToRotate, 0);         // Rotate the Ghost in the Y-Axis in the direction and degrees provided by angleToRotate.
         }
         else                                                            // Else, if the input is out of bounds...
