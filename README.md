@@ -13,10 +13,10 @@
 #### [Project5](https://github.com/Mikepag/Arduino-Unity3D#project-5-camera-control-project): Camera Control (Experimental Project)
 #### [Project6](https://github.com/Mikepag/Arduino-Unity3D#project-6-disk-rotation): Disk Rotation (Combination of Project4.1 & Project5)
 #### [Project6.1](https://github.com/Mikepag/Arduino-Unity3D#project61-p2-disk-rotation-using-average-distance): Disk Rotation Using Average Distance (Sub-Project of Project7)
-#### [Project7](https://github.com/Mikepag/Arduino-Unity3D#project7-disk-rotation-integration): Disk Rotation Integration (Comparison of Project4.2 & Project6.1 & [Project7.0.1](INSERTURLHEEEEEEEEEEEEEEEEEEEEEREEEEEEEEEEEEE) (& [Pepper's_Ghost](https://github.com/Mikepag/Arduino-Unity3D#project7-peppers_ghost-peppers-ghost-hologram-rotation)))
+#### [Project7](https://github.com/Mikepag/Arduino-Unity3D#project7-disk-rotation-integration): Disk Rotation Integration (Comparison of Project4.2 & Project6.1 & [Project7.0.1](https://github.com/Mikepag/Arduino-Unity3D/blob/master/README.md#project7-project701-disk-rotation-using-joystick-gestures) (& [Pepper's_Ghost](https://github.com/Mikepag/Arduino-Unity3D#project7-peppers_ghost-peppers-ghost-hologram-rotation)))
 ##### - - - [Project4.2](https://github.com/Mikepag/Arduino-Unity3D#project42-p1-disk-rotation-using-timesteps): (P1) Disk Rotation Using Timesteps.
 ##### - - - [Project6.1](https://github.com/Mikepag/Arduino-Unity3D#project61-p2-disk-rotation-using-average-distance): (P2) Disk Rotation Using Average Distance.
-##### - - - [Project7.0.1](INSERTURLHEEEEEEEEEEEEEEEEEEEEEREEEEEEEEEEEEE): (P3) Disk Rotation using Joystick-Gestures
+##### - - - [Project7.0.1](https://github.com/Mikepag/Arduino-Unity3D/blob/master/README.md#project7-project701-disk-rotation-using-joystick-gestures): (P3) Disk Rotation using Joystick-Gestures
 ##### - - - [Pepper's_Ghost](https://github.com/Mikepag/Arduino-Unity3D#project7-peppers_ghost-peppers-ghost-hologram-rotation): Pepper's Ghost Hologram Rotation)
 ___
 
