@@ -9,11 +9,15 @@
 #### [Project3.1](https://github.com/Mikepag/Arduino-Unity3D#project-31-qushgrproject_bf): Quad Ultrasonic Sensor - Hand Gesture Recognition Project ("Book Flipping" Gestures)
 #### [Project4](https://github.com/Mikepag/Arduino-Unity3D#project-4-qtushgrproject): Quad Tilted Ultrasonic Sensor - Hand Gesture Recognition Project
 #### [Project4.1](https://github.com/Mikepag/Arduino-Unity3D#project-41-qtushgrproject2): Quad Tilted Ultrasonic Sensor - Hand Gesture Recognition (+ Extra Functionality)
-#### [Project4.2](https://github.com/Mikepag/Arduino-Unity3D#project42-p1-disk-rotation-using-timesteps): P1: Disk Rotation Using Timesteps (Sub-Project of Project7)
+#### [Project4.2](https://github.com/Mikepag/Arduino-Unity3D#project42-p1-disk-rotation-using-timesteps): Disk Rotation Using Timesteps (Sub-Project of Project7)
 #### [Project5](https://github.com/Mikepag/Arduino-Unity3D#project-5-camera-control-project): Camera Control (Experimental Project)
 #### [Project6](https://github.com/Mikepag/Arduino-Unity3D#project-6-disk-rotation): Disk Rotation (Combination of Project4.1 & Project5)
-#### [Project6.1](https://github.com/Mikepag/Arduino-Unity3D#project61-p2-disk-rotation-using-average-distance): P2: Disk Rotation Using Average Distance (Sub-Project of Project7)
-#### [Project7](https://github.com/Mikepag/Arduino-Unity3D#project7-disk-rotation-integration): Disk Rotation Integration (Comparison of Project4.2 & Project6.1 (& [Pepper's_Ghost](https://github.com/Mikepag/Arduino-Unity3D#project7-peppers_ghost-peppers-ghost-hologram-rotation)))
+#### [Project6.1](https://github.com/Mikepag/Arduino-Unity3D#project61-p2-disk-rotation-using-average-distance): Disk Rotation Using Average Distance (Sub-Project of Project7)
+#### [Project7](https://github.com/Mikepag/Arduino-Unity3D#project7-disk-rotation-integration): Disk Rotation Integration (Comparison of Project4.2 & Project6.1 & [Project7.0.1](INSERTURLHEEEEEEEEEEEEEEEEEEEEEREEEEEEEEEEEEE) (& [Pepper's_Ghost](https://github.com/Mikepag/Arduino-Unity3D#project7-peppers_ghost-peppers-ghost-hologram-rotation)))
+##### - - - [Project4.2](https://github.com/Mikepag/Arduino-Unity3D#project42-p1-disk-rotation-using-timesteps): (P1) Disk Rotation Using Timesteps.
+##### - - - [Project6.1](https://github.com/Mikepag/Arduino-Unity3D#project61-p2-disk-rotation-using-average-distance): (P2) Disk Rotation Using Average Distance.
+##### - - - [Project7.0.1](INSERTURLHEEEEEEEEEEEEEEEEEEEEEREEEEEEEEEEEEE): (P3) Disk Rotation using Joystick-Gestures
+##### - - - [Pepper's_Ghost](https://github.com/Mikepag/Arduino-Unity3D#project7-peppers_ghost-peppers-ghost-hologram-rotation): Pepper's Ghost Hologram Rotation)
 ___
 
 # Project 1
@@ -288,9 +292,9 @@ ___
 ___
 
 # Project7 (Disk Rotation Integration)
-##### This project is consisted of two individual projects (Project4.2 & Project6.1) and aims in the comparison of them to find which is the most preferable of the two, regarding human-computer interaction. The projects are almost identical as they both rotate a disk object in Unity using an Arduino Uno and four Ultrasonic Sensors to recognise the user's hand gestures. The only difference is the way the hand gestures are recognised.
+##### This project is consisted of three individual projects (Project4.2, Project6.1 and Project7.0.1) and aims in the comparison of them to find the most preferable one, regarding human-computer interaction. The projects are almost identical as they all three rotate a disk object in Unity using an Arduino Uno and four Ultrasonic Sensors to recognise the user's hand gestures. The only difference lies in the way the hand gestures are recognised.
 ##### - Another sub-project (Pepper's_Ghost) was added which rotates a Pepper's Ghost Hologram. Its purpose is to help new users to get used to hand gesture recognition in an interesting way.
-###### For more details see: [Project4.2 (P1)](https://github.com/Mikepag/Arduino-Unity3D#project7-project42-p1-disk-rotation-using-timesteps), [Project6.1 (P2)](https://github.com/Mikepag/Arduino-Unity3D#project7-project61-p2-disk-rotation-using-average-distance), [Pepper's_Ghost](https://github.com/Mikepag/Arduino-Unity3D#project7-peppers_ghost-peppers-ghost-hologram-rotation).
+###### For more details see: [Project4.2 (P1)](https://github.com/Mikepag/Arduino-Unity3D#project7-project42-p1-disk-rotation-using-timesteps), [Project6.1 (P2)](https://github.com/Mikepag/Arduino-Unity3D#project7-project61-p2-disk-rotation-using-average-distance), [Project7.0.1 (P3)](INSERTURLHEEEEEEEEEEEEEEEEREEEEEEE) [Pepper's_Ghost](https://github.com/Mikepag/Arduino-Unity3D#project7-peppers_ghost-peppers-ghost-hologram-rotation).
 ___
 
 # Project7/ Pepper's_Ghost (Pepper's Ghost Hologram Rotation)
@@ -320,10 +324,10 @@ ___
 * Rotates the Ghost object in Pepper's Ghost Scene using the average distance value sent to Unity from the Arduino.
 * When the distance is < 0 (The hand is detected in the LEFT side of the sensors):
   * The ghost is rotated clockwise.
-  * The smaller the distance is, the faster the rotation becomes.
+  * The smaller the distance value is, the faster the rotation becomes.
 * When the distance is > 0 (The hand is detected in the RIGHT side of the sensors):
   * The ghost is rotated counterclockwise.
-  * The greater the distance is, the faster the rotation becomes.
+  * The greater the distance value is, the faster the rotation becomes.
 ___
 
 # Project7/ Project4.2 (P1: Disk Rotation Using Timesteps)
@@ -448,3 +452,44 @@ ___
 
 ## quadTiltedUS.png
 **&#x27BD; Arduino's Circuit Schema.**
+___
+
+# Project7/ Project7.0.1 (Disk Rotation using Joystick-Gestures)
+##### This project combines the new hand gesture recognition algorithm (Pepper's_Ghost/joystickGhostRotation.cs) with Project6.1/restartP2.cs & Project6.1/timerP2.cs. 
+###### Related Files: [diskRotationP3.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project7/Project7.0.1/diskRotationP3.cs), [restartP3.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project7/Project7.0.1/restartP3.cs), [timerP3.cs](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project7/Project7.0.1/timerP3.cs), [quadTiltedUS.png](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/quadTiltedUS.png).
+
+## diskRotationP3.cs
+**&#x27BD; C Sharp script responsible for rotating the Disk Game Object in the P3 Scene.**
+* **Creates a virtual slider which can be controled by the position of the hand detected in front of the sensors.**
+* Rotates the Disk object in P3 Scene using the average distance value sent to Unity from the Arduino.
+* When the distance is < 0 (The hand is detected in the LEFT side of the sensors):
+  * The disk is rotated clockwise.
+  * The smaller the distance value is, the faster the rotation becomes.
+* When the distance is > 0 (The hand is detected in the RIGHT side of the sensors):
+  * The disk is rotated counterclockwise.
+  * The greater the distance value is, the faster the rotation becomes.
+* diskRotationP3.cs combines Project7/Pepper's_Ghost/joystickGhostRotation.cs and Project7/Project6.1/diskRotationP2.cs.
+
+## restartP3.cs
+**&#x27BD; C Sharp script attached to a Game Object called "Disk".**
+* **The script is responsible for the restart button's functionality.**
+* In more detail:
+  * Enabling/Disabling the restart button whenever necessary.
+  * "Informing" the other scripts when the restart button gets clicked.
+  * Changing the restart button's text and text's colour.
+  * Changing the UI's roundText text and text's colour.
+  * Returning to Menu when the 10th round is over and the button gets clicked.
+* restartP3.cs uses the code from Project7/Project6.1/restartP2.cs.
+
+## timerP3.cs
+**&#x27BD; C Sharp script attached to a Game Object called "Disk".**
+* **The script is responsible for the countdown and stopwatch functionality.**
+* In more detail:
+  * Displaying a countdown timer before each round begins.
+  * Calculating and displaying a stopwatch (elapsed time) which starts when a new round begins and stops when the goal gets reached.
+  * Saving the elapsed time of each round to an external file (LogTimes_P3.txt).
+* timerP3.cs uses the code from Project7/Project6.1/timerP2.cs.
+
+## quadTiltedUS.png
+**&#x27BD; Arduino's Circuit Schema.**
+  
