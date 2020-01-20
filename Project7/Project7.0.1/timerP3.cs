@@ -62,9 +62,16 @@ public class timerP3 : MonoBehaviour
 
             if (updatedFile != roundNum)
             {                                                                   // If I haven't printed the data to the file yet in this round...
-                textToWrite = timerText.text.ToString() + "\n";                 // Create a proper string of the time's value.
-                File.AppendAllText(filename, textToWrite);                      // Append it to the file (print it without deleting previous data).
-                updatedFile = roundNum;                                         // I use this to know in which round the file has last been updated.
+                if (roundNum == 1)
+                {
+                    updatedFile = roundNum;                                     // The first round's time is not saved to the external file.
+                }
+                else
+                {
+                    textToWrite = timerText.text.ToString() + "\n";             // Create a proper string of the time's value.
+                    File.AppendAllText(filename, textToWrite);                  // Append it to the file (print it without deleting previous data).
+                    updatedFile = roundNum;                                     // I use this to know in which round the file has last been updated.
+                }
             }
         }
 
