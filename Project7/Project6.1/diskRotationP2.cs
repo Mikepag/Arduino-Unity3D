@@ -20,6 +20,8 @@ public class diskRotationP2 : MonoBehaviour
     private const int MaxATR = 25;              // MaxAngleToRotate. Maximum degrees angle the Disk can be rotated.
     private const int SIZE = 15;                // recentValues[] size.
 
+    private int timestepsSinceOutOfBounds = 0;  // Used to eliminate the possibility of a hand gesture not being recognised due to Arduino malfanction.
+
     private int previous_resBtnClicked;         // Used to save the previous value of the resBtnClicked variable from the restartP2.cs script. (I use it to know when the restart button gets clicked by compairing it to the current resBtnClicked).
     private int resBtnClicked;                  // Used to save the current value of the resBtnClicked variable from the restartP2.cs script. (resBtnClicked contains the last round's number in which the restart button got clicked).
     private int unfinCD;                        // Used to save the value of the unfinCD variable from the timer.cs script.
@@ -95,6 +97,8 @@ public class diskRotationP2 : MonoBehaviour
 
         if ((tempInput >= MinLeftDistance && tempInput <= MaxLeftDistance) || (tempInput >= MinRightDistance && tempInput <= MaxRightDistance))  // If the input value is between the boundaries...
         {
+            timestepsSinceOutOfBounds = 0;
+
             recentValues[arrIn] = tempInput;                            //...Add the input to the array.
 
             if (currentArrSize < SIZE)
@@ -117,7 +121,12 @@ public class diskRotationP2 : MonoBehaviour
                 goalReached = 1;                                        //...The goal has been successfully reached (for this round).
             }
 
-            DeleteRecentValues();                                       //...Call DeleteRecentValues() to delete all array's values.
+            timestepsSinceOutOfBounds++;                                // Increment the timesteps since the time in which the input value went out of bounds.
+
+            if (timestepsSinceOutOfBounds >= 2 || goalReached == 1)     // If 2 timesteps have passed since the time in which the input value went out of bounds, OR the goal has been reached...
+            {
+                DeleteRecentValues();                                   //...Call DeleteRecentValues() to delete all array's values.
+            }
         }
     }
 
