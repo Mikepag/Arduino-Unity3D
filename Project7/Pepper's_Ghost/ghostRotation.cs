@@ -54,7 +54,7 @@ public class ghostRotation : MonoBehaviour
         {                                                               // Whenever the Backspace key is clicked...
             SceneManager.LoadScene("Assets/Scenes/Menu.unity");         // Load Menu Scene.
         }
-        
+
         CheckMotion();                                                  // Call CheckMotion() to check if the Ghost should be rotated.
     }
 
@@ -102,13 +102,13 @@ public class ghostRotation : MonoBehaviour
         if (recentValues[arrIn] > recentAverage)
         {                                                               // If the latest Input value is greater than the average value...
             Debug.Log("Gesture-to-the-Right, Counterclockwise rotation");
-            rotateCW = false;                                           //the Ghost needs to be rotated Clockwise.
+            rotateCW = false;                                           //...the Ghost needs to be rotated Counterclockwise.
             rotateCCW = true;
         }
         else if (recentValues[arrIn] < recentAverage)
-        {                                                               // If the latest Input value is smaller than the average value... the Ghost needs to be rotated Counterclockwise.
+        {                                                               // If the latest Input value is smaller than the average value...
             Debug.Log("Gesture-to-the-Left, Clockwise rotation");
-            rotateCCW = false;                                          // the Ghost needs to be rotated Counterclockwise.
+            rotateCCW = false;                                          //...the Ghost needs to be rotated Clockwise.
             rotateCW = true;
         }
 
@@ -116,8 +116,7 @@ public class ghostRotation : MonoBehaviour
         // angleToRotate gets a value based on the difference between the latest Input value and array's average value. The value expresses the direction and total degrees of rotation angle.
         // Also, changed the variable's value range from [-64,64] to [-MaxATR,MaxATR].
         angleToRotate = (float)(MaxATR * (recentValues[arrIn] - recentAverage)) / 64;
-        angleToRotate = -angleToRotate;                                 // Setting angleToRotate to its opposite value so the Ghost rotates in the right direction. aTR<0 == CW, aTR>0 == CCW.
-
+        
         if (angleToRotate < 1 && angleToRotate > 0)
         {                                                               // If 0<angleToRotate<1...
             angleToRotate = 1;                                          //...I set angleToRotate back to 1. That helps by rotating the Ghost even for very small hand gestures and improves accuracy.
@@ -137,7 +136,7 @@ public class ghostRotation : MonoBehaviour
 
         // --- GHOST ROTATION ---
         angleToRotate *= 2;
-        Ghost.transform.Rotate(0, angleToRotate, 0);                     // Rotate the Ghost in the Y-Axis in the direction and degrees provided by angleToRotate.
+        Ghost.transform.Rotate(0, 0, angleToRotate);                     // Rotate the Ghost in the Z-Axis in the direction and degrees provided by angleToRotate.
     }
 
 
