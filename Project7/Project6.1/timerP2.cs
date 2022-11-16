@@ -50,7 +50,8 @@ public class timerP2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        goalReached = Disk.GetComponent<diskRotationP2>().goalReached;          // Getting the value of goalReached from the diskRotationP2.cs script.
+        //goalReached = Disk.GetComponent<diskRotationP2>().goalReached;          // Getting the value of goalReached from the diskRotationP2.cs script.
+        goalReached = Disk.GetComponent<diskDampedRotationP2>().goalReached;          // Getting the value of goalReached from the diskDampedRotationP2.cs script.
         roundNum = Disk.GetComponent<restartP2>().roundNum;                     // Getting the value of roundNum from the restartP2.cs script.
 
         previous_resBtnClicked = resBtnClicked;                                 //Save the previous frame's resBtnClicked value.
@@ -62,16 +63,9 @@ public class timerP2 : MonoBehaviour
 
             if (updatedFile != roundNum)
             {                                                                   // If I haven't printed the data to the file yet in this round...
-                if (roundNum == 1)
-                {
-                    updatedFile = roundNum;                                     // The first round's time is not saved to the external file.
-                }
-                else
-                {
-                    textToWrite = timerText.text.ToString() + "\n";             // Create a proper string of the time's value.
-                    File.AppendAllText(filename, textToWrite);                  // Append it to the file (print it without deleting previous data).
-                    updatedFile = roundNum;                                     // I use this to know in which round the file has last been updated.
-                }
+                textToWrite = timerText.text.ToString() + "\n";             // Create a proper string of the time's value.
+                File.AppendAllText(filename, textToWrite);                  // Append it to the file (print it without deleting previous data).
+                updatedFile = roundNum;                                     // I use this to know in which round the file has last been updated.
             }
         }
 
@@ -95,24 +89,53 @@ public class timerP2 : MonoBehaviour
             string seconds = secondsInt.ToString();                             // Converts integer value of elapsed seconds to String.
             string milliseconds = millisecInt.ToString();                       // Converts integer value of elapsed milliseconds to String.
 
-            if (minutesInt < 10)
-            {                                                                   // If < 10...
-                minutes = "0" + minutes;                                        //...Add a zero so it looks better.
+            if ( minutesInt == 0 && secondsInt == 0 && millisecInt  < 200)
+            {
+                timerText.color = Color.green;
+                timerText.text = ">> GO >>";
             }
-            if (secondsInt < 10)
-            {                                                                   // If < 10...
-                seconds = "0" + seconds;                                        //...Add a zero so it looks better.
+            else if ( minutesInt == 0 && secondsInt == 0 && millisecInt < 400)
+            {
+                timerText.color = Color.green;
+                timerText.text = "-- GO --";
             }
-            if (millisecInt < 100)
-            {                                                                   // If < 100...
-                milliseconds = "0" + milliseconds;                              //...Add a zero so it looks better.
-                if (millisecInt < 10)
-                {                                                               // If also < 10...
-                    milliseconds = "0" + milliseconds;                          //...Add another zero so it looks better.
+            else if (minutesInt == 0 && secondsInt == 0 && millisecInt < 600)
+            {
+                timerText.color = Color.green;
+                timerText.text = ">> GO >>";
+            }
+            else if (minutesInt == 0 && secondsInt == 0 && millisecInt < 800)
+            {
+                timerText.color = Color.green;
+                timerText.text = "-- GO --";
+            }
+            else if (minutesInt == 0 && secondsInt == 0 && millisecInt < 999)
+            {
+                timerText.color = Color.green;
+                timerText.text = ">> GO >>";
+            }
+            else
+            {
+                timerText.color = Color.black;
+                if (minutesInt < 10)
+                {                                                                   // If < 10...
+                    minutes = "0" + minutes;                                        //...Add a zero so it looks better.
                 }
-            }
+                if (secondsInt < 10)
+                {                                                                   // If < 10...
+                    seconds = "0" + seconds;                                        //...Add a zero so it looks better.
+                }
+                if (millisecInt < 100)
+                {                                                                   // If < 100...
+                    milliseconds = "0" + milliseconds;                              //...Add a zero so it looks better.
+                    if (millisecInt < 10)
+                    {                                                               // If also < 10...
+                        milliseconds = "0" + milliseconds;                          //...Add another zero so it looks better.
+                    }
+                }
 
-            timerText.text = minutes + ":" + seconds + "," + milliseconds;      // Set UI timersText's text to the elapsed minutes:seconds:milliseconds.
+                timerText.text = minutes + ":" + seconds + "," + milliseconds;      // Set UI timersText's text to the elapsed minutes:seconds:milliseconds.
+            }
         }
     }
 
@@ -121,28 +144,19 @@ public class timerP2 : MonoBehaviour
     {
         unfinCD = 1;                                // The countdown has not finished yet.
         secondsInt = 0;                             // Counts elapsed seconds since the Countdown started.
-        while (secondsInt <= 3)
+        while (secondsInt <= 1)
         {
             if (secondsInt == 0)
             {
-                timerText.text = "3";               // Print "3".
+                timerText.text = "READY";           // Print "READY".
                 secondsInt = 1;
             }
             else if (secondsInt == 1)
             {
-                timerText.text = "2";               // Print "2".
+                timerText.text = "SET";             // Print "SET".
                 secondsInt = 2;
             }
-            else if (secondsInt == 2)
-            {
-                timerText.text = "1";               // Print "1".
-                secondsInt = 3;
-            }
-            else
-            {
-                timerText.text = "GO!";             // Print "GO!".
-                secondsInt = 4;
-            }
+            timerText.color = Color.red;
             yield return new WaitForSeconds(1);     // Suspends the coroutine execution for the given amount of seconds using scaled time.
         }
         unfinCD = 0;                                // The Countdown has finished.
