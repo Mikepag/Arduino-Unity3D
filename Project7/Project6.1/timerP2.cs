@@ -50,8 +50,7 @@ public class timerP2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //goalReached = Disk.GetComponent<diskRotationP2>().goalReached;          // Getting the value of goalReached from the diskRotationP2.cs script.
-        goalReached = Disk.GetComponent<diskDampedRotationP2>().goalReached;          // Getting the value of goalReached from the diskDampedRotationP2.cs script.
+        goalReached = Disk.GetComponent<diskRotationP2>().goalReached;          // Getting the value of goalReached from the diskRotationP2.cs script.
         roundNum = Disk.GetComponent<restartP2>().roundNum;                     // Getting the value of roundNum from the restartP2.cs script.
 
         previous_resBtnClicked = resBtnClicked;                                 //Save the previous frame's resBtnClicked value.
@@ -63,9 +62,9 @@ public class timerP2 : MonoBehaviour
 
             if (updatedFile != roundNum)
             {                                                                   // If I haven't printed the data to the file yet in this round...
-                textToWrite = timerText.text.ToString() + "\n";             // Create a proper string of the time's value.
-                File.AppendAllText(filename, textToWrite);                  // Append it to the file (print it without deleting previous data).
-                updatedFile = roundNum;                                     // I use this to know in which round the file has last been updated.
+                textToWrite = timerText.text.ToString() + "\n";                 // Create a proper string of the time's value.
+                File.AppendAllText(filename, textToWrite);                      // Append it to the file (print it without deleting previous data).
+                updatedFile = roundNum;                                         // I use this to know in which round the file has last been updated.
             }
         }
 

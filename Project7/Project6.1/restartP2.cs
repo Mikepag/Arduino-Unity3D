@@ -14,7 +14,7 @@ public class restartP2 : MonoBehaviour
 
     public int resBtnClicked;           // ==1 when the restart button gets clicked.
     public int roundNum;                // Is equal to the current round's number.
-    private const int FinalRound = 4;   // Constant variable to save the total number of rounds.
+    private const int FinalRound = 3;   // Constant to save the total number of rounds.
 
     private int goalReached;            // Getting the value of goalReached from the diskRotationP2.cs script.
 

@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO.Ports;
 using UnityEngine.UI;
 using System.IO;
+using System;
 using UnityEngine.SceneManagement;
 
 public class ghostRotation : MonoBehaviour
@@ -14,23 +15,26 @@ public class ghostRotation : MonoBehaviour
     //Recieving data from the arduino:
     SerialPort sp = new SerialPort("COM3", 9600);
 
-    private const int MinLeftDistance = -32;    // Used for setting boundaries for the Input value.
-    private const int MaxLeftDistance = -2;     // Used for setting boundaries for the Input value.
-    private const int MinRightDistance = 2;     // Used for setting boundaries for the Input value.
-    private const int MaxRightDistance = 32;    // Used for setting boundaries for the Input value.
-    private const int MaxATR = 25;              // MaxAngleToRotate. Maximum degrees angle the Ghost can be rotated.
-    private const int SIZE = 15;                // recentValues[] size.
+    private const int MinLeftDistance = -32;            // Used for setting boundaries for the Input value.
+    private const int MaxLeftDistance = -2;             // Used for setting boundaries for the Input value.
+    private const int MinRightDistance = 2;             // Used for setting boundaries for the Input value.
+    private const int MaxRightDistance = 32;            // Used for setting boundaries for the Input value.
+    private const int MaxAOR = 25;                      // MaxAngleOfRotation. Maximum degrees angle the Ghost can be rotated.
+    private const int SIZE = 15;                        // previousPositions[] size.
+    private const int maxDampedRotationDuration = 20;   // Maximum number of timesteps the Ghost's damped rotation can last.
 
-    private int randomAngle;                    // Gets a "random" value which is used when rotating the Ghost each time the restart button is clicked.
-    public float angleToRotate;                 // Contains the value in which the Ghost will be rotated.
-    public int tempInput;                       // Variable that gets input from Arduino.
-    private bool rotateCW;                      // Flag to rotate Ghost Clockwise.
-    private bool rotateCCW;                     // Flag to rotate Ghost Counterclockwise.
+    private int timestepsSinceOutOfBounds = 0;          // Counter of the elapsed timesteps since the hand position went out of the predefined boundaries.
 
-    private int[] recentValues = new int[SIZE]; // (Circular) Array containing the [SIZE] most recent input values.
-    public int recentAverage;                   // Average value of all array's values.
-    private int arrIn;                          // Is equal to the number of the array's cell into which we can insert data. When the array is full, the oldest value gets overwritten.
-    private int currentArrSize;                 // Is equal to the array's current size (number of not empty cells). Used for calculating average value.
+    public float angleOfRotation;                       // Contains the value in which the Ghost will be rotated.
+    public int currentPosition;                         // Variable that gets input from Arduino.
+
+    private int[] previousPositions = new int[SIZE];    // (Circular) Array containing the [SIZE] most recent input values.
+    public int averagePreviousPosition;                 // Average value of all array's values.
+    private int arrIn;                                  // Is equal to the number of the array's cell into which we can insert data. When the array is full, the oldest value gets overwritten.
+    private int currentArrSize;                         // Is equal to the array's current size (number of not empty cells). Used for calculating average value.
+
+    public float initialAngleOfDampedRotation;          // Gets the last angleOfRotation value before the hand position went out of the predefined boundaries. Used as the initial speed for the damped rotation.
+    private int dampedRotationDuration;                 // Duration of the damped rotation in timesteps.
 
 
     //__________________________________________________START():__________________________________________________
@@ -38,12 +42,11 @@ public class ghostRotation : MonoBehaviour
     {
         sp.Open();
 
-        angleToRotate = 0;
-        rotateCW = false;
-        rotateCCW = false;
-        recentAverage = 0;
+        angleOfRotation = 0;
+        averagePreviousPosition = 0;
         arrIn = 0;
         currentArrSize = 0;
+        dampedRotationDuration = 0; 
     }
 
 
@@ -51,99 +54,109 @@ public class ghostRotation : MonoBehaviour
     void Update()   // Update is called once per frame
     {
         if (Input.GetKeyDown(KeyCode.Backspace))
-        {                                                               // Whenever the Backspace key is clicked...
-            SceneManager.LoadScene("Assets/Scenes/Menu.unity");         // Load Menu Scene.
+        {                                                       // Whenever the Backspace key is clicked...
+            SceneManager.LoadScene("Assets/Scenes/Menu.unity"); // Load Menu Scene.
         }
 
-        CheckMotion();                                                  // Call CheckMotion() to check if the Ghost should be rotated.
-    }
+        currentPosition = sp.ReadByte();                        // Get input from Serial Port.
+        currentPosition -= 32;                                  // I added 32 before sending it here, so I have to subtract 32 now to get the real value.
 
+        if ((currentPosition >= MinLeftDistance && currentPosition <= MaxLeftDistance) || (currentPosition >= MinRightDistance && currentPosition <= MaxRightDistance))
+        {                                                       // If the input value is between the boundaries...
+            timestepsSinceOutOfBounds = 0;
 
-    //__________________________________________________CHECKMOTION():__________________________________________________
-    void CheckMotion()
-    {
-        tempInput = sp.ReadByte();                                      // Get input from Serial Port.
-        tempInput -= 32;                                                // I added 32 before sending it here, so I have to subtract 32 now to get the real value.
-
-        if ((tempInput >= MinLeftDistance && tempInput <= MaxLeftDistance) || (tempInput >= MinRightDistance && tempInput <= MaxRightDistance))
-        {                                                               // If the input value is between the boundaries...
-            recentValues[arrIn] = tempInput;                            //...Add the input to the array.
+            previousPositions[arrIn] = currentPosition;         //...Add the input to the array.
 
             if (currentArrSize < SIZE)
             {
-                currentArrSize++;                                       // Increment currentArrSize every time a new value gets added, until currentArrSize == 10.
+                currentArrSize++;                               // Increment currentArrSize every time a new value gets added, until currentArrSize == SIZE.
             }
-
-            GetDirection();                                             // Call GetDirection() to rotate the Ghost.
-
-            arrIn++;                                                    // Increment array's counter.
+            
+            angleOfRotation = GetAngleOfRotation();             // Call GetAngleOfRotation() to get the desired angle (and direction) of the rotation.
+            GhostRotation(angleOfRotation);                     // Call GhostRotation() to rotate the Ghost.
+            
+            arrIn++;                                            // Increment array's counter.
             if (arrIn > (SIZE - 1))
-            {                                                           // If the end of the array is reached...
-                arrIn = 0;                                              //..."Point" to the first cell again.
+            {                                                   // If the end of the array is reached...
+                arrIn = 0;                                      //..."Point" to the first cell again.
             }
         }
-        else
-        {                                                               // Else, if the input is out of bounds...
-            DeleteRecentValues();                                       //...Call DeleteRecentValues() to delete all array's values.
+        else                                                                                    // Else, if the input is out of bounds...
+        {
+            if (timestepsSinceOutOfBounds == 0)                                                 // If it is the first time the currentPosition is out of bounds...
+            {
+                initialAngleOfDampedRotation = angleOfRotation;                                 // Save the last calculated angleOfRotation to be used as the initialAngleofDampedRotation.
+                dampedRotationDuration = (int)(Math.Abs(initialAngleOfDampedRotation));         // Geting the integer absolute value of initialAngleOfRotation. 
+                if (dampedRotationDuration > maxDampedRotationDuration)
+                {
+                    dampedRotationDuration = maxDampedRotationDuration;                         // If the calculated duration is longer than the predefined maximum duration, set it to the maximum value.
+                }
+            }
+
+            if (timestepsSinceOutOfBounds < dampedRotationDuration)                             // While the timestepsSinceOutOfBounds haven't reached the maximum rotationDuration value...
+            {   
+                DampedGhostRotation(initialAngleOfDampedRotation, timestepsSinceOutOfBounds);   //...Call DampedGhostRotation() to rotate the Ghost.
+            }
+            
+            if (timestepsSinceOutOfBounds >= 2)                                                 // If 2 timesteps have passed since the time in which the input value went out of bounds...
+            {
+                DeletePreviousPositions();                                                      //...Call DeletePreviousPositions() to delete all array's values.
+            }
+
+            timestepsSinceOutOfBounds++;                                                        // Increment the timesteps since the time in which the input value went out of bounds.
         }
     }
 
+    
 
-    //__________________________________________________GETDIRECTION():__________________________________________________
-    void GetDirection()                                                 // Call GetDirection() to rotate the Ghost.
+
+    //_________________________________________________________________________________________________________________________
+    //__________________________________________________GETANGLEOFROTATION():__________________________________________________
+    float GetAngleOfRotation()
     {
-        recentAverage = 0;
-        for (int i = 0; i < currentArrSize; i++)                        // Calculating average value for all array's "not-empty" cells:
+        averagePreviousPosition = 0;
+        if (currentArrSize > 0) // To avoid the division with zero when the array is empty. (Not really needed since the function is only called if there is at least one value in the array.)
         {
-            recentAverage += recentValues[i];
-        }
-        recentAverage = recentAverage / currentArrSize;
-
-        if (recentValues[arrIn] > recentAverage)
-        {                                                               // If the latest Input value is greater than the average value...
-            Debug.Log("Gesture-to-the-Right, Counterclockwise rotation");
-            rotateCW = false;                                           //...the Ghost needs to be rotated Counterclockwise.
-            rotateCCW = true;
-        }
-        else if (recentValues[arrIn] < recentAverage)
-        {                                                               // If the latest Input value is smaller than the average value...
-            Debug.Log("Gesture-to-the-Left, Clockwise rotation");
-            rotateCCW = false;                                          //...the Ghost needs to be rotated Clockwise.
-            rotateCW = true;
+            for (int i = 0; i < currentArrSize; i++)    // Calculating average value for all array's "not-empty" cells:
+            {
+                averagePreviousPosition += previousPositions[i];
+            }
+            averagePreviousPosition = averagePreviousPosition / currentArrSize;
         }
 
-        // --- SMOOTH ROTATION ---
-        // angleToRotate gets a value based on the difference between the latest Input value and array's average value. The value expresses the direction and total degrees of rotation angle.
-        // Also, changed the variable's value range from [-64,64] to [-MaxATR,MaxATR].
-        angleToRotate = (float)(MaxATR * (recentValues[arrIn] - recentAverage)) / 64;
-        
-        if (angleToRotate < 1 && angleToRotate > 0)
-        {                                                               // If 0<angleToRotate<1...
-            angleToRotate = 1;                                          //...I set angleToRotate back to 1. That helps by rotating the Ghost even for very small hand gestures and improves accuracy.
-        }
-        else if (angleToRotate > -1 && angleToRotate < 0)
-        {                                                               // If -1<angleToRotate<0...
-            angleToRotate = -1;                                         //...I set angleToRotate back to -1. That helps by rotating the Ghost even for very small hand gestures and improves accuracy.
-        }
-        else if (angleToRotate == 0 && rotateCW)
-        {                                                               // When angleToRotate reaches 0, I need the Ghost to continue rotating (really slow) in the same direction for as long as my hand is detected inside the boundaries.
-            angleToRotate = 1;                                          // If rotateCW == true, I set angleToRotate to 1 so it rotates 1 degree Clockwise.
-        }
-        else if (angleToRotate == 0 && rotateCCW)
-        {                                                               // When angleToRotate reaches 0, I need the Ghost to continue rotating (really slow) in the same direction for as long as my hand is detected inside the boundaries.
-            angleToRotate = -1;                                         // If rotateCCW == true, I set angleToRotate to 1 so it rotates 1 degree Counterclockwise.
-        }
+        // angleOfRotation gets a value based on the difference between the latest Input value and array's average value. The value expresses the direction and total degrees of rotation angle.
+        // Also, changed the variable's value range from [-64,64] to [-MaxAOR,MaxAOR].
+        angleOfRotation = (float)(MaxAOR * (currentPosition - averagePreviousPosition)) / 64;
+
+        return angleOfRotation;
+    }
+
+
+    //__________________________________________________GHOSTROTATION():__________________________________________________
+    void GhostRotation(float angleOfRotation)   // Call GhostRotation() to rotate the Ghost while the hand position is between the boundaries.
+    {
+        // --- GHOST ROTATION ---
+        Ghost.transform.Rotate(0, 0, angleOfRotation);  // Rotates the Ghost in the Z-Axis in the direction and degrees provided by angleOfRotation.
+    }
+
+
+    //__________________________________________________DAMPEDGHOSTROTATION():__________________________________________________
+    void DampedGhostRotation(float initialAngleOfDampedRotation, int timestepsSinceOutOfBounds) // Call DampedGhostRotation() to smoothly stop (dampen) the rotating Ghost after the hand position stopped being between the boundaries.
+    {
+        // Automatically calculates the angleOfRotation's decreasing rate as a percentage of the initial angle of rotation to control how long the rotation is going to last.
+        // aOR = iAODR * (100 - (100 * ts/dur))/100, OR: aOR = iAODR * (1 - ts/dur), OR: aOR = iAODR * X%, where X is the appropriate percentage (e.g: aOR = iAODR * 50%, aOR = iAODR * 95% etc.).
+        // Removes the appropriate percentage from the initial angle of rotation for every elapsed timestep, so the rotational speed decreases and reaches 0 (0% of the iAODR) when the maximum rotation's duration is reached:
+        angleOfRotation = initialAngleOfDampedRotation * (100 - (100/dampedRotationDuration * (1 + timestepsSinceOutOfBounds))) / 100;
 
         // --- GHOST ROTATION ---
-        angleToRotate *= 2;
-        Ghost.transform.Rotate(0, 0, angleToRotate);                     // Rotate the Ghost in the Z-Axis in the direction and degrees provided by angleToRotate.
+        Ghost.transform.Rotate(0, 0, angleOfRotation);  // Rotates the Ghost in the Z-Axis in the direction and degrees provided by angleOfRotation.
     }
 
 
-    //__________________________________________________DELETERECENTVALUES():__________________________________________________
-    void DeleteRecentValues()                                           // Function used for "deleting" all recent values from the array.
+    //__________________________________________________DELETEPREVIOUSPOSITIONS():__________________________________________________
+    void DeletePreviousPositions()  // Function used for "deleting" all recent values from the array.
     {
-        arrIn = 0;                                                      // Put the next input value to the first array's cell.
-        currentArrSize = 0;                                             // Array's size == 0 means that array is currently empty.
+        arrIn = 0;                  // Put the next input value to the first array's cell.
+        currentArrSize = 0;         // Array's size == 0 means that array is currently empty.
     }
 }
