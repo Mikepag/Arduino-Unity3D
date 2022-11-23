@@ -26,35 +26,33 @@ public class diskRotationP3 : MonoBehaviour
     public int goalReached;                     // ==1 when the goal is reached, ==0 when the goal is not reached yet.
 
     private int randomAngle;                    // Gets a "random" value which is used when rotating the disk each time the restart button is clicked.
-    private int angle;                          // Gets the disk's current rotation value of Y Axis (Disk.transform.localRotation.eulerAngles.y).
-    public float angleToRotate;                 // Contains the value in which the disk will be rotated.
-    public int tempInput;                       // Variable that gets input from Arduino.
+    private int currentAngle;                   // Gets the disk's current rotation value of Y Axis (Disk.transform.localRotation.eulerAngles.y).
+    public float angleOfRotation;               // Contains the value in which the disk will be rotated.
+    public int currentPosition;                 // Variable that gets input from Arduino.
 
 
 
     //__________________________________________________START():__________________________________________________
     void Start()    // Use this for initialization
     {
-        sp.Open();
-
         previous_resBtnClicked = 0;             // The restart button has not been clicked in the previous frame.
         resBtnClicked = 0;                      // The restart button has not been clicked yet.
         goalReached = 0;
-        angleToRotate = 0;
+        angleOfRotation = 0;
     }
 
 
     //__________________________________________________UPDATE():__________________________________________________
     void Update()   // Update is called once per frame
     {
-        angle = (int)Disk.transform.localRotation.eulerAngles.y;            // Get the current Y-Axis rotation value.
+        currentAngle = (int)Disk.transform.localRotation.eulerAngles.y;     // Get the current Y-Axis rotation value.
 
         previous_resBtnClicked = resBtnClicked;                             // Save the previous frame's resBtnClicked value.
         resBtnClicked = Disk.GetComponent<restartP3>().resBtnClicked;       // Getting the current value of resBtnClicked from the restartP3.cs script.
         unfinCD = Disk.GetComponent<timerP3>().unfinCD;                     // Getting the value of unfinCD from the timerP3.cs script.
         didCntdown = Disk.GetComponent<timerP3>().didCntdown;               // Getting the value of didCntdown from the timerP3.cs script.
 
-        if ((resBtnClicked - previous_resBtnClicked) == 1)                  // If the restart button has been clicked...
+        if ((resBtnClicked - previous_resBtnClicked) == 1)                  // If the restart button has just been clicked...
         {
             randomAngle = Random.Range(0, 180);                             // Returns a random integer number between 0 and 179.
             if (randomAngle >= 90)
@@ -64,31 +62,32 @@ public class diskRotationP3 : MonoBehaviour
             transform.localRotation = Quaternion.Euler(0, randomAngle, 0);  // Set Disk's rotation of Y axis to the randomAngle.
             goalReached = 0;                                                // Every time the restart button gets clicked, a new round starts in which the goal has not been reached yet.
         }
-
- 
-        if (goalReached == 0 && unfinCD == 0 && didCntdown == 1)            // If the the goal is Not reached yet AND the countdown is not currently taking place AND there was a countdown already...
+        else if (goalReached == 0 && unfinCD == 0 && didCntdown == 1)       // Else, if the the goal is Not reached yet AND the countdown is not currently taking place AND there was a countdown already...
         {
-            CheckMotion();                                                  // Call CheckMotion() to check if the disk should be rotated.
+            CheckRotation();                                                // Call CheckRotation() to check if the disk should be rotated.
         }
     }
 
-    //__________________________________________________CHECKMOTION():__________________________________________________
-    void CheckMotion()
-    {
-        tempInput = sp.ReadByte();                              // Get input from Serial Port.
-        tempInput -= 32;                                        // I added 32 before sending it here, so I have to subtract 32 now to get the real value.
 
-        if ((tempInput >= MinLeftDistance && tempInput <= MaxLeftDistance) || (tempInput >= MinRightDistance && tempInput <= MaxRightDistance))
-        {                                                       // If the input value is between the boundaries...
+    //__________________________________________________CHECKROTATION():__________________________________________________
+    void CheckRotation()
+    {
+        sp.Open();                                                          // Open the Serial Port to get current hand position value.
+        currentPosition = sp.ReadByte();                                    // Get the current hand position value as input from Serial Port.
+        sp.Close();                                                         // Close the Serial Port so position values don't get stored to it in between rounds and during the countdown causing "random rotation" and lag.
+        currentPosition -= 32;                                              // I added 32 before sending it here, so I have to subtract 32 now to get the real value.
+
+        if ((currentPosition >= MinLeftDistance && currentPosition <= MaxLeftDistance) || (currentPosition >= MinRightDistance && currentPosition <= MaxRightDistance))
+        {                                                                   // If the input value is between the boundaries...
             //_____ Joystick _____
-            angleToRotate = -tempInput / 4;                     // Calculate the correct angle to rotate.
-            Disk.transform.Rotate(0, angleToRotate, 0);         // Rotate the Ghost in the Y-Axis in the direction and degrees provided by angleToRotate.
+            angleOfRotation = (float)currentPosition / (-4);                // Calculate the angle of rotation based on the current hand position.
+            Disk.transform.Rotate(0, angleOfRotation, 0);                   // Rotate the Ghost in the Y-Axis in the direction and degrees provided by angleOfRotation.
         }
-        else                                                            // Else, if the input is out of bounds...
+        else                                                                // Else, if the input is out of bounds...
         {
-            if (angle >= 175 && angle <= 185 && (resBtnClicked - previous_resBtnClicked) == 0)     // If the current angle is between 175 and 185 and the button has not been clicked yet to start the next round...
-            {
-                goalReached = 1;                                        //...The goal has been successfully reached (for this round).
+            if (currentAngle >= 175 && currentAngle <= 185 && (resBtnClicked - previous_resBtnClicked) == 0)
+            {                                                               // If the current angle is between 175 and 185 and the button has not been clicked yet to start the next round...
+                goalReached = 1;                                            //...The goal has been successfully reached (for this round).
             }
         }
     }
