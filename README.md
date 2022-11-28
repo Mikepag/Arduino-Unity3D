@@ -3,21 +3,29 @@
 ---
 
 # Index
-#### [Project1](https://github.com/Mikepag/Arduino-Unity3D#project-1): Distance Calculation using an Ultrasonic Sensor - Unity's Cube Movement.
-#### [Project2](https://github.com/Mikepag/Arduino-Unity3D#project-2-dushgrproject): Dual Ultrasonic Sensor - Hand Gesture Recognition Project
-#### [Project3](https://github.com/Mikepag/Arduino-Unity3D#project-3-qushgrproject): Quad Ultrasonic Sensor - Hand Gesture Recognition Project
-#### [Project3.1](https://github.com/Mikepag/Arduino-Unity3D#project-31-qushgrproject_bf): Quad Ultrasonic Sensor - Hand Gesture Recognition Project ("Book Flipping" Gestures)
-#### [Project4](https://github.com/Mikepag/Arduino-Unity3D#project-4-qtushgrproject): Quad Tilted Ultrasonic Sensor - Hand Gesture Recognition Project
-#### [Project4.1](https://github.com/Mikepag/Arduino-Unity3D#project-41-qtushgrproject2): Quad Tilted Ultrasonic Sensor - Hand Gesture Recognition (+ Extra Functionality)
-#### [Project4.2](https://github.com/Mikepag/Arduino-Unity3D#project42-p1-disk-rotation-using-timesteps): Disk Rotation Using Timesteps (Sub-Project of Project7)
-#### [Project5](https://github.com/Mikepag/Arduino-Unity3D#project-5-camera-control-project): Camera Control (Experimental Project)
-#### [Project6](https://github.com/Mikepag/Arduino-Unity3D#project-6-disk-rotation): Disk Rotation (Combination of Project4.1 & Project5)
-#### [Project6.1](https://github.com/Mikepag/Arduino-Unity3D#project61-p2-disk-rotation-using-average-distance): Disk Rotation Using Average Distance (Sub-Project of Project7)
-#### [Project7](https://github.com/Mikepag/Arduino-Unity3D#project7-disk-rotation-integration): Disk Rotation Integration (Comparison of Project4.2 & Project6.1 & [Project7.0.1](https://github.com/Mikepag/Arduino-Unity3D/blob/master/README.md#project7-project701-disk-rotation-using-joystick-gestures) (& [Pepper's_Ghost](https://github.com/Mikepag/Arduino-Unity3D#project7-peppers_ghost-peppers-ghost-hologram-rotation)))
-##### - - - [Project4.2](https://github.com/Mikepag/Arduino-Unity3D#project42-p1-disk-rotation-using-timesteps): (P1) Disk Rotation Using Timesteps.
-##### - - - [Project6.1](https://github.com/Mikepag/Arduino-Unity3D#project61-p2-disk-rotation-using-average-distance): (P2) Disk Rotation Using Average Distance.
-##### - - - [Project7.0.1](https://github.com/Mikepag/Arduino-Unity3D/blob/master/README.md#project7-project701-disk-rotation-using-joystick-gestures): (P3) Disk Rotation using Joystick-Gestures
-##### - - - [Pepper's_Ghost](https://github.com/Mikepag/Arduino-Unity3D#project7-peppers_ghost-peppers-ghost-hologram-rotation): Pepper's Ghost Hologram Rotation)
+#### &#x2756; [Project1](https://github.com/Mikepag/Arduino-Unity3D#project-1): Distance Calculation using an Ultrasonic Sensor - Unity's Cube Movement.
+#### &#x2756; [Project2](https://github.com/Mikepag/Arduino-Unity3D#project-2-dushgrproject): Dual Ultrasonic Sensor - Hand Gesture Recognition Project
+#### &#x2756;  [Project3](https://github.com/Mikepag/Arduino-Unity3D#project-3-qushgrproject): Quad Ultrasonic Sensor - Hand Gesture Recognition Project
+#### &#x2756; [Project3.1](https://github.com/Mikepag/Arduino-Unity3D#project-31-qushgrproject_bf): Quad Ultrasonic Sensor - Hand Gesture Recognition Project ("Book Flipping" Gestures)
+#### &#x2756; [Project4](https://github.com/Mikepag/Arduino-Unity3D#project-4-qtushgrproject): Quad Tilted Ultrasonic Sensor - Hand Gesture Recognition Project
+#### &#x2756; [Project4.1](https://github.com/Mikepag/Arduino-Unity3D#project-41-qtushgrproject2): Quad Tilted Ultrasonic Sensor - Hand Gesture Recognition (+ Extra Functionality)
+#### &#x2756; [Project4.2](https://github.com/Mikepag/Arduino-Unity3D#project42-p1-disk-rotation-using-timesteps): Disk Rotation Using Timesteps (Sub-Project of Project7)
+#### &#x2756; [Project5](https://github.com/Mikepag/Arduino-Unity3D#project-5-camera-control-project): Camera Control (Experimental Project)
+#### &#x2756; [Project6](https://github.com/Mikepag/Arduino-Unity3D#project-6-disk-rotation): Disk Rotation (Combination of Project4.1 & Project5)
+#### &#x2756; [Project6.1](https://github.com/Mikepag/Arduino-Unity3D#project61-p2-disk-rotation-using-average-distance): Disk Rotation Using Average Distance (Sub-Project of Project7)
+#### &#x2756; [Project7](https://github.com/Mikepag/Arduino-Unity3D#project7-disk-rotation-integration): Disk Rotation Integration (Comparison of Project4.2 & Project6.1 & [Project7.0.1](https://github.com/Mikepag/Arduino-Unity3D/blob/master/README.md#project7-project701-disk-rotation-using-joystick-gestures) (& [Pepper's_Ghost](https://github.com/Mikepag/Arduino-Unity3D#project7-peppers_ghost-peppers-ghost-hologram-rotation)))
+##### - - - &#x27A5; [Project4.2](https://github.com/Mikepag/Arduino-Unity3D#project42-p1-disk-rotation-using-timesteps): (P1) Disk Rotation Using Timesteps.
+##### - - - &#x27A5; [Project6.1](https://github.com/Mikepag/Arduino-Unity3D#project61-p2-disk-rotation-using-average-distance): (P2) Disk Rotation Using Average Distance.
+##### - - - &#x27A5; [Project7.0.1](https://github.com/Mikepag/Arduino-Unity3D/blob/master/README.md#project7-project701-disk-rotation-using-joystick-gestures): (P3) Disk Rotation using Joystick-Gestures
+##### - - - &#x27A5; [Pepper's_Ghost](https://github.com/Mikepag/Arduino-Unity3D#project7-peppers_ghost-peppers-ghost-hologram-rotation): Pepper's Ghost Hologram Rotation)
+
+
+#### &#x2756; [SystemEvaluation](): Scripts used for evaluating the mappings developed in the previous sections ([Natural]() and [Isomorphic]()), as well as their related field studies ([Natural]() and [Isomorphic]()).
+##### - - - &#x27A5; [NaturalEvaluation](): (NTRL) Disk Rotation using natural interaction as in [Project6.1]().
+##### - - - &#x27A5; [NaturalFieldStudy](): (NTRL)Pepper's Ghost Hologram Rotation using natural interaction.
+##### - - - &#x27A5; [IsomorphicEvaluation](): (ISMC) Disk Rotation using isomorphic interaction as in [Project7.0.1]().
+##### - - - &#x27A5; [IsomorphicFieldStudy](): (ISMC) Pepper's Ghost Hologram Rotation using isomorphic interaction.
+##### - - - &#x27A5; [Menu](): Navigation between the different Unity scenes.
 ___
 
 # Project 1
@@ -492,4 +500,171 @@ ___
 
 ## quadTiltedUS.png
 **&#x27BD; Arduino's Circuit Schema.**
-  
+___
+
+
+
+
+
+
+# SystemEvaluation 
+##### This project consists of two individual projects (NaturalEvaluation and IsomorphicEvaluation), and aims at their quantitative and qualitative evaluation regarding the system's usability and utility, as percieved by the users during their interaction with it. The projects are almost identical as they both rotate a disk object in Unity using an Arduino Uno and four Ultrasonic Sensors to recognise the user's hand gestures. The only difference between the projects lies in the mapping (natural / isomorphic) between the users' input and the system's reactions.
+##### - Additionally, each one of the individual projects is related to a field study (NaturalFieldStudy, IsomorphicFieldStudy) which makes use of a Pepper's Ghost Hologram. The field studies' purpose is the presentation of a working prototype –real-world implementation– of the system, as it could be installed in places such as a museum, and the feedback reception from the users.
+###### For more details see: [NaturalEvaluation](), [NaturalFieldStudy](), [IsomorphicEvaluation](), [IsomorphicFieldStudy](), [Menu]().
+___
+
+# SystemEvaluation/ NaturalEvaluation (NTRL: Disk Rotation using natural interaction).
+##### This project is an evolution of [Project6.1]() with which only has minnor differences.
+###### Related Files: [cameraControl.ino](), [DiskRotationNTRL.cs](), [RestartNTRL.cs](), [TimerNTRL.cs](), [quadTiltedUS.png](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/quadTiltedUS.png).
+
+## cameraControl.ino
+**&#x27BD; C++ code uploaded to the Arduino. Performs Position Detection in 1D.**
+* **Calculates an average distance value of all four Ultrasonic Sensors and sends it to Unity via the Serial Port.**
+* Project5/cameraControl.ino code.
+* It uses the four Ultrasonic Sensors to calculate four distances.
+* Two average distances are calculated, one for the left breadboard (avgDistL) and one for the right breadboard (avgDistR).
+* Finally, the value of the variable totalAvgDist is calculated based on the average value of avgDistL & avgDistR. This value gets sent to Unity.
+
+## DiskRotationNTRL.cs
+**&#x27BD; C Sharp script attached to a Game Object called "Disk".**
+* **Receives the current position value from the Serial Port, saves it in an array, calculates the average value of all array's values, compares the latest input with that average value and rotates the Disk clockwise/counterclockwise accordingly.**
+* Project7/Project6.1/diskRotationP2.cs code was used as a base.
+* It gets the value of variables resBtnClicked, unfinCD and didCntdown from the RestartNTRL.cs and TimerNTRL.cs scripts.
+* I use the previous_resBtnClicked variable to know when the restart button gets clicked by compairing it to the current resBtnClicked as shown below:
+  * if ((resBtnClicked - previous_resBtnClicked) == 1)  // If it's True --> The restart button got clicked.
+* If the restart button gets clicked:
+  * The Disk gets rotated to a random angle.
+* For as long as the the goal is not reached yet, the countdown is not currently taking place and a countdown already took place in the current round:
+   * If the current hand position (currentPosition) is between the range [-32,-2]υ[2,32]:
+      * The currentPosition's value is added to an array (previousPositions[]).
+      * The array's average value (averagePreviousPosition) is calculated.
+      * The desired angle of rotation is calculated as follows:
+         * angleOfRotation gets a value in [-maxAOR, maxAOR] == [-25, 25] based on the difference between the current position value and the array's average value. The value expresses the direction and total degrees of rotation angle:
+            * **angleOfRotation = (float)(MaxAOR * (currentPosition - averagePreviousPosition)) / 64;**
+      * The disk is then rotated in relation to the angle and orientation provided by angleOfRotation.
+         * If currentPosition < averagePreviousPosition &#x279C; The Ghost rotates Clockwise.
+         * If currentPosition > averagePreviousPosition &#x279C; The Ghost rotates Counterclockwise.
+   * Else, if the current hand position (currentPosition) is not between the acceptable boundaries, but the last calculated angleOfRotation was not zero:
+      * The last calculated angleOfRotation is saved in order to be used as the initialAngleofDampedRotation.
+      * **DAMPED ROTATION**: The Disk continues rotating with angleOfRotation == initialAngleofDampedRotation, with that angle slowly decreasing in each frame until the rotation stops.
+      * The DeleteRecentValues() function is used to empty the array some miliseconds after the currentPosition gets out-of-bounds to prepare for the next gesture recognition.
+* After the Disk has stopped rotating, I check whether its angle is between 175° and 185°.
+  If it is:
+  * The goal has been successfully reached (for this round).
+  * The Disk stops rotating for recognised gestures.
+
+## RestartNTRL.cs
+**&#x27BD; C Sharp script attached to a Game Object called "Disk".**
+* **The script is responsible for the restart button's functionality.**
+* In more detail:
+  * Enabling/Disabling the restart button whenever necessary.
+  * "Informing" the other scripts when the restart button gets clicked.
+  * Changing the restart button's text and text's colour.
+  * Changing the UI's roundText text and text's colour.
+  * Returning to Menu when the final round is over and the button gets clicked.
+  * When the restart button gets clicked, the resButClicked variable gets the current round's number.
+  * * After the final round is over, the button opens the Menu Scene.
+* RestartNTRL.cs has the code from Project7/Project6.1/restartP2.cs.cs with some changes and adjustments.
+ 
+## TimerNTRL.cs
+**&#x27BD; C Sharp script attached to a Game Object called "Disk".**
+* **The script is responsible for the countdown and stopwatch functionality.**
+* In more detail:
+  * Displaying a countdown timer before each round begins.
+  * Calculating and displaying a stopwatch (elapsed time) which starts when a new round begins and stops when the goal gets reached.
+  * Saving the elapsed time of each round to an external file (LogTimes_Natural.txt).
+* TimerNTRL.cs has the code from Project7/Project6.1/timerP2.cs with some changes and adjustments.
+
+## quadTiltedUS.png
+**&#x27BD; Arduino's Circuit Schema.**
+___
+
+# SystemEvaluation / NaturalFieldStudy (Pepper's Ghost Hologram Natural Rotation)
+##### In this project a Pepper's Ghost Hologram is rotated using a natural method.
+###### Related Files: [GhostRotationNTRL.cs]().
+###### Unity Asset for Creating Peppers Ghost Hologram Pyramids: [KainosSoftwareLtd/PeppersGhostPyramid](https://github.com/KainosSoftwareLtd/PeppersGhostPyramid).
+
+## GhostRotationNTRL.cs
+**&#x27BD; C# script responsible for rotating the Ghost Game Object in the NaturalFieldStudy Scene.**
+* **Receives the current position value from the Serial Port, saves it in an array, calculates the average value of all array's values, compares the latest input with that average value and rotates the Ghost clockwise/counterclockwise accordingly.**
+* The code is from SystemEvaluation/NaturalEvaluation/DiskRotationNTRL.cs with minnor changes.
+* If the current hand position (currentPosition) is between the range [-32,-2]υ[2,32]:
+   * The currentPosition's value is added to an array (previousPositions[]).
+   * The array's average value (averagePreviousPosition) is calculated.
+   * The desired angle of rotation is calculated as follows:
+      * angleOfRotation gets a value in [-maxAOR, maxAOR] == [-25, 25] based on the difference between the current position value and the array's average value. The value expresses the direction and total degrees of rotation angle:
+         * **angleOfRotation = (float)(MaxAOR * (currentPosition - averagePreviousPosition)) / 64;**
+   * The Ghost is then rotated in relation to the angle and orientation provided by angleOfRotation.
+      * If currentPosition < averagePreviousPosition &#x279C; The Ghost rotates Clockwise.
+      * If currentPosition > averagePreviousPosition &#x279C; The Ghost rotates Counterclockwise.
+* Else, if the current hand position (currentPosition) is not between the acceptable boundaries, but the last calculated angleOfRotation was not zero:
+   * The last calculated angleOfRotation is saved in order to be used as the initialAngleofDampedRotation.
+   * **DAMPED ROTATION**: The Ghost continues rotating with angleOfRotation == initialAngleofDampedRotation, with that angle slowly decreasing in each frame until the rotation stops.
+   * The DeleteRecentValues() function is used to empty the array some miliseconds after the currentPosition gets out-of-bounds to prepare for the next gesture recognition.
+___
+
+# SystemEvaluation/ IsomorphicEvaluation (ISMC: Disk Rotation using isomorphic interaction).
+##### This project is an evolution of [Project7.0.1]() with which only has minnor differences.
+###### Related Files: [cameraControl.ino](), [DiskRotationISMC.cs](), [RestartISMC.cs](), [TimerISMC.cs](), [quadTiltedUS.png](https://github.com/Mikepag/Arduino-Unity3D/blob/master/Project4/quadTiltedUS.png).
+
+## DiskRotationISMC.cs
+**&#x27BD; C Sharp script responsible for rotating the Disk Game Object in the IsomorphicEvaluation Scene.**
+* **Creates a virtual slider which can be controled by the position of the hand detected in front of the sensors.**
+* Rotates the Disk object in IsomorphicEvaluation Scene using the current hand position (currentPosition) value sent to Unity from the Arduino.
+* When the current position is < 0 (The hand is detected in the LEFT side of the sensors):
+  * The disk is rotated clockwise.
+  * The smaller the current position value is, the faster the rotation becomes.
+* When the current position is > 0 (The hand is detected in the RIGHT side of the sensors):
+  * The disk is rotated counterclockwise.
+  * The greater the current position value is, the faster the rotation becomes.
+
+## RestartISMC.cs
+**&#x27BD; C Sharp script attached to a Game Object called "Disk".**
+* **The script is responsible for the restart button's functionality.**
+* In more detail:
+  * Enabling/Disabling the restart button whenever necessary.
+  * "Informing" the other scripts when the restart button gets clicked.
+  * Changing the restart button's text and text's colour.
+  * Changing the UI's roundText text and text's colour.
+  * Returning to Menu when the final round is over and the button gets clicked.
+* RestartISMC.cs uses the code from Project7/Project7.0.1/restartP3.cs.
+
+## TimerISMC.cs
+**&#x27BD; C Sharp script attached to a Game Object called "Disk".**
+* **The script is responsible for the countdown and stopwatch functionality.**
+* In more detail:
+  * Displaying a countdown timer before each round begins.
+  * Calculating and displaying a stopwatch (elapsed time) which starts when a new round begins and stops when the goal gets reached.
+  * Saving the elapsed time of each round to an external file (LogTimes_Isomorphic.txt).
+* TimerISMC.cs uses the code from Project7/Project7.0.1/timerP3.cs.
+
+## quadTiltedUS.png
+**&#x27BD; Arduino's Circuit Schema.**
+___
+
+# SystemEvaluation / IsomorphicFieldStudy (Pepper's Ghost Hologram Isomorphic Rotation)
+##### In this project a Pepper's Ghost Hologram is rotated using an isomorphic method.
+###### Related Files: [GhostRotationISMC.cs]().
+###### Unity Asset for Creating Peppers Ghost Hologram Pyramids: [KainosSoftwareLtd/PeppersGhostPyramid](https://github.com/KainosSoftwareLtd/PeppersGhostPyramid).
+
+## GhostRotationISMC.cs
+**&#x27BD; C# script responsible for rotating the Ghost Game Object in the IsomorphicFieldStudy Scene.**
+* **Creates a virtual slider which can be controled by the position of the hand detected in front of the sensors.**
+* Rotates the Ghost object in IsomorphicFieldStudy Scene using the current hand position (currentPosition) value sent to Unity from the Arduino.
+* When the current position is < 0 (The hand is detected in the LEFT side of the sensors):
+  * The Ghost is rotated clockwise.
+  * The smaller the current position value is, the faster the rotation becomes.
+* When the current position is > 0 (The hand is detected in the RIGHT side of the sensors):
+  * The Ghost is rotated counterclockwise.
+  * The greater the current position value is, the faster the rotation becomes.
+___
+
+# SystemEvaluation / Menu (Main Menu Buttons' Functionality)
+##### In this project the five buttons of the Menu scene are programmed.
+###### Related Files: [MenuButtons.cs]().
+
+## MenuButtons.cs
+**&#x27BD; C# script responsible for the functionality of the five buttons in the Menu Scene.**
+* The main menu in the Menu scene is comprised of five buttons, one for each of the four scenes (IsomorphicEvaluation, IsomorphicFieldStudy, NaturalEvaluation and NaturalFieldStudy) and one "Quit" button.
+* If one of the scene buttons gets clicked, the script loads the relative scene.
+* If the Quit button gets clicked, the script quits the application.
